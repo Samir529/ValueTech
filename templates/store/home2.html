@@ -1,0 +1,188 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- ================= Banner / Carousel ================= -->
+
+
+<div class="container-fluid mt-3">
+  <div class="row">
+    <!-- Left: Carousel / Banner -->
+    <div class="col-lg-9 col-md-8 mb-3">
+      <div id="homeCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner rounded shadow-sm">
+          <!-- Slide 1 -->
+          <div class="carousel-item active">
+            <img src="{% static 'assets/images/banners/banner1.jpg' %}" class="d-block w-100" alt="Banner 1">
+          </div>
+          <!-- Slide 2 -->
+          <div class="carousel-item">
+            <img src="{% static 'assets/images/banners/banner2.jpg' %}" class="d-block w-100" alt="Banner 2">
+          </div>
+          <!-- Slide 3 -->
+          <div class="carousel-item">
+            <img src="{% static 'assets/images/banners/banner3.jpg' %}" class="d-block w-100" alt="Banner 3">
+          </div>
+        </div>
+        <!-- Controls -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#homeCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#homeCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon"></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Right: Compare + Career -->
+    <div class="col-lg-3 col-md-4">
+      <!-- Compare Products -->
+      <div class="p-3 mb-3 rounded shadow-sm" style="background-color:#fff7e6;">
+        <h6 class="fw-bold">Compare Products</h6>
+        <p class="small text-muted">Choose Two Products to Compare</p>
+        <form>
+          <input type="text" class="form-control mb-2" placeholder="Search and Select Product">
+          <input type="text" class="form-control mb-2" placeholder="Search and Select Product">
+          <button class="btn btn-outline-primary w-100">View Comparison</button>
+        </form>
+      </div>
+
+      <!-- Career Banner -->
+      <div class="p-3 text-center rounded shadow-sm" style="background-color:#f0f6ff;">
+        <h6 class="fw-bold text-primary">Shape Your Career with Us</h6>
+        <a href="#" class="btn btn-danger btn-sm mt-2">Join Us!</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= Promo Badges ================= -->
+<div class="container my-4">
+  <div class="row g-3 text-center">
+    <div class="col-6 col-md-3">
+      <div class="p-3 bg-light rounded shadow-sm h-100">
+        <img src="{% static 'assets/images/icons/free-install.png' %}" alt="Free Install" class="mb-2" style="height:40px;">
+        <h6 class="fw-bold mb-0">Free Installation</h6>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="p-3 bg-light rounded shadow-sm h-100">
+        <img src="{% static 'assets/images/icons/free-delivery.png' %}" alt="Free Delivery" class="mb-2" style="height:40px;">
+        <h6 class="fw-bold mb-0">Free Delivery</h6>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="p-3 bg-light rounded shadow-sm h-100">
+        <img src="{% static 'assets/images/icons/emi.png' %}" alt="EMI" class="mb-2" style="height:40px;">
+        <h6 class="fw-bold mb-0">0% EMI Facility</h6>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="p-3 bg-light rounded shadow-sm h-100">
+        <img src="{% static 'assets/images/icons/cashback.png' %}" alt="Cashback" class="mb-2" style="height:40px;">
+        <h6 class="fw-bold mb-0">5% Cashback</h6>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Notice Bar -->
+<div class="text-center py-2 mt-3" style="background:#f9f9f9; border-top:1px solid #ddd;">
+  <small>Monday, 8 September, All our branches are open. Additionally, our online activities are open and operational.</small>
+</div>
+
+
+
+<!-- ================= Featured Categories ================= -->
+<div class="container my-5">
+  <h4 class="fw-bold mb-4">Featured Categories</h4>
+  <div class="row g-3">
+    <div class="col-6 col-md-3">
+      <a href="#" class="card shadow-sm h-100 text-center p-3">
+        <img src="{% static 'assets/images/categories/laptop.png' %}" class="img-fluid mb-2" alt="Laptop">
+        <h6 class="fw-bold">Laptop</h6>
+      </a>
+    </div>
+    <div class="col-6 col-md-3">
+      <a href="#" class="card shadow-sm h-100 text-center p-3">
+        <img src="{% static 'assets/images/categories/desktop.png' %}" class="img-fluid mb-2" alt="Desktop">
+        <h6 class="fw-bold">Desktop</h6>
+      </a>
+    </div>
+    <div class="col-6 col-md-3">
+      <a href="#" class="card shadow-sm h-100 text-center p-3">
+        <img src="{% static 'assets/images/categories/monitor.png' %}" class="img-fluid mb-2" alt="Monitor">
+        <h6 class="fw-bold">Monitor</h6>
+      </a>
+    </div>
+    <div class="col-6 col-md-3">
+      <a href="#" class="card shadow-sm h-100 text-center p-3">
+        <img src="{% static 'assets/images/categories/phone.png' %}" class="img-fluid mb-2" alt="Phone">
+        <h6 class="fw-bold">Phone</h6>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ================= Featured Products ================= -->
+<div class="container my-5">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="fw-bold">Featured Products</h4>
+    <a href="#" class="text-decoration-none">View All &raquo;</a>
+  </div>
+  <div class="row g-3">
+    {% for product in featured_products %}
+    <div class="col-6 col-md-3">
+      <div class="card h-100 shadow-sm">
+        <img src="{{ product.image.url }}" class="card-img-top p-2" alt="{{ product.name }}">
+        <div class="card-body">
+          <h6 class="card-title text-truncate">{{ product.name }}</h6>
+          <p class="fw-bold text-danger mb-1">৳ {{ product.price }}</p>
+          <a href="{% url 'product_detail' product.id %}" class="btn btn-sm btn-primary w-100">Buy Now</a>
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <p>No featured products available.</p>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- ================= Promotional Banners ================= -->
+<div class="container my-5">
+  <div class="row g-3">
+    <div class="col-md-6">
+      <img src="{% static 'assets/images/banners/promo1.jpg' %}" class="img-fluid rounded shadow-sm" alt="Promo 1">
+    </div>
+    <div class="col-md-6">
+      <img src="{% static 'assets/images/banners/promo2.jpg' %}" class="img-fluid rounded shadow-sm" alt="Promo 2">
+    </div>
+  </div>
+</div>
+
+<!-- ================= Latest Gadgets ================= -->
+<div class="container my-5">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="fw-bold">Latest Gadgets</h4>
+    <a href="#" class="text-decoration-none">View All &raquo;</a>
+  </div>
+  <div class="row g-3">
+    {% for gadget in latest_gadgets %}
+    <div class="col-6 col-md-3">
+      <div class="card h-100 shadow-sm">
+        <img src="{{ gadget.image.url }}" class="card-img-top p-2" alt="{{ gadget.name }}">
+        <div class="card-body">
+          <h6 class="card-title text-truncate">{{ gadget.name }}</h6>
+          <p class="fw-bold text-danger mb-1">৳ {{ gadget.price }}</p>
+          <a href="{% url 'product_detail' gadget.id %}" class="btn btn-sm btn-outline-primary w-100">View Details</a>
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <p>No gadgets found.</p>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}

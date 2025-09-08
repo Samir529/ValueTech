@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ValueTech - Your Trusted Gateway to the Latest Tech</title>
+    <link rel="icon" href="/static/assets/images/logos/icon.png">
+    <!-- Bootstrap CSS + JS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Fonts -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"/>
+    <style>
+        body { background-color: #f1f1f1; font-family: 'Inter', sans-serif;}
+    </style>
+    <style>
+        a {
+          text-decoration: none;    /* No underline */
+          color: black;
+        }
+        a:hover {
+          text-decoration: underline;   /* Shows underline on hover */
+          color: black;
+        }
+        /*a:link {*/
+        /*  color: black;*/
+        /*}*/
+        /*a:visited {*/
+        /*  color: blue;*/
+        /*}*/
+        /*a:active {*/
+        /*  color: black;*/
+        /*}*/
+    </style>
+    <style>
+        .search-container {
+          display: flex;
+          align-items: center;
+          background: #fff;
+          border-radius: 5px;
+          padding: 1px 7px;
+          box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+          width: 400px;
+          max-width: 90%;
+        }
+        .search-box {
+          border: none;
+          outline: none;
+          font-size: 16px;
+          flex: 1;
+          padding: 8px;
+        }
+        .search-button {
+          background: #0077ff;
+          border: none;
+          border-radius: 50%;
+          width: 32px;
+          height: 32px;
+          cursor: pointer;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        .search-button svg {
+          fill: #fff;
+          width: 20px;
+          height: 20px;
+        }
+        .search-button:hover {
+          background: #005ecc;
+        }
+    </style>
+    <style>
+        /* --- Floating button base styles --- */
+        .floating-btn {
+        position: fixed;
+        border: none;
+        border-radius: 9999px;
+        display: grid;
+        place-items: center;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        cursor: pointer;
+        z-index: 9999;
+        }
+
+        /* --- WhatsApp button styles --- */
+        #whatsappBtn {
+        right: 21px;
+        bottom: 20px; /* slightly above back-to-top */
+        width: 58px;
+        height: 58px;
+        background: #25D366;
+        color: #fff;
+        transition: opacity .25s ease, background-color .2s ease;
+        opacity: 0.9;
+        }
+
+        #whatsappBtn:hover, #whatsappBtn:focus-visible {
+        opacity: 1;
+        background: #20b358;
+        outline: none;
+        }
+
+        /* --- Back-to-Top button styles --- */
+        #backToTop {
+        position: fixed;
+        right: 24px;
+        bottom: 90px;
+        width: 52px;
+        height: 52px;
+        border: none;
+        border-radius: 9999px;
+        background: rgba(17, 24, 39, 0.8); /* dark slate */
+        color: #fff;
+        display: grid;
+        place-items: center;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        cursor: pointer;
+        opacity: 0; /* hidden by default at top of page */
+        pointer-events: none; /* don't trap clicks when hidden */
+        transform: translateY(8px);
+        transition: opacity .25s ease, transform .25s ease, background-color .2s ease;
+        z-index: 9999;
+        }
+
+        /* Visible state once user has scrolled past the threshold */
+        #backToTop.show {
+        opacity: .65; /* usually faded out */
+        pointer-events: auto;
+        transform: translateY(0);
+        }
+
+        /* Hover/Focus makes it fully visible */
+        #backToTop:hover, #backToTop:focus-visible {
+        opacity: 1;
+        background: rgba(17, 24, 39, 0.92);
+        outline: none; /* we'll style focus ring below */
+        }
+
+        /* Accessible focus ring */
+        #backToTop:focus-visible { box-shadow: 0 0 0 3px rgba(59,130,246,.6), 0 10px 30px rgba(0,0,0,0.25); }
+
+        /* Optional: reduce motion for users who prefer it */
+        @media (prefers-reduced-motion: reduce) {
+        #backToTop { transition: none; }
+        }
+
+        /* Optional: adjust position on very small screens */
+        @media (max-width: 480px) {
+        #backToTop { right: 16px; bottom: 16px; width: 48px; height: 48px; }
+        }
+
+        /* SVG icon size */
+        #backToTop svg, #whatsappBtn svg { width: 22px; height: 22px; }
+    </style>
+
+    <!-- Breadcrumb CSS-->
+    <style>
+        .breadcrumb i {
+        margin-right: 8px;
+        }
+        .breadcrumb-item + .breadcrumb-item::before {
+        content: "/";
+        margin-left: 8px;
+        }
+    </style>
+    <style>
+        .topbar a {
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.2s ease;
+        }
+        .topbar a:hover {
+        color: aquamarine !important;
+        }
+        .topbar .rounded-pill {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        }
+    </style>
+</head>
+<body>
+<!-- Topbar -->
+<div class="topbar py-1" style="background-color:#174080; color:white; font-size:14px;">
+  <div class="d-flex justify-content-center align-items-center flex-wrap gap-3">
+    <div class="d-flex align-items-center px-3 py-1 rounded-pill" style="background:#12346B; border:1px solid #11346B;">
+      <i class="fab fa-whatsapp text-light me-2"></i>
+      <a href="tel:16890" class="text-light">16890</a>
+    </div>
+    <div class="d-flex align-items-center px-3 py-1 rounded-pill" style="background:#12346B; border:1px solid #11346B;">
+      <i class="far fa-envelope text-light me-2"></i>
+      <a href="mailto:info@valuetech.com" class="text-light">info@valuetech.com</a>
+    </div>
+    <div class="d-flex align-items-center px-3 py-1 rounded-pill" style="background:#12346B; border:1px solid #11346B;">
+      <i class="fas fa-star text-light me-2"></i>
+      <a href="#" class="text-light">New Arrival</a>
+    </div>
+    <div class="d-flex align-items-center px-3 py-1 rounded-pill" style="background:#12346B; border:1px solid #11346B;">
+      <i class="fas fa-headset text-light me-2"></i>
+      <a href="#" class="text-light">Customer Service</a>
+    </div>
+    <div class="d-flex align-items-center px-3 py-1 rounded-pill" style="background:#12346B; border:1px solid #11346B;">
+      <i class="fas fa-gears text-light me-2"></i>
+      <a href="/admin" class="text-light">Admin Site</a>
+    </div>
+  </div>
+</div>
+
+<!-- Navbar (will become sticky after scrolling past topbar) -->
+<nav>
+  <!-- navbar content -->
+  <div class="navbar d-flex align-items-center justify-content-between px-3" style="z-index:1;">
+
+      <!-- Logo -->
+      <a href="/" class="me-3">
+        <img src="/static/assets/images/Logos/transparent.png" alt="Logo" style="width: 260px; height: 60px;"/>
+      </a>
+
+        <!-- mx-auto = centers -->
+        <!-- me-auto = pushes it left -->
+        <!-- ms-auto = pushes it right -->
+        <!-- ms-3 = add small space to the left (margin-start) -->
+
+      <!-- Center Search Box -->
+      <form class="search-container ms-1 me-auto" action="/search" method="GET">
+        <input type="text" name="q" class="search-box" placeholder="Search Products...">
+        <button class="search-button" type="submit">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" >
+            <path d="M10 2a8 8 0 0 0 0 16 7.96 7.96 0 0 0 4.9-1.7l4.4 4.4a1 1 0 0 0 1.4-1.4l-4.4-4.4A7.96 7.96 0 0 0 18 10a8 8 0 0 0-8-8Zm0 2a6 6 0 1 1 0 12 6 6 0 0 1 0-12Z"/>
+          </svg>
+        </button>
+      </form>
+
+      <!-- Right-side icons -->
+      <div class="d-flex align-items-center ms-3">
+        <!-- Offers -->
+        <div class="me-2 d-flex align-items-center">
+          <span data-bs-toggle="tooltip" data-bs-placement="top" title="Offers">
+            <a href="#" onclick="event.preventDefault();" style="text-decoration: none;" class="d-flex align-items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="30" height="29" fill=limegreen class="me-1 navbar-icon-2" viewBox="0 2 20 24">
+                <path d="M20 7h-2.18c.11-.31.18-.65.18-1a3 3 0 0 0-5.91-.75L12 6.1l-.09-.85A3 3 0 0 0 6 6c0 .35.07.69.18 1H4a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-9a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1ZM15 4a1 1 0 0 1 1 1 1 1 0 0 1-2 0 1 1 0 0 1 1-1ZM9 4a1 1 0 0 1 1 1 1 1 0 0 1-2 0 1 1 0 0 1 1-1Zm2 16H6v-7h5Zm7 0h-5v-7h5Zm1-9H5V9h14Z"/>
+              </svg>
+              <div class="d-flex flex-column">
+                <span style="color: darkblue">Offers</span>
+                <small class="small-text">Latest Offers</small>
+              </div>
+            </a>
+          </span>
+        </div>
+        <!-- PC Builder -->
+        <div class="me-3 d-flex align-items-center">
+          <span data-bs-toggle="tooltip" data-bs-placement="top" title="Build Your PC">
+            <a href="#" onclick="event.preventDefault();" style="text-decoration: none;" class="d-flex align-items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill=limegreen class="mx-1 navbar-icon-2" viewBox="0 0 24 24">
+                <path d="M20 3H4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h6v2H8a1 1 0 0 0 0 2h8a1 1 0 0 0 0-2h-2v-2h6a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2ZM20 16H4V5h16Z"/>
+                <path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm0 2a2 2 0 1 1 0 4 2 2 0 0 1 0-4Z"/>
+              </svg>
+              <div class="d-flex flex-column">
+                <span style="color: darkblue">Build Your PC</span>
+                <small class="small-text">Dream PC</small>
+              </div>
+            </a>
+          </span>
+        </div>
+        <!-- Shopping Cart -->
+        <div class="mx-1">
+          <span data-bs-toggle="tooltip" data-bs-placement="top" title="Shopping Cart">
+            <a href="#" onclick="event.preventDefault();">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#1E88E5" class="navbar-icon" viewBox="0 0 24 24">
+                <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10
+                         0c-1.1 0-1.99.9-1.99 2S15.9 22 17 22s2-.9 2-2-.9-2-2-2zM7.16
+                         14l.84-2h8.99c.75 0 1.41-.41 1.75-1.03l3.58-6.49a.996.996
+                         0 0 0-.86-1.48H5.21L4.27 2H1v2h2l3.6
+                         7.59-1.35 2.44C4.52 14.37 5.48 16 7 16h12v-2H7.42c-.14
+                         0-.25-.11-.26-.25z"/>
+              </svg>
+            </a>
+          </span>
+        </div>
+        <!-- Favourites / Heart -->
+        <div class="mx-1">
+          <span data-bs-toggle="tooltip" data-bs-placement="top" title="Favourites">
+            <a href="#" onclick="event.preventDefault();">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#1E88E5" class="navbar-icon" viewBox="0 0 24 24">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28
+                         2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81
+                         4.5 2.09C13.09 3.81 14.76 3 16.5
+                         3 19.58 3 22 5.42 22 8.5c0 3.78-3.4
+                         6.86-8.55 11.54L12 21.35z"/>
+              </svg>
+            </a>
+          </span>
+        </div>
+        <!-- Compare Products -->
+        <div class="mx-1">
+          <span data-bs-toggle="tooltip" data-bs-placement="top" title="Compare">
+            <a href="#" onclick="event.preventDefault();">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#1E88E5" class="navbar-icon" viewBox="0 0 24 24">
+                <path d="M4 4h6v16H4V4zm10 4h6v12h-6V8z"/>
+              </svg>
+            </a>
+          </span>
+        </div>
+        <!-- Account / User -->
+        <div class="mx-1 d-flex align-items-center">
+           <span data-bs-toggle="tooltip" data-bs-placement="top" title="Account">
+             <a href="{% url 'account' %}" style="text-decoration: none;">
+               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="darkorange" class="navbar-icon-3" viewBox="0 0 24 24">
+                 <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12
+                          2.4 7.2 4.5 7.2 7.2 9.3 12 12
+                          12zm0 2.4c-3.2 0-9.6 1.6-9.6
+                          4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
+               </svg>
+             </a>
+           </span>
+           <div class="mx-1 d-flex flex-column">
+             <span data-bs-toggle="tooltip" data-bs-placement="top" title="Account">
+               <a href="{% url 'account' %}" style="text-decoration: none; color: darkblue;">Account</a>
+             </span>
+             <small class="small-text">
+               {% if user.is_authenticated %}
+                 <a href="{% url 'account' %}">Profile</a>
+                 or
+                 <a href="{% url 'logout' %}">Logout</a>
+               {% else %}
+                 <a href="{% url 'register_account' %}">Register</a>
+                 or
+                 <a href="{% url 'account_login' %}">Login</a>
+               {% endif %}
+             </small>
+           </div>
+        </div>
+        <!-- Navigation side menu-->
+        <span class="menu-button" onclick="toggleNav()">&#9776; Menu</span>
+      </div>
+  </div>
+</nav>
+
+<!-- Category Section -->
+<div class="category-bar">
+  <div class="container d-flex flex-wrap justify-content-center">
+    <a href="#">Desktop</a>
+    <a href="#">Laptop</a>
+    <a href="#">Component</a>
+    <a href="#">Monitor</a>
+    <a href="#">Power</a>
+    <a href="#">Phone</a>
+    <a href="#">Tablet</a>
+    <a href="#">Office Equipment</a>
+    <a href="#">Camera</a>
+    <a href="#">Security</a>
+    <a href="#">Networking</a>
+    <a href="#">Software</a>
+    <a href="#">Server & Storage</a>
+    <a href="#">Accessories</a>
+    <a href="#">Gadget</a>
+    <a href="#">Gaming</a>
+    <a href="#">TV</a>
+    <a href="#">Appliance</a>
+  </div>
+</div>
+
+<div id="sidenavjs" class="sidenav">
+        <a href="#" class="closebtn" onclick="toggleNav()">&times;</a>
+        <a href="#">About Us</a>
+        <a href="#">Contact Us</a>
+        <a href="#">Privacy Policy</a>
+        {% if user.is_authenticated %}
+            <a href="/logout">Logout</a>
+        {% endif %}
+</div>
+
+<!-- Back-to-Top Button -->
+<button id="backToTop" aria-label="Back to top" title="Back to top">
+    <!-- Up arrow icon (inline SVG) -->
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+    <path fill="currentColor" d="M12 4c.28 0 .53.11.71.29l6 6-1.42 1.42L13 8.42V20h-2V8.41l-4.29 4.3L5.29 10.3l6-6A1 1 0 0 1 12 4Z"/>
+    </svg>
+</button>
+<!-- WhatsApp Button -->
+<a href="https://wa.me/1234567890" target="_blank" id="whatsappBtn" class="floating-btn" aria-label="Chat on WhatsApp" title="Chat on WhatsApp">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+    <path fill="currentColor" d="M16 .396C7.163.396.003 7.558.003 16.396c0 2.884.756 5.697 2.191 8.169L.01 32l7.65-2.157a15.85 15.85 0 0 0 8.34 2.354h.001c8.837 0 16-7.163 16-16 0-4.271-1.664-8.281-4.687-11.314A15.908 15.908 0 0 0 16 .396zm0 29.002a13.09 13.09 0 0 1-6.681-1.828l-.478-.283-4.54 1.281 1.31-4.417-.312-.453a13.14 13.14 0 0 1-2.032-7.003c0-7.252 5.905-13.157 13.157-13.157 3.516 0 6.822 1.369 9.301 3.849a13.086 13.086 0 0 1 3.856 9.308c0 7.252-5.905 13.156-13.156 13.156zm7.182-9.865c-.392-.196-2.317-1.145-2.676-1.274-.359-.13-.62-.196-.882.196-.262.392-1.012 1.274-1.24 1.536-.228.262-.457.294-.848.098-.392-.196-1.654-.61-3.15-1.945-1.165-1.04-1.951-2.326-2.179-2.718-.228-.392-.024-.604.172-.8.176-.176.392-.457.588-.686.196-.228.262-.392.392-.654.13-.262.065-.49-.033-.686-.098-.196-.882-2.126-1.21-2.915-.318-.763-.642-.659-.882-.671-.228-.012-.49-.015-.752-.015s-.686.098-1.044.49c-.359.392-1.372 1.34-1.372 3.268s1.404 3.792 1.6 4.05c.196.262 2.76 4.216 6.7 5.91.937.405 1.667.647 2.237.829.94.299 1.794.257 2.469.156.753-.112 2.317-.945 2.644-1.857.326-.911.326-1.694.228-1.857-.098-.163-.359-.262-.75-.458z"/>
+    </svg>
+</a>
+<script>
+    // Configuration
+    const SHOW_AFTER_Y = 200; // px scrolled before showing the button
+
+    const btn = document.getElementById('backToTop');
+    let raf = null;
+
+    // Show/hide on scroll with rAF for performance
+    window.addEventListener('scroll', () => {
+    if (raf) return;
+    raf = requestAnimationFrame(() => {
+    if (window.scrollY > SHOW_AFTER_Y) {
+    btn.classList.add('show');
+    } else {
+    btn.classList.remove('show');
+    }
+    raf = null;
+    });
+    }, { passive: true });
+
+    // Click -> smooth scroll to top
+    btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+</script>
+<div style="padding-top: 10px;">
+    {% block content%}
+    {%endblock%}
+</div>
+
+<!-- ================= Footer Section ================= -->
+<style>
+    footer {
+        font-family: 'Roboto', sans-serif;
+        font-size: 16px;
+    }
+    footer h6 {
+        font-size: 16px;
+        letter-spacing: 4.0px;
+    }
+    footer a {
+        transition: color 0.1s ease-in-out;
+        line-height: 2.0;
+        color: lightgray;
+    }
+    footer a:hover {
+        color: #dc3545 !important;
+    }
+    .footer-pill {
+        border: 1px solid #444;
+        border-radius: 50px;
+        padding: 14px 8px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        margin-bottom: 20px;
+        text-decoration: none;
+        color: white;
+    }
+    .footer-pill:hover {
+        border: 1px solid tomato;
+        text-decoration: none;
+        color: #ffffff !important;
+    }
+    .footer-social {
+        gap: 12px;
+    }
+    .footer-social a {
+        width: 45px;
+        height: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background-color: #2a2a3c;
+        color: #fff;
+        font-size: 25px;
+        text-decoration: none;
+        transition: background-color 0.2s ease;
+    }
+    .footer-social a:hover {
+        background-color: #555;
+        color: #ffffff !important;
+    }
+    .app-links a {
+      display: inline-block;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      transition: all 0.1s ease;
+    }
+    .app-links a:hover {
+      border: 1px solid #fff;
+    }
+</style>
+
+<footer class="pt-5 pb-3" style="background-color: #0E0828; margin-top: 100px;">
+  <div class="container">
+    <div class="row">
+      <!-- Support -->
+      <div class="col-md-4 mb-4" style="margin: 15px 50px 5px -100px;">
+        <h6 class="text-light text-uppercase fw-bold mb-3">Support</h6>
+        <div style="margin-top: 35px;">
+            <!-- Phone pill -->
+            <a href="tel:16890" class="footer-pill">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-phone-alt text-danger me-2"></i>
+                    <small style="color: lightgray">9 AM - 8 PM</small>
+                </div>
+                <span class="fw-bold text-danger">16890</span>
+            </a>
+            <!-- Store locator pill -->
+             <a href="#" onclick="event.preventDefault();" class="footer-pill">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-map-marker-alt text-danger me-2"></i>
+                    <small style="color: lightgray">Store Locator</small>
+                </div>
+                <span class="fw-bold text-danger">Find Our Stores</span>
+             </a>
+        </div>
+      </div>
+      <!-- About Us -->
+      <div class="col-md-4 mb-4" style="margin: 15px 50px 5px 50px;">
+        <h6 class="text-light text-uppercase fw-bold mb-3">About Us</h6>
+        <div class="row" style="margin-top: 35px;">
+          <div class="col-6">
+            <ul class="list-unstyled small">
+              <li><a href="#" onclick="event.preventDefault();" class="text-decoration-none">Affiliate Program</a></li>
+              <li><a href="#" onclick="event.preventDefault();" class="text-decoration-none">Online Delivery</a></li>
+              <li><a href="#" onclick="event.preventDefault();" class="text-decoration-none">Refund & Return Policy</a></li>
+              <li><a href="#" onclick="event.preventDefault();" class="text-decoration-none">Blog</a></li>
+              <li><a href="#" onclick="event.preventDefault();" class="text-decoration-none">EMI Terms</a></li>
+              <li><a href="#" onclick="event.preventDefault();" class="text-decoration-none">Privacy Policy</a></li>
+            </ul>
+          </div>
+          <div class="col-6">
+            <ul class="list-unstyled small">
+              <li><a href="#" onclick="event.preventDefault();" class="text-decoration-none">Contact Us</a></li>
+              <li><a href="#" onclick="event.preventDefault();" class="text-decoration-none">About Us</a></li>
+              <li><a href="#" onclick="event.preventDefault();" class="text-decoration-none">Terms and Conditions</a></li>
+              <li><a href="#" onclick="event.preventDefault();" class="text-decoration-none">Career</a></li>
+              <li><a href="#" onclick="event.preventDefault();" class="text-decoration-none">Partners</a></li>
+              <li><a href="#" onclick="event.preventDefault();" class="text-decoration-none">Brands</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- Stay Connected -->
+      <div class="col-md-4 mb-4" style="margin: 15px -100px 5px 50px;">
+        <h6 class="text-light text-uppercase fw-bold mb-3">Stay Connected</h6>
+        <div style="margin-top: 35px;">
+            <p class="text-light small fw-bold mb-1">ValueTech Bangladesh Ltd</p>
+            <p class="small mb-1" style="color: lightgray">Head Office: Jahurul Islam City,<br>Aftabnagar, Dhaka-1212</p>
+            <p class="small" style="color: lightgray">Email: <a href="mailto:webteam@valuetech.com" class="text-danger">webteam@valuetech.com</a></p>
+            <div class="footer-social d-flex mt-3">
+                <a href="#" onclick="event.preventDefault();"><i class="fab fa-whatsapp"></i></a>
+                <a href="#" onclick="event.preventDefault();"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" onclick="event.preventDefault();"><i class="fab fa-youtube"></i></a>
+                <a href="#" onclick="event.preventDefault();"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+      </div>
+    </div>
+    <hr class="text-light my-4">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
+      <p class="mb-2 mb-md-0 small" style="color: lightgray">&copy; 2025 ValueTech Bangladesh Ltd | All rights reserved</p>
+      <div class="d-flex justify-content-between align-items-center flex-wrap">
+        <span class="mb-2 mb-md-0 small" style="color: lightgray">Experience ValueTech App on your mobile:</span>
+        <div class="ms-3 app-links">
+            <a href="#" onclick="event.preventDefault();"><img src="{% static 'assets/images/google-play-2.png' %}" alt="Google Play" class="me-2" style="height: 40px;"></a>
+            <a href="#" onclick="event.preventDefault();"><img src="{% static 'assets/images/app-store-2.png' %}" alt="App Store" style="height: 40px;"></a>
+        </div>
+      </div>
+    </div>
+    <hr>
+  </div>
+</footer>
+<!-- ================= End Footer Section ================= -->
+
+<script src="{% static 'js/script.js' %}"></script>
+
+<script>
+  // Activate all tooltips
+  const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+  const tooltipList = [...tooltipTriggerList].map(el => new bootstrap.Tooltip(el))
+</script>
+
+<script>
+  window.addEventListener("scroll", function () {
+  const navbar = document.querySelector(".navbar");
+  const topbar = document.querySelector(".topbar");
+  const categoryBar = document.querySelector(".category-bar");
+  const topbarHeight = topbar ? topbar.offsetHeight : 0;
+
+  if (window.scrollY >= topbarHeight) {
+    navbar.classList.add("sticky");
+    categoryBar.classList.add("sticky");
+  } else {
+    navbar.classList.remove("sticky");
+    categoryBar.classList.remove("sticky");
+  }
+});
+</script>
+
+{% block extra_js %}
+{% endblock %}
+</body>
+</html>

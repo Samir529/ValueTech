@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<style>
+    .form-control {
+      border-radius: 15px;
+    }
+</style>
+<div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/"><i class="fas fa-home"></i></a></li>
+        <li class="breadcrumb-item"><a href="/advertiserPanel">Account</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="/advertise_post_form/" style="color: dimgray">Add New Product</a></li>
+      </ol>
+    </nav>
+</div>
+<div class="content">
+    <br>
+    <h2 class="fw-bold mb-4">Add New Product</h2>
+    <hr>
+    <form method="POST" enctype="multipart/form-data" class="fw-bold mt-3">
+        {% csrf_token %}
+
+        {% if form.errors %}
+        <div class="alert alert-danger">
+          <ul class="mb-0">
+            {% for field in form %}
+              {% for error in field.errors %}
+                <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+              {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+              <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+
+        <!-- Category -->
+        <label>Category:</label>
+        <div class="form-control fw-bold mb-3">
+            <div class="row mt-3 mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">{{ form.existing_category.label }}</label>
+                    {{ form.existing_category }}
+                    {% if form.existing_category.errors %}
+                        <div class="text-danger small">{{ form.existing_category.errors }}</div>
+                    {% endif %}
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">{{ form.new_category.label }}</label>
+                        {{ form.new_category }}
+                        {% if form.new_category.errors %}
+                            <div class="text-danger small">{{ form.new_category.errors }}</div>
+                        {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Name -->
+        <div class="mb-3">
+          {{ form.name.label_tag }}
+          {{ form.name }}
+        </div>
+
+        <!-- Custom Slug -->
+        <div class="mb-3">
+          {{ form.slug.label_tag }}
+          {{ form.slug }}
+        </div>
+
+        <!-- Brand + Model -->
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            {{ form.brand.label_tag }}
+            {{ form.brand }}
+          </div>
+          <div class="col-md-6 mb-3">
+            {{ form.model.label_tag }}
+            {{ form.model }}
+          </div>
+        </div>
+
+        <!-- Color + Product Code -->
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            {{ form.color.label_tag }}
+            {{ form.color }}
+          </div>
+          <div class="col-md-6 mb-3">
+            {{ form.product_code.label_tag }}
+            {{ form.product_code }}
+          </div>
+        </div>
+
+        <!-- Specification -->
+        <div class="mb-3">
+          {{ form.specification.label_tag }}
+          {{ form.specification }}
+        </div>
+
+        <!-- Description -->
+        <div class="mb-3">
+          {{ form.description.label_tag }}
+          {{ form.description }}
+        </div>
+
+        <!-- Prices -->
+        <div class="row">
+          <div class="col-md-5 mb-3">
+            {{ form.regular_price.label_tag }}
+            {{ form.regular_price }}
+          </div>
+          <div class="col-md-5 mb-3">
+            {{ form.special_price.label_tag }}
+            {{ form.special_price }}
+          </div>
+        </div>
+
+        <!-- Stock + Status -->
+        <div class="row">
+          <div class="col-md-5 mb-3">
+            {{ form.stock.label_tag }}
+            {{ form.stock }}
+          </div>
+          <div class="col-md-6 mb-3 shadow">
+           {{ form.status.label_tag }}
+            {{ form.status }}
+          </div>
+        </div>
+
+         <!-- Warranty + Warranty Details -->
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            {{ form.warranty.label_tag }}
+            {{ form.warranty }}
+          </div>
+          <div class="col-md-6 mb-3">
+            {{ form.warranty_details.label_tag }}
+            {{ form.warranty_details }}
+          </div>
+        </div>
+
+        <!-- Product Image -->
+        <div class="mb-3">
+          {{ form.product_image.label_tag }}
+          {{ form.product_image }}
+        </div>
+        <div class="form-check form-switch mt-4 mb-4">
+            <input class="form-check-input" type="checkbox" value="checkbox" name="confirm" id="confirm" required>
+            <label class="form-check-label" for="confirm">Confirm</label>
+        </div>
+        <!-- Submit -->
+        <button type="submit" class="button" style="margin-top: 15px; width: 385px;"><span>Save Product</span></button>
+    </form>
+    <a href="{% url 'staffPanel' %}"><button class="button2" style="margin-top: 15px; width: 385px;"><span>Back</span></button></a>
+</div>
+
+<!-- Select2 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+<!-- jQuery (needed for Select2) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Select2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+  $(document).ready(function () {
+    // Applying Select2 only on existing_category field
+    $('#id_existing_category').select2({
+      placeholder: "Select or search category",
+      allowClear: true,
+      width: '100%'
+    });
+  });
+</script>
+{% endblock %}
+
+
+

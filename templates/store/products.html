@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+  <style>
+    .filter-section { background: #fff; border-radius: 5px; padding: 15px; margin-bottom: 10px; }
+    .product-card { background: #fff; border-radius: 5px; padding: 10px; margin-bottom: 2px; transition: all .1s; }
+    .product-card:hover { transform: scale(1.02); box-shadow: 0 8px 16px rgba(0,0,0,0.1); }
+    .price { font-size: 18px; font-weight: bold; color: #d9534f; }
+    .old-price { text-decoration: line-through; color: gray; font-size: 14px; }
+    .filter-title { font-weight: bold; margin-bottom: 10px; }
+    .category-pill { border: 1px solid #ccc; margin: 3px; border-radius: 25px; padding: 5px 15px; cursor: pointer; background: white; }
+    .category-pill:hover { background: #f1f1f1; }
+    .active-pill { background: #0d6efd; color: white; }
+  </style>
+</head>
+<body>
+<div class="container-fluid">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/"><i class="fas fa-home"></i></a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="#" style="color: dimgray">Products</a></li>
+      </ol>
+    </nav>
+</div>
+<div class="container-fluid mt-3">
+  <!-- Categories -->
+  <div class="d-flex flex-wrap mb-3">
+    <div class="category-pill active-pill" data-category="all">All Products</div>
+    <div class="category-pill" data-category="oled">Product Accessories</div>
+    <div class="category-pill" data-category="gaming">Gaming Product</div>
+    <div class="category-pill" data-category="ultrabook">Premium Products</div>
+    <div class="category-pill" data-category="accessories">Upcoming Products</div>
+    <div class="category-pill" data-category="intel_i5">Gadgets</div>
+  </div>
+
+  <div class="row">
+    <!-- Filters -->
+    <div class="col-md-3">
+      <div class="filter-section">
+        <div class="filter-title">Price Range</div>
+        <input type="range" min="0" max="1000000" value="250000" id="priceRange" class="form-range">
+        <p>Up to: <span id="priceValue">950000</span>৳</p>
+      </div>
+      <div class="filter-section">
+        <div class="filter-title">Availability</div>
+        <div><input type="checkbox" class="filter" value="in_stock"> In Stock</div>
+        <div><input type="checkbox" class="filter" value="pre_order"> Pre Order</div>
+        <div><input type="checkbox" class="filter" value="upcoming"> Up Coming</div>
+      </div>
+      <div class="filter-section">
+        <div class="filter-title">Brand</div>
+        <div><input type="checkbox" class="filter" value="apple"> A</div>
+        <div><input type="checkbox" class="filter" value="hp"> B</div>
+        <div><input type="checkbox" class="filter" value="dell"> C</div>
+        <div><input type="checkbox" class="filter" value="lenovo"> D</div>
+      </div>
+    </div>
+
+    <!-- Product List -->
+    <div class="col-md-9">
+      <div class="row g-3" id="product-list">
+        {% for product in products %}
+        <div class="col-md-3">
+          <div class="product-card">
+            <img src="{{ product.product_image.url }}" alt="Product Image" class="img-fluid mb-2 mx-auto d-block" style="width: 200px; height: 200px;">
+            <h6>{{ product.name }}</h6>
+            <p>{{ product.specification }}</p>
+            <div>
+              <span class="price">{{ product.special_price }}৳</span>
+                {% if product.regular_price %}
+                    <span class="old-price">{{ product.regular_price }}৳</span>
+                {% endif %}
+            </div>
+            <button class="btn btn-primary btn-sm mt-2">Buy Now</button>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Pagination -->
+      <nav>
+        <ul class="pagination mt-3">
+          {% if products.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page={{ products.previous_page_number }}">Prev</a></li>
+          {% endif %}
+          {% for num in products.paginator.page_range %}
+            <li class="page-item {% if products.number == num %}active{% endif %}">
+              <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+            </li>
+          {% endfor %}
+          {% if products.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ products.next_page_number }}">Next</a></li>
+          {% endif %}
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+<script>
+  // Price Range live update
+  $("#priceRange").on("input", function() {
+    $("#priceValue").text($(this).val());
+    applyFilters();
+  });
+
+  // Checkbox and category clicks
+  $(".filter, .category-pill").on("change click", function() {
+    $(".category-pill").removeClass("active-pill");
+    $(this).addClass("active-pill");
+    applyFilters();
+  });
+
+  // AJAX filter
+  function applyFilters() {
+    let price = $("#priceRange").val();
+    let availability = [];
+    $(".filter:checked").each(function() {
+      availability.push($(this).val());
+    });
+    let category = $(".active-pill").data("category");
+
+    $.ajax({
+      url: "{% url 'filter_products' %}",
+      data: {
+        price: price,
+        availability: availability.join(","),
+        category: category,
+      },
+      success: function(data) {
+        $("#product-list").html(data.html);
+      }
+    });
+  }
+</script>
+</body>
+{% endblock %}

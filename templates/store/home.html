@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<!-- ====== Top Shortcut Buttons (Finder, Complain, Service, Repair) ====== -->
+<div class="container my-4">
+  <div class="row g-3 text-center">
+    <div class="col-6 col-md-3">
+      <a href="#" class="d-block p-3 bg-white shadow-sm rounded h-100">
+        <div class="mb-2">
+          <img src="{% static 'assets/icons/laptop-finder.svg' %}" alt="Laptop Finder" width="45" height="45">
+        </div>
+        <h6 class="fw-bold">Laptop Finder</h6>
+        <small class="text-muted">Find Your Laptop Easily</small>
+      </a>
+    </div>
+    <div class="col-6 col-md-3">
+      <a href="#" class="d-block p-3 bg-white shadow-sm rounded h-100">
+        <div class="mb-2">
+          <img src="{% static 'assets/icons/complain.svg' %}" alt="Raise a Complain" width="45" height="45">
+        </div>
+        <h6 class="fw-bold">Raise a Complain</h6>
+        <small class="text-muted">Share your experience</small>
+      </a>
+    </div>
+    <div class="col-6 col-md-3">
+      <a href="#" class="d-block p-3 bg-white shadow-sm rounded h-100">
+        <div class="mb-2">
+          <img src="{% static 'assets/icons/service.svg' %}" alt="Home Service" width="45" height="45">
+        </div>
+        <h6 class="fw-bold">Home Service</h6>
+        <small class="text-muted">Get expert help</small>
+      </a>
+    </div>
+    <div class="col-6 col-md-3">
+      <a href="#" class="d-block p-3 bg-white shadow-sm rounded h-100">
+        <div class="mb-2">
+          <img src="{% static 'assets/icons/repair.svg' %}" alt="Servicing Center" width="45" height="45">
+        </div>
+        <h6 class="fw-bold">Servicing Center</h6>
+        <small class="text-muted">Repair your device</small>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ====== Featured Categories Section ====== -->
+<div class="container my-5">
+  <h5 class="fw-bold text-center">Featured Category</h5>
+  <p class="text-center text-muted">Get Your Desired Product from Featured Category!</p>
+
+  <div class="row g-3 text-center">
+    {% for cat,icon in categories %}
+    <div class="col-6 col-md-3 col-lg-2">
+      <a href="#" class="d-block p-3 bg-white shadow-sm rounded h-100">
+        <div class="mb-2">
+          <img src="{% static 'assets/icons/'|add:icon %}" alt="{{ cat }}" width="45" height="45">
+        </div>
+        <small class="fw-semibold">{{ cat }}</small>
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- ====== Featured Products Section ====== -->
+<div class="container my-5">
+  <h5 class="fw-bold text-center">Featured Products</h5>
+  <p class="text-center text-muted">Check & Get Your Desired Product!</p>
+
+  <div class="row g-3">
+    {% for product in products %}
+    <div class="col-6 col-md-4 col-lg-3">
+      <div class="card h-100 border-0 shadow-sm">
+        <!-- Discount Tag -->
+        {% if product.discount %}
+        <span class="badge bg-purple position-absolute m-2 px-2 py-1"
+              style="top:0; right:0; font-size:12px;">
+          Save: {{ product.discount }}
+        </span>
+        {% endif %}
+        <!-- Image -->
+        <img src="{{ product.product_image.url }}" class="card-img-top p-3" alt="{{ product.name }}">
+        <!-- Body -->
+        <div class="card-body text-center">
+          <h6 class="card-title">{{ product.name }}</h6>
+          <p class="fw-bold text-danger mb-0">{{ product.special_price }}৳</p>
+          {% if product.regular_price %}
+          <small class="text-muted text-decoration-line-through">{{ product.regular_price }}৳</small>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,66 @@
+﻿{% extends "base.html"%}
+{% block content %}
+<body>
+<style>
+        label {
+            color: black
+        }
+        form label {font-weight: bold}
+</style>
+<div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/"><i class="fas fa-home"></i></a></li>
+        <li class="breadcrumb-item"><a href="/account_login">Account</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="/register_account/" style="color: dimgray">Register</a></li>
+      </ol>
+    </nav>
+</div>
+<div class="content">
+    <br>
+    {% if messages %}
+        {% for message in messages %}
+            <!-- Error message container -->
+            <div class="alert alert-danger" role="alert" style="width: 385px">
+                <i class="fa fa-exclamation-circle"></i>
+                <strong>Warning: </strong>{{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    <h4 style="color: black;">Register Account</h4>
+    <!--        {% load crispy_forms_tags %}-->
+    <form class="row g-3" action="{% url 'register_account' %}" method="post" style="width: 400px">
+        {% csrf_token %}
+        <div class="col-md-6">
+            <label for="first_name" class="form-label">First Name</label><label style="color: red; margin-left: 5px">*</label>
+            <input type="text" name="first_name" class="form-control" placeholder="First Name" id="first_name"
+                   aria-label="First Name" required>
+        </div>
+        <div class="col-md-6">
+            <label for="last_name" class="form-label">Last Name</label><label style="color: red; margin-left: 5px">*</label>
+            <input type="text" name="last_name" class="form-control" placeholder="Last Name" id="last_name"
+                   aria-label="Last Name" required>
+        </div>
+        <div class="col-md-7">
+            <label for="email" class="form-label">E-mail</label><label style="color: red; margin-left: 5px">*</label>
+            <input type="email" name="email" class="form-control" id="email" placeholder="E-mail" style="width: 385px" required>
+        </div>
+        <div class="col-md-8">
+            <label for="phone_number" class="form-label">Phone Number</label><label style="color: red; margin-left: 5px">*</label>
+            <input type="number" name="phone_number" minlength="14" class="form-control" id="phone_number"
+                   placeholder="Phone Number" style="width: 385px"/>
+        </div>
+        <div class="col-md-9">
+            <button type="submit" class="button" style="margin-top: 15px; width: 385px"><span>Continue</span></button>
+        </div>
+    </form>
+    <br>
+    <h6 style="color: gray; text-align: center">Already have an account?</h6>
+    <br>
+    <div style="width: 385px">
+        <h6 style="color: black; text-align: left">If you already have an account with us, please login at the
+            <a href="{% url 'account_login' %}" style="color: orangered;"> login page</a>.</h6>
+    </div>
+</div>
+</body>
+{% endblock %}
