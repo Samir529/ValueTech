@@ -55,13 +55,14 @@
 /* Category Bar */
 .category-bar {
     background: #E0E0E0 !important;
-    border-top: 1px solid #eee;
-    border-bottom: 1px solid #eee;
+    border-top: 1px solid darkgray;
+    border-bottom: 1px solid darkgray;
     white-space: nowrap;       /* Prevent line breaks */
     overflow-x: auto;          /* Scroll if too long */
     overflow-y: hidden;
     scrollbar-width: none;     /* Hide scrollbar Firefox */
     -ms-overflow-style: none;  /* Hide scrollbar IE/Edge */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     padding-top: 14px;
     padding-bottom: 14px;
     height: 45px;
@@ -97,10 +98,39 @@
     left: 0;
     width: 100%;
     z-index: 999;
-    box-shadow: 0 6px 8px rgba(0,0,0,0.1);
-    border-top: 1px solid #eee;
-    border-bottom: 1px solid #eee;
+    box-shadow: 0 8px 8px rgba(0,0,0,0.1);
+    border-top: 1px solid darkgray;
+    border-bottom: 1px solid darkgray;
     animation: slideDown 0.3s forwards;
+}
+
+/* Notice Bar */
+.notice-bar {
+    display: flex;  /* make flex container */
+    align-items: center;    /* vertically center */
+    justify-content: center;    /* horizontally center */
+    text-align: center;
+    overflow: hidden;   /* hide overflowing text */
+    position: relative;
+    background-color: white;
+    border-radius: 50px;
+    padding: 20px;
+}
+.notice-text {
+    display: inline-block;
+    white-space: nowrap;  /* keep text in a single line */
+    position: absolute;
+    right: 0;   /* Start from the right edge */
+    will-change: transform;
+    animation: move-left 20s linear infinite;
+}
+@keyframes move-left {
+    0% {
+        transform: translateX(100%);    /* Start completely off-screen right */
+    }
+    100% {
+        transform: translateX(-100%);   /* Move completely off-screen left */
+    }
 }
 
 .card2 {

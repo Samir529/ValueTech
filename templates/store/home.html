@@ -1,66 +1,282 @@
 {% extends "base.html" %}
 {% load static %}
-
 {% block content %}
+<style>
+    .top-action-button a:hover {
+        text-decoration: none;
+    }
 
-<!-- ====== Top Shortcut Buttons (Finder, Complain, Service, Repair) ====== -->
-<div class="container my-4">
-  <div class="row g-3 text-center">
+    .featured-category a {
+        border-radius: 15px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+    .featured-category a:hover {
+        text-decoration: none;
+    }
+    .featured-category p:hover {
+        color: tomato;
+    }
+</style>
+
+<!-- ================= Banner / Carousel ================= -->
+<div class="container-fluid mt-3">
+  <div class="row g-3">
+    <!-- Left: Carousel / Banner -->
+    <div class="col-lg-8 col-md-8 mb-3">
+      <div id="homeCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="2000">
+        <div class="carousel-inner rounded shadow-sm">
+          <!-- Slide 1 -->
+          <div class="carousel-item active">
+            <a href="#" onclick="event.preventDefault();">
+                <img src="{% static 'assets/images/banners/banner1.jpg' %}" class="d-block w-100" height=450 alt="Banner 1">
+            </a>
+          </div>
+          <!-- Slide 2 -->
+          <div class="carousel-item">
+            <a href="#" onclick="event.preventDefault();">
+                <img src="{% static 'assets/images/banners/banner2.jpg' %}" class="d-block w-100" height=450 alt="Banner 2">
+            </a>
+          </div>
+          <!-- Slide 3 -->
+          <div class="carousel-item">
+            <a href="#" onclick="event.preventDefault();">
+                <img src="{% static 'assets/images/banners/banner3.jpg' %}" class="d-block w-100" height=450 alt="Banner 3">
+            </a>
+          </div>
+        </div>
+        <!-- Controls -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#homeCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#homeCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon"></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Right: Fixed Side Banner -->
+    <div class="col-lg-4 col-md-4">
+      <!-- Side Banner 1 -->
+      <div class="carousel-inner rounded shadow-sm mb-2">
+        <a href="#" onclick="event.preventDefault();">
+            <img src="{% static 'assets/images/banners/banner4.jpg' %}" class="d-block w-100" height=221 alt="Banner 4">
+        </a>
+      </div>
+      <!-- Side Banner 2 -->
+      <div class="carousel-inner rounded shadow-sm">
+        <a href="#" onclick="event.preventDefault();">
+            <img src="{% static 'assets/images/banners/banner5.jpg' %}" class="d-block w-100" height=221 alt="Banner 5">
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Notice Bar -->
+<div class="container-fluid mt-3">
+    <div class="notice-bar">
+        <small class="notice-text">
+            <span id="current-date"></span>, All our branches are open. Additionally, our online activities are open and operational.
+        </small>
+    </div>
+</div>
+
+<!-- ====== Top Action Buttons ====== -->
+<div class="container-fluid top-action-button mt-5">
+  <div class="row g-4 text-center">
     <div class="col-6 col-md-3">
-      <a href="#" class="d-block p-3 bg-white shadow-sm rounded h-100">
+      <a href="#" onclick="event.preventDefault();" class="d-block p-3 bg-white shadow-sm rounded">
         <div class="mb-2">
-          <img src="{% static 'assets/icons/laptop-finder.svg' %}" alt="Laptop Finder" width="45" height="45">
+          <i class="fas fa-laptop fa-2x text-danger"></i>
         </div>
         <h6 class="fw-bold">Laptop Finder</h6>
         <small class="text-muted">Find Your Laptop Easily</small>
       </a>
     </div>
     <div class="col-6 col-md-3">
-      <a href="#" class="d-block p-3 bg-white shadow-sm rounded h-100">
+      <a href="#" onclick="event.preventDefault();" class="d-block p-3 bg-white shadow-sm rounded">
         <div class="mb-2">
-          <img src="{% static 'assets/icons/complain.svg' %}" alt="Raise a Complain" width="45" height="45">
+          <i class="fas fa-comment-dots fa-2x text-danger"></i>
         </div>
         <h6 class="fw-bold">Raise a Complain</h6>
         <small class="text-muted">Share your experience</small>
       </a>
     </div>
     <div class="col-6 col-md-3">
-      <a href="#" class="d-block p-3 bg-white shadow-sm rounded h-100">
+      <a href="#" onclick="event.preventDefault();" class="d-block p-3 bg-white shadow-sm rounded">
         <div class="mb-2">
-          <img src="{% static 'assets/icons/service.svg' %}" alt="Home Service" width="45" height="45">
+          <i class="fas fa-home fa-2x text-danger"></i>
         </div>
         <h6 class="fw-bold">Home Service</h6>
         <small class="text-muted">Get expert help</small>
       </a>
     </div>
     <div class="col-6 col-md-3">
-      <a href="#" class="d-block p-3 bg-white shadow-sm rounded h-100">
+      <a href="#" onclick="event.preventDefault();" class="d-block p-3 bg-white shadow-sm rounded">
         <div class="mb-2">
-          <img src="{% static 'assets/icons/repair.svg' %}" alt="Servicing Center" width="45" height="45">
+          <i class="fas fa-tools fa-2x text-danger"></i>
         </div>
         <h6 class="fw-bold">Servicing Center</h6>
-        <small class="text-muted">Repair your device</small>
+        <small class="text-muted">Repair Your Device</small>
       </a>
     </div>
   </div>
 </div>
 
-<!-- ====== Featured Categories Section ====== -->
-<div class="container my-5">
+<!-- ====== Featured Category Section ====== -->
+<div class="container-fluid featured-category my-5">
   <h5 class="fw-bold text-center">Featured Category</h5>
-  <p class="text-center text-muted">Get Your Desired Product from Featured Category!</p>
+  <h6 class="text-center">Get Your Desired Product from Featured Category!</h6>
 
-  <div class="row g-3 text-center">
-    {% for cat,icon in categories %}
-    <div class="col-6 col-md-3 col-lg-2">
-      <a href="#" class="d-block p-3 bg-white shadow-sm rounded h-100">
-        <div class="mb-2">
-          <img src="{% static 'assets/icons/'|add:icon %}" alt="{{ cat }}" width="45" height="45">
+  <div class="row g-2 text-center mt-4">
+    <!-- Starlink -->
+    <div class="col-6 col-md-3 col-lg-2 mb-3">
+      <a href="#" onclick="event.preventDefault();" class="p-4 bg-white shadow-sm h-100">
+        <div class="mb-4">
+          <i class="fas fa-satellite-dish fa-2x"></i>
         </div>
-        <small class="fw-semibold">{{ cat }}</small>
+        <p class="mb-0">Starlink</p>
       </a>
     </div>
-    {% endfor %}
+    <!-- Drone -->
+    <div class="col-6 col-md-3 col-lg-2 mb-3">
+      <a href="#" onclick="event.preventDefault();" class="p-4 bg-white shadow-sm h-100">
+        <div class="mb-4">
+          <i class="fas fa-helicopter fa-2x"></i>
+        </div>
+        <p class="mb-0">Drone</p>
+      </a>
+    </div>
+    <!-- Gimbal -->
+    <div class="col-6 col-md-3 col-lg-2 mb-3">
+      <a href="#" onclick="event.preventDefault();" class="bg-white shadow-sm h-100">
+        <div class="mb-4">
+          <i class="fas fa-video fa-2x"></i>
+        </div>
+        <p class="mb-0">Gimbal</p>
+      </a>
+    </div>
+    <!-- Tablet PC -->
+    <div class="col-6 col-md-3 col-lg-2 mb-3">
+      <a href="#" onclick="event.preventDefault();" class="p-4 bg-white shadow-sm h-100">
+        <div class="mb-4">
+          <i class="fas fa-tablet-alt fa-2x"></i>
+        </div>
+        <p class="mb-0">Tablet PC</p>
+      </a>
+    </div>
+    <!-- TV -->
+    <div class="col-6 col-md-3 col-lg-2 mb-3">
+      <a href="#" onclick="event.preventDefault();" class="p-4 bg-white shadow-sm h-100">
+        <div class="mb-4">
+          <i class="fas fa-tv fa-2x"></i>
+        </div>
+        <p class="mb-0">TV</p>
+      </a>
+    </div>
+    <!-- Mobile Phone -->
+    <div class="col-6 col-md-3 col-lg-2 mb-3">
+      <a href="#" onclick="event.preventDefault();" class="p-4 bg-white shadow-sm h-100">
+        <div class="mb-4">
+          <i class="fas fa-mobile-alt fa-2x"></i>
+        </div>
+        <p class="mb-0">Mobile Phone</p>
+      </a>
+    </div>
+    <!-- Mobile Accessories -->
+    <div class="col-6 col-md-3 col-lg-2 mb-3">
+      <a href="#" onclick="event.preventDefault();" class="p-4 bg-white shadow-sm h-100">
+        <div class="mb-4">
+          <i class="fas fa-plug fa-2x"></i>
+        </div>
+        <p class="mb-0">Mobile Accessories</p>
+      </a>
+    </div>
+    <!-- Portable SSD -->
+    <div class="col-6 col-md-3 col-lg-2 mb-3">
+      <a href="#" onclick="event.preventDefault();" class="p-4 bg-white shadow-sm h-100">
+        <div class="mb-4">
+          <i class="fas fa-hdd fa-2x"></i>
+        </div>
+        <p class="mb-0">Portable SSD</p>
+      </a>
+    </div>
+    <!-- WiFi Camera -->
+    <div class="col-6 col-md-3 col-lg-2 mb-3">
+      <a href="#" onclick="event.preventDefault();" class="p-4 bg-white shadow-sm h-100">
+        <div class="mb-4">
+          <i class="fas fa-video fa-2x"></i>
+        </div>
+        <p class="mb-0">WiFi Camera</p>
+      </a>
+    </div>
+    <!-- Trimmer -->
+    <div class="col-6 col-md-3 col-lg-2 mb-3">
+      <a href="#" onclick="event.preventDefault();" class="p-4 bg-white shadow-sm h-100">
+        <div class="mb-4">
+          <i class="fas fa-cut fa-2x"></i>
+        </div>
+        <p class="mb-0">Trimmer</p>
+      </a>
+    </div>
+    <!-- Smart Watch -->
+    <div class="col-6 col-md-3 col-lg-2 mb-3">
+      <a href="#" onclick="event.preventDefault();" class="p-4 bg-white shadow-sm h-100">
+        <div class="mb-4">
+          <i class="fas fa-clock fa-2x"></i>
+        </div>
+        <p class="mb-0">Smart Watch</p>
+      </a>
+    </div>
+    <!-- Action Camera -->
+    <div class="col-6 col-md-3 col-lg-2 mb-3">
+      <a href="#" onclick="event.preventDefault();" class="p-4 bg-white shadow-sm h-100">
+        <div class="mb-4">
+          <i class="fas fa-camera fa-2x"></i>
+        </div>
+        <p class="mb-0">Action Camera</p>
+      </a>
+    </div>
+    <!-- Earphone -->
+    <div class="col-6 col-md-3 col-lg-2 mb-3">
+      <a href="#" onclick="event.preventDefault();" class="p-4 bg-white shadow-sm h-100">
+        <div class="mb-4">
+          <i class="fas fa-headphones fa-2x"></i>
+        </div>
+        <p class="mb-0">Earphone</p>
+      </a>
+    </div>
+    <!-- Earbuds -->
+    <div class="col-6 col-md-3 col-lg-2 mb-3">
+      <a href="#" onclick="event.preventDefault();" class="p-4 bg-white shadow-sm h-100">
+        <div class="mb-4">
+          <i class="fas fa-headphones-alt fa-2x"></i>
+        </div>
+        <p class="mb-0">Earbuds</p>
+      </a>
+    </div>
+    <!-- Bluetooth Speakers -->
+    <div class="col-6 col-md-3 col-lg-2 mb-3">
+      <a href="#" onclick="event.preventDefault();" class="p-4 bg-white shadow-sm h-100">
+        <div class="mb-4">
+          <i class="fas fa-volume-up fa-2x"></i>
+        </div>
+        <p class="mb-0">Bluetooth Speakers</p>
+      </a>
+    </div>
+    <!-- Gaming Console -->
+    <div class="col-6 col-md-3 col-lg-2 mb-3">
+      <a href="#" onclick="event.preventDefault();" class="p-4 bg-white shadow-sm h-100">
+        <div class="mb-4">
+          <i class="fas fa-gamepad fa-2x"></i>
+        </div>
+        <p class="mb-0">Gaming Console</p>
+      </a>
+    </div>
   </div>
 </div>
 
@@ -95,5 +311,53 @@
     {% endfor %}
   </div>
 </div>
+
+<!-- ================= Promotional Banners ================= -->
+<div class="container my-5">
+  <div class="row g-3">
+    <div class="col-md-6">
+      <img src="{% static 'assets/images/banners/promo1.jpg' %}" class="img-fluid rounded shadow-sm" alt="Promo 1">
+    </div>
+    <div class="col-md-6">
+      <img src="{% static 'assets/images/banners/promo2.jpg' %}" class="img-fluid rounded shadow-sm" alt="Promo 2">
+    </div>
+  </div>
+</div>
+
+<!-- ================= Latest Gadgets ================= -->
+<div class="container my-5">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="fw-bold">Latest Gadgets</h4>
+    <a href="#" class="text-decoration-none">View All &raquo;</a>
+  </div>
+  <div class="row g-3">
+    {% for gadget in latest_gadgets %}
+    <div class="col-6 col-md-3">
+      <div class="card h-100 shadow-sm">
+        <img src="{{ gadget.image.url }}" class="card-img-top p-2" alt="{{ gadget.name }}">
+        <div class="card-body">
+          <h6 class="card-title text-truncate">{{ gadget.name }}</h6>
+          <p class="fw-bold text-danger mb-1">৳ {{ gadget.price }}</p>
+          <a href="{% url 'product_detail' gadget.id %}" class="btn btn-sm btn-outline-primary w-100">View Details</a>
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <p>No gadgets found.</p>
+    {% endfor %}
+  </div>
+</div>
+
+{% block extra_js %}
+<script>
+  const today = new Date();
+  // Format the date manually
+  const dayName = today.toLocaleDateString('en-US', { weekday: 'long' });
+  const dayNumber = today.getDate();
+  const monthName = today.toLocaleDateString('en-US', { month: 'long' });
+  document.getElementById('current-date').textContent =
+      `${dayName}, ${dayNumber} ${monthName}`;
+</script>
+{% endblock %}
 
 {% endblock %}
