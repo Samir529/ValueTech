@@ -1,12 +1,22 @@
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect
-from store.forms import productForm
+from django.db.models import F, ExpressionWrapper, IntegerField, FloatField
 
 
 def store_home(req):
-    products = Product.objects.all().order_by('-product_adding_date')
+    products = (
+        Product.objects
+        .annotate(                              # ORM-powered with annotate(). So I don’t have to loop and calculate inside the view.
+            discount=ExpressionWrapper(         # That would be more efficient if I have lots of products. This way the database itself
+                F('regular_price') - F('special_price'),    # calculates the discount amount and discount percentage, and my template stays clean.
+                output_field=IntegerField()
+            ),
+            discount_percentage=ExpressionWrapper(
+                (F('regular_price') - F('special_price')) * 100.0 / F('regular_price'),
+                output_field=FloatField()
+            )
+        )
+        .order_by('-product_adding_date')
+    )
 
-    # billboard_filter = Product(req.GET, queryset=allPosts)
     context = {'products': products}
     return render(req, 'store/home.html', context)
 

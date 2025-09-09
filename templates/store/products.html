@@ -62,13 +62,13 @@
         {% for product in products %}
         <div class="col-md-3">
           <div class="product-card">
-            <img src="{{ product.product_image.url }}" alt="Product Image" class="img-fluid mb-2 mx-auto d-block" style="width: 200px; height: 200px;">
+            <img src="{{ product.product_image.url }}" alt="{{ product.name }}" class="img-fluid mb-2 mx-auto d-block" style="width: 200px; height: 200px;">
             <h6>{{ product.name }}</h6>
             <p>{{ product.specification }}</p>
             <div>
               <span class="price">{{ product.special_price }}৳</span>
                 {% if product.regular_price %}
-                    <span class="old-price">{{ product.regular_price }}৳</span>
+                    <span class="old-price ms-2">{{ product.regular_price }}৳</span>
                 {% endif %}
             </div>
             <button class="btn btn-primary btn-sm mt-2">Buy Now</button>

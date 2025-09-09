@@ -283,9 +283,9 @@
 <!-- ====== Featured Products Section ====== -->
 <div class="container my-5">
   <h5 class="fw-bold text-center">Featured Products</h5>
-  <p class="text-center text-muted">Check & Get Your Desired Product!</p>
+  <h6 class="text-center">Check & Get Your Desired Product!</h6>
 
-  <div class="row g-3">
+  <div class="row g-2 mt-3">
     {% for product in products %}
     <div class="col-6 col-md-4 col-lg-3">
       <div class="card h-100 border-0 shadow-sm">
@@ -297,13 +297,17 @@
         </span>
         {% endif %}
         <!-- Image -->
-        <img src="{{ product.product_image.url }}" class="card-img-top p-3" alt="{{ product.name }}">
+        <img src="{{ product.product_image.url }}" class="img-fluid mb-2 mx-auto d-block" alt="{{ product.name }}" style="width: 250px; height: 250px;">
         <!-- Body -->
-        <div class="card-body text-center">
+        <div class="card-body">
           <h6 class="card-title">{{ product.name }}</h6>
-          <p class="fw-bold text-danger mb-0">{{ product.special_price }}৳</p>
+          <p class="fw-bold text-danger mb-0 d-inline">
+            {{ product.special_price }}৳
+          </p>
           {% if product.regular_price %}
-          <small class="text-muted text-decoration-line-through">{{ product.regular_price }}৳</small>
+            <small class="text-muted text-decoration-line-through ms-2">
+              {{ product.regular_price }}৳
+            </small>
           {% endif %}
         </div>
       </div>
