@@ -1,12 +1,11 @@
 # accounts/views.py
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, update_session_auth_hash
+from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-
 from .forms import userForm
 from core.models import customUser
 from .models import accountInfo
