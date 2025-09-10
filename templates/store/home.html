@@ -13,11 +13,17 @@
         justify-content: center;
         align-items: center;
         text-align: center;
+        /*box-shadow: 0 0 8px rgba(0,0,0,0.1); !* subtle, even shadow *!*/
     }
     .featured-category a:hover {
         text-decoration: none;
+        /*box-shadow: 0 20px rgba(0,0,0,0.25); !* more pronounced, even shadow *!*/
+        box-shadow: 0 4px 5px rgba(0,0,0,0.1),  /* bottom */
+                    4px 0 5px rgba(0,0,0,0.05), /* right */
+                    -4px 0 5px rgba(0,0,0,0.05) !important; /* left */
     }
-    .featured-category p:hover {
+    /* When the card is hovered, only the text changes color */
+    .featured-category a:hover p {
         color: tomato;
     }
 </style>
@@ -27,7 +33,7 @@
   <div class="row g-3">
     <!-- Left: Carousel / Banner -->
     <div class="col-lg-8 col-md-8 mb-3">
-      <div id="homeCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="2000">
+      <div id="homeCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="2200">
         <div class="carousel-inner rounded shadow-sm">
           <!-- Slide 1 -->
           <div class="carousel-item active">
@@ -281,23 +287,26 @@
 </div>
 
 <!-- ====== Featured Products Section ====== -->
-<div class="container my-5">
+<div class="container-fluid my-5">
   <h5 class="fw-bold text-center">Featured Products</h5>
   <h6 class="text-center">Check & Get Your Desired Product!</h6>
 
-  <div class="row g-2 mt-3">
+  <div class="row row-cols-2 row-cols-md-3 row-cols-lg-5 g-2 mt-4">
     {% for product in products %}
-    <div class="col-6 col-md-4 col-lg-3">
-      <div class="card h-100 border-0 shadow-sm">
+    <div class="col d-flex">
+      <div class="card h-100 w-100 border-0 shadow-sm">
         <!-- Discount Tag -->
-        {% if product.discount %}
-        <span class="badge bg-purple position-absolute m-2 px-2 py-1"
-              style="top:0; right:0; font-size:12px;">
-          Save: {{ product.discount }}
-        </span>
+        {% if product.discount > 0 %}
+            <span class="badge position-absolute m-2 px-2 py-1"
+                style="top:0; right:0; font-size:12px; background: darkviolet">
+                Save: {{ product.discount }}৳ (-{{ product.discount_percentage|floatformat:0 }})%
+            </span>
         {% endif %}
         <!-- Image -->
-        <img src="{{ product.product_image.url }}" class="img-fluid mb-2 mx-auto d-block" alt="{{ product.name }}" style="width: 250px; height: 250px;">
+        <img src="{{ product.product_image.url }}"
+             class="img-fluid mb-2 mx-auto d-block"
+             alt="{{ product.name }}"
+             style="width: 250px; height: 250px; object-fit: contain;">
         <!-- Body -->
         <div class="card-body">
           <h6 class="card-title">{{ product.name }}</h6>
@@ -305,34 +314,43 @@
             {{ product.special_price }}৳
           </p>
           {% if product.regular_price %}
-            <small class="text-muted text-decoration-line-through ms-2">
-              {{ product.regular_price }}৳
-            </small>
+          <small class="text-muted text-decoration-line-through ms-2">
+            {{ product.regular_price }}৳
+          </small>
           {% endif %}
         </div>
       </div>
     </div>
+    {% empty %}
+        <p>No featured products found.</p>
     {% endfor %}
   </div>
 </div>
 
 <!-- ================= Promotional Banners ================= -->
-<div class="container my-5">
-  <div class="row g-3">
+<div class="container-fluid my-7">
+  <div class="row g-2">
     <div class="col-md-6">
-      <img src="{% static 'assets/images/banners/promo1.jpg' %}" class="img-fluid rounded shadow-sm" alt="Promo 1">
+      <a href="#" onclick="event.preventDefault();">
+        <img src="{% static 'assets/images/banners/promo1.jpg' %}" class="img-fluid rounded shadow-sm" alt="Promo 1">
+      </a>
     </div>
     <div class="col-md-6">
-      <img src="{% static 'assets/images/banners/promo2.jpg' %}" class="img-fluid rounded shadow-sm" alt="Promo 2">
+      <a href="#" onclick="event.preventDefault();">
+        <img src="{% static 'assets/images/banners/promo2.jpg' %}" class="img-fluid rounded shadow-sm" alt="Promo 2">
+      </a>
     </div>
   </div>
 </div>
 
 <!-- ================= Latest Gadgets ================= -->
 <div class="container my-5">
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <h4 class="fw-bold">Latest Gadgets</h4>
-    <a href="#" class="text-decoration-none">View All &raquo;</a>
+  <div class="mb-4">
+    <div class="d-flex justify-content-between align-items-center">
+      <h5 class="fw-bold">Latest Gadgets</h5>
+      <a href="#" onclick="event.preventDefault();" class="text-decoration-none">View All &raquo;</a>
+    </div>
+    <h6>Check & Get Latest Gadgets!</h6>
   </div>
   <div class="row g-3">
     {% for gadget in latest_gadgets %}
@@ -347,7 +365,7 @@
       </div>
     </div>
     {% empty %}
-    <p>No gadgets found.</p>
+        <p>No gadgets found.</p>
     {% endfor %}
   </div>
 </div>

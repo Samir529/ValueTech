@@ -133,6 +133,103 @@
     }
 }
 
+
+/* Bootstrap custom spacing extension (6–10) */
+
+/* 3.5rem */
+.m-6  { margin: 3.5rem !important; }
+.mt-6 { margin-top: 3.5rem !important; }
+.mb-6 { margin-bottom: 3.5rem !important; }
+.ms-6 { margin-left: 3.5rem !important; }
+.me-6 { margin-right: 3.5rem !important; }
+.mx-6 { margin-left: 3.5rem !important; margin-right: 3.5rem !important; }
+.my-6 { margin-top: 3.5rem !important; margin-bottom: 3.5rem !important; }
+
+/* 4rem */
+.m-7  { margin: 4rem !important; }
+.mt-7 { margin-top: 4rem !important; }
+.mb-7 { margin-bottom: 4rem !important; }
+.ms-7 { margin-left: 4rem !important; }
+.me-7 { margin-right: 4rem !important; }
+.mx-7 { margin-left: 4rem !important; margin-right: 4rem !important; }
+.my-7 { margin-top: 4rem !important; margin-bottom: 4rem !important; }
+
+/* 4.5rem */
+.m-8  { margin: 4.5rem !important; }
+.mt-8 { margin-top: 4.5rem !important; }
+.mb-8 { margin-bottom: 4.5rem !important; }
+.ms-8 { margin-left: 4.5rem !important; }
+.me-8 { margin-right: 4.5rem !important; }
+.mx-8 { margin-left: 4.5rem !important; margin-right: 4.5rem !important; }
+.my-8 { margin-top: 4.5rem !important; margin-bottom: 4.5rem !important; }
+
+/* 5rem */
+.m-9  { margin: 5rem !important; }
+.mt-9 { margin-top: 5rem !important; }
+.mb-9 { margin-bottom: 5rem !important; }
+.ms-9 { margin-left: 5rem !important; }
+.me-9 { margin-right: 5rem !important; }
+.mx-9 { margin-left: 5rem !important; margin-right: 5rem !important; }
+.my-9 { margin-top: 5rem !important; margin-bottom: 5rem !important; }
+
+/* 5.5rem */
+.m-10  { margin: 5.5rem !important; }
+.mt-10 { margin-top: 5.5rem !important; }
+.mb-10 { margin-bottom: 5.5rem !important; }
+.ms-10 { margin-left: 5.5rem !important; }
+.me-10 { margin-right: 5.5rem !important; }
+.mx-10 { margin-left: 5.5rem !important; margin-right: 5.5rem !important; }
+.my-10 { margin-top: 5.5rem !important; margin-bottom: 5.5rem !important; }
+
+
+/* Bootstrap custom padding extension (6–10) */
+
+/* 3.5rem */
+.p-6  { padding: 3.5rem !important; }
+.pt-6 { padding-top: 3.5rem !important; }
+.pb-6 { padding-bottom: 3.5rem !important; }
+.ps-6 { padding-left: 3.5rem !important; }
+.pe-6 { padding-right: 3.5rem !important; }
+.px-6 { padding-left: 3.5rem !important; padding-right: 3.5rem !important; }
+.py-6 { padding-top: 3.5rem !important; padding-bottom: 3.5rem !important; }
+
+/* 4rem */
+.p-7  { padding: 4rem !important; }
+.pt-7 { padding-top: 4rem !important; }
+.pb-7 { padding-bottom: 4rem !important; }
+.ps-7 { padding-left: 4rem !important; }
+.pe-7 { padding-right: 4rem !important; }
+.px-7 { padding-left: 4rem !important; padding-right: 4rem !important; }
+.py-7 { padding-top: 4rem !important; padding-bottom: 4rem !important; }
+
+/* 4.5rem */
+.p-8  { padding: 4.5rem !important; }
+.pt-8 { padding-top: 4.5rem !important; }
+.pb-8 { padding-bottom: 4.5rem !important; }
+.ps-8 { padding-left: 4.5rem !important; }
+.pe-8 { padding-right: 4.5rem !important; }
+.px-8 { padding-left: 4.5rem !important; padding-right: 4.5rem !important; }
+.py-8 { padding-top: 4.5rem !important; padding-bottom: 4.5rem !important; }
+
+/* 5rem */
+.p-9  { padding: 5rem !important; }
+.pt-9 { padding-top: 5rem !important; }
+.pb-9 { padding-bottom: 5rem !important; }
+.ps-9 { padding-left: 5rem !important; }
+.pe-9 { padding-right: 5rem !important; }
+.px-9 { padding-left: 5rem !important; padding-right: 5rem !important; }
+.py-9 { padding-top: 5rem !important; padding-bottom: 5rem !important; }
+
+/* 5.5rem */
+.p-10  { padding: 5.5rem !important; }
+.pt-10 { padding-top: 5.5rem !important; }
+.pb-10 { padding-bottom: 5.5rem !important; }
+.ps-10 { padding-left: 5.5rem !important; }
+.pe-10 { padding-right: 5.5rem !important; }
+.px-10 { padding-left: 5.5rem !important; padding-right: 5.5rem !important; }
+.py-10 { padding-top: 5.5rem !important; padding-bottom: 5.5rem !important; }
+
+
 .card2 {
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.4);
     transition: 0.3s;
@@ -140,20 +237,6 @@
 }
 .card2:hover {
     box-shadow: 0 16px 32px 0 rgba(0,0,0,0.6);
-}
-
-#backgroundVideo {
-    /*position: fixed;*/
-    right: 0;
-    bottom: 0;
-    min-width: 100%;
-    min-height: 100%;
-}
-.video-overlay {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    padding: 0px 0px 100px 0px;
 }
 
 .button {

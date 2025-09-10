@@ -1,7 +1,7 @@
 from django.db.models import F, ExpressionWrapper, IntegerField, FloatField
 
 
-def store_home(req):
+def store_home(request):
     products = (
         Product.objects
         .annotate(                              # ORM-powered with annotate(). So I don’t have to loop and calculate inside the view.
@@ -18,11 +18,11 @@ def store_home(req):
     )
 
     context = {'products': products}
-    return render(req, 'store/home.html', context)
+    return render(request, 'store/home.html', context)
 
 
-def base(req):
-    return render(req, 'base.html')
+def base(request):
+    return render(request, 'base.html')
 
 
 from django.shortcuts import render
@@ -31,8 +31,26 @@ from django.template.loader import render_to_string
 from .models import Product
 
 def product_list(request):
-    products = Product.objects.all().order_by('-product_adding_date')
-    return render(request, "store/products.html", {"products": products})
+    products = (
+        Product.objects
+        .annotate(  # ORM-powered with annotate(). So I don’t have to loop and calculate inside the view.
+            discount=ExpressionWrapper(
+                # That would be more efficient if I have lots of products. This way the database itself
+                F('regular_price') - F('special_price'),
+                # calculates the discount amount and discount percentage, and my template stays clean.
+                output_field=IntegerField()
+            ),
+            discount_percentage=ExpressionWrapper(
+                (F('regular_price') - F('special_price')) * 100.0 / F('regular_price'),
+                output_field=FloatField()
+            )
+        )
+        .order_by('-product_adding_date')
+    )
+
+    context = {'products': products}
+    return render(request, 'store/products.html', context)
+
 
 def filter_products(request):
     price = request.GET.get("price")
