@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<style>
+  /* Custom Star Tech style */
+  .product-title { font-size: 1.8rem; font-weight: 600; color: #2c3e50; }
+  .price-tag { font-size: 1.6rem; font-weight: bold; color: #e63946; }
+  .old-price { text-decoration: line-through; color: gray; font-size: 0.95rem; margin-left: 10px; }
+  .key-features li { margin-bottom: 6px; }
+  .tab-content { background: #fff; border: 1px solid #dee2e6; border-top: none; padding: 20px; }
+  .related-card img { height: 120px; object-fit: contain; }
+  .related-card h6 { font-size: 0.9rem; }
+  .spec-title { font-weight: bold; background: #f8f9fa; padding: 6px 12px; }
+  .spec-table td { padding: 6px 10px; border: 1px solid #dee2e6; vertical-align: top; }
+</style>
+
+<div class="container my-5">
+  <div class="row">
+    <!-- Product Image -->
+    <div class="col-md-5 text-center">
+      <img src="{{ product.product_image.url }}" alt="{{ product.name }}" 
+           class="img-fluid mb-3 shadow-sm" style="max-height: 400px; object-fit: contain;">
+
+      <!-- Thumbnails -->
+      <div class="d-flex justify-content-center gap-2 mt-2">
+        <img src="{{ product.product_image.url }}" class="img-thumbnail" style="width:60px; height:60px;">
+        <img src="{{ product.product_image.url }}" class="img-thumbnail" style="width:60px; height:60px;">
+        <img src="{{ product.product_image.url }}" class="img-thumbnail" style="width:60px; height:60px;">
+      </div>
+    </div>
+
+    <!-- Product Info -->
+    <div class="col-md-7">
+      <h3 class="product-title">{{ product.name }}</h3>
+      <p>
+        <span class="price-tag">{{ product.special_price }}৳</span>
+        <span class="old-price">{{ product.regular_price }}৳</span>
+      </p>
+
+      <p>Status:
+        {% if product.status == "in_stock" %}
+          <span class="badge bg-success">In Stock</span>
+        {% elif product.status == "pre_order" %}
+          <span class="badge bg-warning text-dark">Pre Order</span>
+        {% elif product.status == "up_coming" %}
+          <span class="badge bg-info text-dark">Up Coming</span>
+        {% else %}
+          <span class="badge bg-danger">Out of Stock</span>
+        {% endif %}
+      </p>
+
+      <p>Product Code: <strong>{{ product.product_code }}</strong></p>
+      <p>Brand: <span class="text-primary">{{ product.brand }}</span></p>
+      <p>Model: <span class="fw-bold">{{ product.model }}</span></p>
+
+      <!-- Key Features -->
+      <h6 class="fw-bold mt-4">Key Features</h6>
+      <ul class="key-features">
+        {% for line in product.key_features.splitlines %}
+          <li>{{ line }}</li>
+        {% endfor %}
+      </ul>
+      <a href="#specifications" class="text-danger">View More Info</a>
+
+      <!-- Quantity + Buttons -->
+      <div class="mt-4 d-flex align-items-center gap-3 flex-wrap">
+        <div class="input-group" style="width: 120px;">
+          <button class="btn btn-outline-secondary" type="button">-</button>
+          <input type="text" class="form-control text-center" value="1">
+          <button class="btn btn-outline-secondary" type="button">+</button>
+        </div>
+        <button class="btn btn-outline-primary btn-lg">Add to Cart</button>
+        <button class="btn btn-primary btn-lg">Buy Now</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabs Section -->
+  <div class="row mt-5">
+    <div class="col-md-9">
+      <ul class="nav nav-tabs">
+        <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#specifications">Specification</a></li>
+        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#description">Description</a></li>
+        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#reviews">Reviews (0)</a></li>
+      </ul>
+
+      <div class="tab-content">
+        <div id="specifications" class="tab-pane fade show active">
+          <h6 class="fw-bold mb-3">Specification</h6>
+          <table class="table spec-table">
+            <tbody>
+              {% for spec in product.specifications %}
+              <tr>
+                <td class="spec-title">{{ spec.title }}</td>
+                <td>{{ spec.value }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <div id="description" class="tab-pane fade">
+          <h6>Description</h6>
+          <p>{{ product.description|linebreaks }}</p>
+        </div>
+        <div id="reviews" class="tab-pane fade">
+          <p>No reviews yet.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="col-md-3">
+      <!-- Related Products -->
+      <h6 class="fw-bold">Related Products</h6>
+      {% for related in related_products %}
+      <div class="card mb-3 related-card shadow-sm border-0">
+        <a href="{% url 'product_details' related.slug %}" class="text-decoration-none text-dark">
+          <img src="{{ related.product_image.url }}" class="card-img-top p-2" alt="{{ related.name }}">
+          <div class="card-body text-center">
+            <h6 class="small">{{ related.name|truncatechars:25 }}</h6>
+            <p class="fw-bold text-danger mb-0">{{ related.special_price }}৳</p>
+            {% if related.regular_price %}
+              <small class="text-muted text-decoration-line-through">{{ related.regular_price }}৳</small>
+            {% endif %}
+          </div>
+        </a>
+      </div>
+      {% empty %}
+        <p>No related products.</p>
+      {% endfor %}
+
+      <!-- Recently Viewed -->
+      <h6 class="fw-bold mt-4">Recently Viewed</h6>
+      {% for viewed in recently_viewed %}
+      <div class="card mb-3 related-card shadow-sm border-0">
+        <a href="{% url 'product_details' viewed.slug %}" class="text-decoration-none text-dark">
+          <img src="{{ viewed.product_image.url }}" class="card-img-top p-2" alt="{{ viewed.name }}">
+          <div class="card-body text-center">
+            <h6 class="small">{{ viewed.name|truncatechars:25 }}</h6>
+            <p class="fw-bold text-danger mb-0">{{ viewed.special_price }}৳</p>
+            {% if viewed.regular_price %}
+              <small class="text-muted text-decoration-line-through">{{ viewed.regular_price }}৳</small>
+            {% endif %}
+          </div>
+        </a>
+      </div>
+      {% empty %}
+        <p>No recently viewed products.</p>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

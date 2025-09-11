@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<style>
+    /* Custom Styles */
+    .product-title {
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: #2c3e50;
+    }
+    .price-tag {
+        font-size: 1.6rem;
+        font-weight: bold;
+        color: #e63946;
+    }
+    .old-price {
+        text-decoration: line-through;
+        color: gray;
+        font-size: 0.95rem;
+        margin-left: 10px;
+    }
+    .key-features li {
+        margin-bottom: 6px;
+    }
+    .tab-content {
+        background: #fff;
+        border: 1px solid #dee2e6;
+        border-top: none;
+        padding: 20px;
+    }
+    .related-card img {
+        height: 150px;
+        object-fit: contain;
+    }
+    .related-card h6 {
+        font-size: 0.9rem;
+    }
+</style>
+
+<div class="container my-5">
+  <div class="row">
+    <!-- Product Image -->
+    <div class="col-md-5 text-center">
+      <img src="{{ product.product_image.url }}"
+           alt="{{ product.name }}"
+           class="img-fluid mb-3 shadow-sm"
+           style="max-height: 400px; object-fit: contain;">
+
+      <!-- Thumbnails (you can extend for multiple images later) -->
+      <div class="d-flex justify-content-center gap-2 mt-2">
+        <img src="{{ product.product_image.url }}" class="img-thumbnail" style="width:60px; height:60px;">
+        <img src="{{ product.product_image.url }}" class="img-thumbnail" style="width:60px; height:60px;">
+        <img src="{{ product.product_image.url }}" class="img-thumbnail" style="width:60px; height:60px;">
+      </div>
+    </div>
+
+    <!-- Product Info -->
+    <div class="col-md-7">
+      <h3 class="product-title">{{ product.name }}</h3>
+
+      <p>
+        <span class="price-tag">{{ product.special_price }}৳</span>
+        <span class="old-price">{{ product.regular_price }}৳</span>
+      </p>
+
+      <p>Status:
+        {% if product.status == "in_stock" %}
+          <span class="badge bg-success">In Stock</span>
+        {% elif product.status == "pre_order" %}
+          <span class="badge bg-warning text-dark">Pre Order</span>
+        {% elif product.status == "up_coming" %}
+          <span class="badge bg-info text-dark">Up Coming</span>
+        {% else %}
+          <span class="badge bg-danger">Out of Stock</span>
+        {% endif %}
+      </p>
+
+      <p>Product Code: <strong>{{ product.product_code }}</strong></p>
+      <p>Brand: <span class="text-primary">{{ product.brand }}</span></p>
+      <p>Model: <span class="fw-bold">{{ product.model }}</span></p>
+
+      <!-- Key Features -->
+      <h6 class="fw-bold mt-4">Key Features</h6>
+      <ul class="key-features">
+        {% for line in product.specification.splitlines %}
+          <li>{{ line }}</li>
+        {% endfor %}
+      </ul>
+      <a href="#specifications" class="text-danger">View More Info</a>
+
+      <!-- Quantity + Buttons -->
+      <div class="mt-4 d-flex align-items-center gap-3">
+        <div class="input-group" style="width: 120px;">
+          <button class="btn btn-outline-secondary" type="button">-</button>
+          <input type="text" class="form-control text-center" value="1">
+          <button class="btn btn-outline-secondary" type="button">+</button>
+        </div>
+        <button class="btn btn-primary btn-lg">Buy Now</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="row mt-5">
+    <div class="col-12">
+      <ul class="nav nav-tabs">
+        <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#specifications">Specification</a></li>
+        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#description">Description</a></li>
+        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#reviews">Reviews (0)</a></li>
+      </ul>
+
+      <div class="tab-content">
+        <div id="specifications" class="tab-pane fade show active">
+          <h6>Specifications</h6>
+          <p>{{ product.specification|linebreaks }}</p>
+        </div>
+        <div id="description" class="tab-pane fade">
+          <h6>Description</h6>
+          <p>{{ product.description|linebreaks }}</p>
+        </div>
+        <div id="reviews" class="tab-pane fade">
+          <p>No reviews yet.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+   <!-- Related Products -->
+  <div class="mt-5">
+    <h5 class="fw-bold mb-3">Related Products</h5>
+    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-6 g-3">
+      {% for related in related_products %}
+      <div class="col d-flex">
+        <a href="{% url 'product_details' related.slug %}" class="text-decoration-none text-dark w-100">
+          <div class="card h-100 border-0 shadow-sm">
+            <img src="{{ related.product_image.url }}"
+                 class="img-fluid mx-auto d-block"
+                 alt="{{ related.name }}"
+                 style="width: 150px; height: 150px; object-fit: contain;">
+            <div class="card-body text-center">
+              <h6 class="card-title small">{{ related.name|truncatechars:30 }}</h6>
+              <p class="fw-bold text-danger mb-0">{{ related.special_price }}৳</p>
+              {% if related.regular_price %}
+                <small class="text-muted text-decoration-line-through">{{ related.regular_price }}৳</small>
+              {% endif %}
+            </div>
+          </div>
+        </a>
+      </div>
+      {% empty %}
+        <p>No related products found.</p>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

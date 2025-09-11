@@ -8,7 +8,7 @@
       border-radius: 10px;
       transition: 0.1s;
       text-align: center;
-      padding: 30px 22px;
+      padding: 30px 10px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.08);
       cursor: pointer;
       background: #F9F9F9;
@@ -67,18 +67,50 @@
     <!-- Dashboard Cards -->
     <div class="row g-3">
       <div class="col-md-3 col-6">
-          <a href="{% url 'add_product' %}" style="text-decoration: none">
+          <a href="#" onclick="event.preventDefault();" style="text-decoration: none">
             <div class="dashboard-card">
               <div class="dashboard-icon"><i class="fa-solid fa-file-lines"></i></div>
-              <p class="points mb-0">Add New Product</p>
+              <p class="points mb-0">All Orders</p>
             </div>
           </a>
       </div>
       <div class="col-md-3 col-6">
+        <div class="dashboard-card">
+          <div class="dashboard-icon"><i class="fa-solid fa-credit-card"></i></div>
+          <p class="points mb-0">All Transactions</p>
+        </div>
+      </div>
+      <div class="col-md-3 col-6">
+        <a href="{% url 'add_product' %}" style="text-decoration: none">
+          <div class="dashboard-card">
+            <div class="dashboard-icon"><i class="fa-solid fa-plus"></i></div>
+            <p class="points mb-0">Add New Product</p>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-3 col-6">
+        <div class="dashboard-card">
+          <div class="dashboard-icon"><i class="fa-solid fa-plus-circle"></i></div>
+          <p class="points mb-0">Add New Category</p>
+        </div>
+      </div>
+      <div class="col-md-3 col-6">
+        <div class="dashboard-card">
+          <div class="dashboard-icon"><i class="fa-solid fa-minus"></i></div>
+          <p class="points mb-0">Remove a Product</p>
+        </div>
+      </div>
+      <div class="col-md-3 col-6">
+        <div class="dashboard-card">
+          <div class="dashboard-icon"><i class="fa-solid fa-minus-circle"></i></div>
+          <p class="points mb-0">Remove a Category</p>
+        </div>
+      </div>
+      <div class="col-md-3 col-6">
           <a href="{% url 'product_list' %}" style="text-decoration: none">
             <div class="dashboard-card">
-              <div class="dashboard-icon"><i class="fa-solid fa-user"></i></div>
-              <p class="points mb-0">View All Products</p>
+              <div class="dashboard-icon"><i class="fa-solid fa-computer"></i></div>
+              <p class="points mb-0">All Products</p>
             </div>
           </a>
       </div>
@@ -86,30 +118,6 @@
         <div class="dashboard-card">
           <div class="dashboard-icon"><i class="fa-solid fa-lock"></i></div>
           <p class="points mb-0">Change Password</p>
-        </div>
-      </div>
-      <div class="col-md-3 col-6">
-        <div class="dashboard-card">
-          <div class="dashboard-icon"><i class="fa-solid fa-location-dot"></i></div>
-          <p class="points mb-0">Addresses</p>
-        </div>
-      </div>
-      <div class="col-md-3 col-6">
-        <div class="dashboard-card">
-          <div class="dashboard-icon"><i class="fa-regular fa-heart"></i></div>
-          <p class="points mb-0">Wish List</p>
-        </div>
-      </div>
-      <div class="col-md-3 col-6">
-        <div class="dashboard-card">
-          <div class="dashboard-icon"><i class="fa-solid fa-computer"></i></div>
-          <p class="points mb-0">Dream PC</p>
-        </div>
-      </div>
-      <div class="col-md-3 col-6">
-        <div class="dashboard-card">
-          <div class="dashboard-icon"><i class="fa-solid fa-credit-card"></i></div>
-          <p class="points mb-0">Your Transactions</p>
         </div>
       </div>
     </div>

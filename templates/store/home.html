@@ -309,7 +309,11 @@
              style="width: 250px; height: 250px; object-fit: contain;">
         <!-- Body -->
         <div class="card-body">
-          <h6 class="card-title">{{ product.name }}</h6>
+          <h6 class="card-title">
+            <a href="{% url 'product_details' product.slug %}">
+                {{ product.name }}
+            </a>
+          </h6>
           <p class="fw-bold text-danger mb-0 d-inline">
             {{ product.special_price }}৳
           </p>

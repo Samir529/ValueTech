@@ -36,12 +36,31 @@ class Category(models.Model):
         super().save(*args, **kwargs)
 
 
+class subCategory(models.Model):
+    category = models.ForeignKey(
+        Category, on_delete=models.CASCADE
+    )
+    name = models.CharField(max_length=100, unique=True)
+    slug = models.SlugField(max_length=100, unique=True, blank=True)
+
+    class Meta:
+        verbose_name_plural = "Sub Categories"
+
+    def __str__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = unique_slugify(self, self.name)
+        super().save(*args, **kwargs)
+
+
 class Product(models.Model):
     category = models.ForeignKey(
         Category, related_name="products", on_delete=models.CASCADE
     )
     name = models.CharField(max_length=200)
-    slug = models.SlugField(max_length=200, unique=True, blank=True)
+    slug = models.SlugField(max_length=200, unique=True, primary_key=True, blank=True)
     product_adding_date = models.DateTimeField(auto_now_add=True)   # stores full date + time
 
     # Pricing
@@ -63,7 +82,7 @@ class Product(models.Model):
     )
 
     # Product details
-    product_code = models.CharField(max_length=100, unique=True, primary_key=True)
+    product_code = models.CharField(max_length=100, unique=True)
     brand = models.CharField(max_length=100)
     model = models.CharField(max_length=100)
     color = models.CharField(max_length=100, blank=True, null=True)

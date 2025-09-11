@@ -67,7 +67,7 @@
     <!-- Dashboard Cards -->
     <div class="row g-3">
       <div class="col-md-3 col-6">
-          <a href="#" style="text-decoration: none">
+          <a href="#" onclick="event.preventDefault();" style="text-decoration: none">
             <div class="dashboard-card">
               <div class="dashboard-icon"><i class="fa-solid fa-file-lines"></i></div>
               <p class="points mb-0">Orders</p>
@@ -75,7 +75,7 @@
           </a>
       </div>
       <div class="col-md-3 col-6">
-          <a href="#" style="text-decoration: none">
+          <a href="#" onclick="event.preventDefault();" style="text-decoration: none">
             <div class="dashboard-card">
               <div class="dashboard-icon"><i class="fa-solid fa-user"></i></div>
               <p class="points mb-0">Edit Profile</p>
@@ -103,13 +103,19 @@
       <div class="col-md-3 col-6">
         <div class="dashboard-card">
           <div class="dashboard-icon"><i class="fa-solid fa-computer"></i></div>
-          <p class="points mb-0">Dream PC</p>
+          <p class="points mb-0">Saved PC</p>
         </div>
       </div>
       <div class="col-md-3 col-6">
         <div class="dashboard-card">
           <div class="dashboard-icon"><i class="fa-solid fa-credit-card"></i></div>
           <p class="points mb-0">Your Transactions</p>
+        </div>
+      </div>
+      <div class="col-md-3 col-6">
+        <div class="dashboard-card">
+          <div class="dashboard-icon"><i class="fa-solid fa-star"></i></div>
+          <p class="points mb-0">Reviews</p>
         </div>
       </div>
     </div>

@@ -1,5 +1,5 @@
 from django.db.models import F, ExpressionWrapper, IntegerField, FloatField
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from store.models import Product
 
 from django.http import JsonResponse
@@ -55,6 +55,20 @@ def product_list(request, category=None):
     }
     return render(request, 'store/products.html', context)
 
+
+def product_details(request, slug):
+    product = get_object_or_404(Product, slug=slug)
+
+    related_products = (
+        Product.objects
+        .filter(category=product.category)
+        .exclude(slug=product.slug)[:6]  # Limit to 6 products
+    )
+
+    return render(request, "store/product_details.html", {
+        "product": product,
+        "related_products": related_products,
+    })
 
 
 def filter_products(request):
