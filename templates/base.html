@@ -15,7 +15,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"/>
     <style>
-        body { background-color: #f1f1f1; font-family: 'Inter', sans-serif;}
+        body { background-color: #f1f1f1; font-family: 'Inter', Arial, sans-serif;}
     </style>
     <style>
         a {
@@ -214,7 +214,7 @@
 <!-- Navbar (will become sticky after scrolling past topbar) -->
 <nav>
   <!-- navbar content -->
-  <div class="navbar d-flex align-items-center justify-content-between px-3" style="z-index:1;">
+  <div class="navbar d-flex align-items-center justify-content-between px-3">
 
       <!-- Logo -->
       <a href="/" class="me-3">
@@ -414,7 +414,7 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 </script>
-<div style="padding-top: 14px;">
+<div class="content-wrapper {% block wrapper_class %}{% endblock %}">
     {% block content%}
     {%endblock%}
 </div>

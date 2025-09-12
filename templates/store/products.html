@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 {% extends 'base.html' %}
 {% load static %}
+{% load humanize %}
 {% block content %}
-  <style>
+<style>
     .filter-section { background: #fff; border-radius: 5px; padding: 15px; margin-bottom: 10px; }
     .product-card { background: #fff; border-radius: 5px; padding: 10px; margin-bottom: 2px; transition: all .1s; }
     .product-card:hover { transform: scale(1.02); box-shadow: 0 8px 16px rgba(0,0,0,0.1); }
@@ -22,22 +23,25 @@
     .category-pill { border: 1px solid #ccc; margin: 3px; border-radius: 25px; padding: 5px 15px; cursor: pointer; background: white; }
     .category-pill:hover { background: #f1f1f1; }
     .active-pill { background: #0d6efd; color: white; }
-  </style>
+</style>
+
 <body>
 <div class="container-fluid">
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/"><i class="fas fa-home"></i></a></li>
-        <li class="breadcrumb-item active" aria-current="page"><a href="#" style="color: dimgray">Products</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'product_list' %}" style="color: dimgray">Products</a></li>
       </ol>
     </nav>
 </div>
 <div class="container-fluid mt-3">
   <div>
     {% if selected_category %}
-      <h4 class="fw-medium mb-3" style="color: royalblue">{{ selected_category }} Price in Bangladesh</h4>
+      <h3 class="fw-bold mb-3" style="color: royalblue; font-family: 'Candara', Arial, sans-serif;">
+          {{ selected_category }} Price in Bangladesh</h3>
     {% else %}
-      <h4 class="fw-medium mb-3" style="color: royalblue">All Products Price in Bangladesh</h4>
+      <h3 class="fw-bold mb-3" style="color: royalblue; font-family: 'Candara', Arial, sans-serif;">
+          All Products Price in Bangladesh</h3>
     {% endif %}
   </div>
   <!-- Sub Categories -->
@@ -83,7 +87,7 @@
             {% if product.discount > 0 %}
                 <span class="badge m-2 px-2 py-1"
                     style="top:0; right:0; font-size:12px; background: darkviolet">
-                    Save: {{ product.discount }}৳ (-{{ product.discount_percentage|floatformat:0 }})%
+                    Save: {{ product.discount|intcomma }}৳ (-{{ product.discount_percentage|floatformat:0 }})%
                 </span>
             {% endif %}
             <a href="{% url 'product_details' product.slug %}">
@@ -92,16 +96,19 @@
                      class="img-fluid mb-2 mx-auto d-block"
                      style="width: 210px; height: 210px; object-fit: contain;">
             </a>
-            <h6 class="card-title">
+            <small class="card-title fw-bold">
                 <a href="{% url 'product_details' product.slug %}">
                     {{ product.name }}
                 </a>
-            </h6>
-            <p>{{ product.specification }}</p>
-            <div>
-              <span class="price">{{ product.special_price }}৳</span>
+            </small>
+            <p class="text-muted my-3">
+                <small>{{ product.specification }}</small>
+            </p>
+            <hr>
+            <div class="text-center">
+              <span class="price">{{ product.special_price|floatformat:-2|intcomma }}৳</span>
                 {% if product.regular_price %}
-                    <span class="old-price ms-2">{{ product.regular_price }}৳</span>
+                    <span class="old-price ms-2">{{ product.regular_price|floatformat:-2|intcomma }}৳</span>
                 {% endif %}
             </div>
             <div class="text-center">

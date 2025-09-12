@@ -2,6 +2,12 @@
     max-width: fit-content;
     margin-inline: auto;
 }
+.content-wrapper {
+    padding-top: 14px; /* default = 14px gap */
+}
+.content-wrapper.without-gap {
+    padding-top: 0; /* no gap */
+}
 
 .navbar {
     background-color: floralwhite;
@@ -11,6 +17,7 @@
     width: 100%;
     transition: all 0.3s ease-in-out;
     height: 100px;
+    z-index: 1000;
 }
 .navbar-icon:hover {
     fill: #165D9B;
@@ -32,7 +39,7 @@
     padding-top: 10px;  /* shrinks navbar smoothly */
     padding-bottom: 10px;   /* shrinks navbar smoothly */
     animation: slideDown 0.3s forwards; /* slide animation */
-    height: 80px;
+    height: 80px;   /* (60+10+10) */
 }
 /* Slide animation */
 @keyframes slideDown {
@@ -94,7 +101,7 @@
 /* Sticky Category Bar */
 .category-bar.sticky {
     position: fixed;
-    top: 80px; /* adjust to match navbar height */
+    top: 80px; /* adjust to match navbar height */ /* (60+10+10) */
     left: 0;
     width: 100%;
     z-index: 999;

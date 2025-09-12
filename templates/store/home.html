@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load humanize %}
 {% block content %}
 <style>
     .top-action-button a:hover {
@@ -317,7 +318,7 @@
         {% if product.discount > 0 %}
             <span class="badge m-2 px-2 py-1"
                 style="top:0; right:0; font-size:12px; background: darkviolet">
-                Save: {{ product.discount }}৳ (-{{ product.discount_percentage|floatformat:0 }})%
+                Save: {{ product.discount|intcomma }}৳ (-{{ product.discount_percentage|floatformat:0 }})%
             </span>
         {% endif %}
         <!-- Image -->
@@ -329,19 +330,21 @@
         </a>
         <!-- Body -->
         <div class="card-body">
-          <h6 class="card-title">
-            <a href="{% url 'product_details' product.slug %}">
-                {{ product.name }}
-            </a>
-          </h6>
-          <p class="fw-bold text-danger mb-0 d-inline">
-            {{ product.special_price }}৳
-          </p>
-          {% if product.regular_price %}
-          <small class="text-muted text-decoration-line-through ms-2">
-            {{ product.regular_price }}৳
+          <small class="card-title">
+              <a href="{% url 'product_details' product.slug %}">
+                  {{ product.name }}
+              </a>
           </small>
-          {% endif %}
+          <div class="mt-3">
+              <span class="fw-bold text-danger mb-0 d-inline">
+                {{ product.special_price|floatformat:-2|intcomma }}৳
+              </span>
+              {% if product.regular_price %}
+                <small class="text-muted text-decoration-line-through ms-2">
+                    {{ product.regular_price|floatformat:-2|intcomma }}৳
+                </small>
+              {% endif %}
+          </div>
         </div>
       </div>
     </div>
