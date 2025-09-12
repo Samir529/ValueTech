@@ -118,7 +118,7 @@
     <div class="col-md-3">
       <!-- Related Products -->
       <div class="card mb-3 related-card shadow-sm border-0 pt-4">
-          <h5 class="text-center fw-semibold">Related Product</h5>
+          <h5 class="text-center fw-semibold">Related Products</h5>
           <hr>
           {% for related in related_products %}
           <a href="{% url 'product_details' related.slug %}" class="text-decoration-none text-dark">
@@ -133,7 +133,7 @@
           </a>
           <hr>
          {% empty %}
-            <p>No related products.</p>
+            <p class="ps-3">No related products.</p>
          {% endfor %}
       </div>
 
@@ -153,7 +153,7 @@
               </div>
             </a>
         {% empty %}
-            <p class="text-center">No recently viewed products.</p>
+            <p class="ps-3">No recently viewed products.</p>
         {% endfor %}
       </div>
     </div>
