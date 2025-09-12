@@ -6,6 +6,16 @@
     .filter-section { background: #fff; border-radius: 5px; padding: 15px; margin-bottom: 10px; }
     .product-card { background: #fff; border-radius: 5px; padding: 10px; margin-bottom: 2px; transition: all .1s; }
     .product-card:hover { transform: scale(1.02); box-shadow: 0 8px 16px rgba(0,0,0,0.1); }
+    .product-card img {
+        position: relative;
+        z-index: 1;   /* image stays below */
+    }
+    .product-card img:hover { filter: brightness(1.08); }
+    .product-card .card-title a:hover { color: tomato; }
+    .product-card .badge {
+        position: absolute;
+        z-index: 2;   /* ensures badge is above the image */
+    }
     .price { font-size: 16px; font-weight: bold; color: #d9534f; }
     .old-price { text-decoration: line-through; color: gray; font-size: 14px; }
     .filter-title { font-weight: bold; margin-bottom: 10px; }
@@ -40,9 +50,9 @@
     <div class="category-pill" data-category="intel_i5">Latest Gadgets</div>
   </div>
 
-  <div class="row">
+  <div class="row g-3">
     <!-- Filters -->
-    <div class="col-md-3">
+    <div class="col-md-3" style="width: 300px;">
       <div class="filter-section">
         <div class="filter-title">Price Range</div>
         <input type="range" min="0" max="1000000" value="250000" id="priceRange" class="form-range">
@@ -65,22 +75,28 @@
 
     <!-- Product List -->
     <div class="col-md-9">
-      <div class="row row-cols-2 row-cols-md-3 row-cols-lg-5 g-2" id="product-list">
+      <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-2" id="product-list">
         {% for product in products %}
-        <div class="col-md-3">
-          <div class="product-card position-relative">
+        <div class="col-md-3 mb-1">
+          <div class="product-card h-100 w-100 border-0 rounded-3 shadow-sm position-relative">
             <!-- Discount Tag -->
             {% if product.discount > 0 %}
-                <span class="badge position-absolute m-2 px-2 py-1"
+                <span class="badge m-2 px-2 py-1"
                     style="top:0; right:0; font-size:12px; background: darkviolet">
                     Save: {{ product.discount }}৳ (-{{ product.discount_percentage|floatformat:0 }})%
                 </span>
             {% endif %}
-            <img src="{{ product.product_image.url }}"
-                 alt="{{ product.name }}"
-                 class="img-fluid mb-2 mx-auto d-block"
-                 style="width: 200px; height: 200px; object-fit: contain;">
-            <h6>{{ product.name }}</h6>
+            <a href="{% url 'product_details' product.slug %}">
+                <img src="{{ product.product_image.url }}"
+                     alt="{{ product.name }}"
+                     class="img-fluid mb-2 mx-auto d-block"
+                     style="width: 210px; height: 210px; object-fit: contain;">
+            </a>
+            <h6 class="card-title">
+                <a href="{% url 'product_details' product.slug %}">
+                    {{ product.name }}
+                </a>
+            </h6>
             <p>{{ product.specification }}</p>
             <div>
               <span class="price">{{ product.special_price }}৳</span>
@@ -89,7 +105,7 @@
                 {% endif %}
             </div>
             <div class="text-center">
-                <a href="#" onclick="event.preventDefault();"><button class="button mt-3" style="width: 165px"><span>Buy Now</span></button></a>
+                <a href="#" onclick="event.preventDefault();"><button class="button mt-3" style="width: 180px"><span>Buy Now</span></button></a>
             </div>
           </div>
         </div>
