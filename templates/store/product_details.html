@@ -73,12 +73,15 @@
           <!-- Quantity + Buttons -->
           <div class="mt-4 d-flex align-items-center gap-3 flex-wrap">
             <div class="input-group" style="width: 120px;">
-              <button class="btn btn-outline-secondary" type="button">-</button>
-              <input type="text" class="form-control text-center" value="1">
-              <button class="btn btn-outline-secondary" type="button">+</button>
+                <button class="btn btn-outline-secondary" type="button" id="decreaseQty">-</button>
+                <input type="text" class="form-control text-center" id="quantityInput" name="quantity" value="1">
+                <button class="btn btn-outline-secondary" type="button" id="increaseQty">+</button>
             </div>
             <a href="#" onclick="event.preventDefault();"><button class="button2" style="width: 190px"><span>Add to Cart</span></button></a>
-            <a href="#" onclick="event.preventDefault();"><button class="button" style="width: 190px"><span>Buy Now</span></button></a>
+            <form action="{% url 'checkout' product.slug %}" method="get" class="d-inline">
+                <input type="hidden" name="quantity" id="buyNowQuantity" value="1">
+                <button type="submit" class="button" style="width: 190px"><span>Buy Now</span></button>
+            </form>
           </div>
         </div>
       </div>
@@ -159,4 +162,33 @@
     </div>
   </div>
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const qtyInput = document.getElementById("quantityInput");
+    const hiddenQty = document.getElementById("buyNowQuantity");
+
+    document.getElementById("increaseQty").addEventListener("click", function () {
+        qtyInput.value = parseInt(qtyInput.value) + 1;
+        hiddenQty.value = qtyInput.value;
+    });
+
+    document.getElementById("decreaseQty").addEventListener("click", function () {
+        let current = parseInt(qtyInput.value);
+        if (current > 1) {
+            qtyInput.value = current - 1;
+            hiddenQty.value = qtyInput.value;
+        }
+    });
+
+    // Keep hiddenQty in sync if user types manually
+    qtyInput.addEventListener("input", function () {
+        let val = parseInt(qtyInput.value);
+        if (isNaN(val) || val < 1) val = 1;
+        qtyInput.value = val;
+        hiddenQty.value = val;
+    });
+});
+</script>
+
 {% endblock %}

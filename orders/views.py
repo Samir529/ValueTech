@@ -65,3 +65,66 @@
 #     order.save()
 #     return render(request, "orders/checkout_success.html")
 #
+
+from django.shortcuts import render, get_object_or_404
+from orders.models import Order, OrderItem
+from store.models import Product
+
+
+def checkout(request, slug):
+    product = get_object_or_404(Product, slug=slug)
+    quantity = int(request.GET.get("quantity", 1))  # default to 1
+    subtotal = product.special_price * quantity
+
+    if request.method == "POST":
+        # Create the order from POST data
+        order = Order.objects.create(
+            first_name=request.POST.get("first_name"),
+            last_name=request.POST.get("last_name"),
+            phone=request.POST.get("phone"),
+            street_address=request.POST.get("street_address"),
+            town_city=request.POST.get("town_city"),
+            country=request.POST.get("country", "Bangladesh"),
+            district=request.POST.get("district"),
+            email=request.POST.get("email"),
+            notes=request.POST.get("notes"),
+            payment_method=request.POST.get("payment_method"),
+            transaction_id=request.POST.get("transaction_id"),
+            subtotal=subtotal,
+            shipping=99 if request.POST.get("payment_method") == "cod_outside" else 50,
+        )
+
+        # Final total
+        order.total = order.subtotal + order.shipping
+        order.save()
+
+        # Save the ordered item
+        OrderItem.objects.create(
+            order=order,
+            product=product,
+            quantity=quantity,
+        )
+
+        return render(request, "orders/checkout_success.html", {"order": order})
+
+    # Districts list
+    districts = [
+        "Bagerhat", "Bandarban", "Barguna", "Barishal", "Bhola", "Bogura", "Brahmanbaria",
+        "Chandpur", "Chattogram", "Chuadanga", "Cox's Bazar", "Cumilla", "Dhaka", "Dinajpur",
+        "Faridpur", "Feni", "Gaibandha", "Gazipur", "Gopalganj", "Habiganj", "Jamalpur",
+        "Jashore", "Jhalokati", "Jhenaidah", "Joypurhat", "Khagrachhari", "Khulna", "Kishoreganj",
+        "Kurigram", "Kushtia", "Lakshmipur", "Lalmonirhat", "Madaripur", "Magura", "Manikganj",
+        "Meherpur", "Moulvibazar", "Munshiganj", "Mymensingh", "Naogaon", "Narail", "Narayanganj",
+        "Narsingdi", "Natore", "Netrokona", "Nilphamari", "Noakhali", "Pabna", "Panchagarh",
+        "Patuakhali", "Pirojpur", "Rajbari", "Rajshahi", "Rangamati", "Rangpur", "Satkhira",
+        "Shariatpur", "Sherpur", "Sirajganj", "Sunamganj", "Sylhet", "Tangail", "Thakurgaon"
+    ]
+
+    context = {
+        "product": product,
+        "quantity": quantity,
+        "subtotal": subtotal,
+        "districts": districts,
+    }
+    return render(request, "orders/checkout.html", context)
+

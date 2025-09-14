@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from store.forms import productForm
+from core.forms import productForm
 
 
 @login_required

@@ -13,3 +13,10 @@
 #
 # ]
 #
+
+from django.urls import path
+from orders.views import checkout
+
+urlpatterns = [
+    path("checkout/<slug:slug>/", checkout, name="checkout"),
+]

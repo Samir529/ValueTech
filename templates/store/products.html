@@ -112,7 +112,7 @@
                 {% endif %}
             </div>
             <div class="text-center">
-                <a href="#" onclick="event.preventDefault();"><button class="button mt-3" style="width: 180px"><span>Buy Now</span></button></a>
+                <a href="{% url 'checkout' product.slug %}"><button class="button mt-3" style="width: 180px"><span>Buy Now</span></button></a>
             </div>
           </div>
         </div>

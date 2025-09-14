@@ -1,16 +1,246 @@
+<!DOCTYPE html>
 {% extends 'base.html' %}
-{% block title %}Checkout{% endblock %}
+{% load static %}
+{% load humanize %}
 {% block content %}
-<h2>Checkout</h2>
-<p>Total: ${{ order.total_price }}</p>
+<style>
+    .order-summary { background: #fff; border-radius: 8px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+    .order-summary h4 { font-weight: 600; margin-bottom: 15px; }
+    .form-section { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+    .btn-order { background: #3d5afe; color: #fff; font-weight: 600; padding: 12px; border-radius: 6px; width: 100%; }
+    .btn-order:hover { background: #2c46d3; }
+    /* Custom dropdown with search */
+    .custom-dropdown { position: relative; }
+    .custom-dropdown .dropdown-menu {
+        max-height: 300px;
+        overflow-y: auto;
+        width: 100%;
+    }
+    .custom-dropdown .dropdown-menu input {
+        width: 95%;
+        margin: 5px auto;
+        display: block;
+    }
+</style>
 
-<form method="post">
-  {% csrf_token %}
-<!--  <button type="submit" class="btn btn-primary">Confirm & Pay</button>-->
-    <button type="submit" class="btn btn-primary">Pay with Card</button>
-</form>
+<div class="container-fluid">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/"><i class="fas fa-home"></i></a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'checkout' product.slug %}" style="color: dimgray">Checkout</a></li>
+      </ol>
+    </nav>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <!-- Billing Form -->
+        <div class="col-md-7">
+            <h4>Billing Details</h4>
+            <form method="POST">
+                {% csrf_token %}
 
-<form method="get" action="{% url 'create_payment_session' %}" class="mt-2">
-    <button type="submit" class="btn btn-success">Pay with SSLCommerz</button>
-</form>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">First name</label><label class="ps-1" style="color: #de001e;">*</label>
+                        <input type="text" name="first_name" class="form-control" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Last name (optional)</label>
+                        <input type="text" name="last_name" class="form-control">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Phone</label><label class="ps-1" style="color: #de001e;">*</label>
+                    <input type="text" name="phone" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Street Address</label><label class="ps-1" style="color: #de001e;">*</label>
+                    <input type="text" name="street_address" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Email (optional)</label>
+                    <input type="email" name="email" class="form-control">
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Town / City (optional)</label>
+                        <input type="text" name="town_city" class="form-control">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Country / Region</label><label class="ps-1" style="color: #de001e;">*</label>
+                        <input type="text" name="country" class="form-control" value="Bangladesh" readonly>
+                    </div>
+                </div>
+
+                <!-- District Dropdown with Search -->
+                <div class="mb-3 custom-dropdown">
+                    <label class="form-label">District (optional)</label>
+                    <div class="dropdown">
+                        <button class="btn btn-outline-secondary w-100 dropdown-toggle" type="button" id="districtDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            Select District
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="districtDropdown" id="districtList">
+                            <li><input type="text" class="form-control" placeholder="Search..." id="districtSearch"></li>
+                            {% for district in districts %}
+                                <li><a class="dropdown-item district-option" href="#">{{ district }}</a></li>
+                            {% endfor %}
+                        </ul>
+                        <input type="hidden" name="district" id="districtInput">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Email (optional)</label>
+                    <input type="email" name="email" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Order Notes (optional)</label>
+                    <textarea name="notes" class="form-control"></textarea>
+                </div>
+
+                <!-- Payment Methods -->
+                <div class="payment-methods mt-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" checked="checked" name="payment_method" id="cod_outside" value="cod_outside" required>
+                        <label class="form-check-label fw-bold" for="cod_outside">
+                            Cash On Delivery (Outside Dhaka)
+                        </label>
+                        <p class="small-text text-muted form-section">
+                            For Ordering Outside Dhaka, The Courier Charge Must Be Paid in Advance. <br>
+                            বিকাশে ১০০ টাকা অগ্রিম পাঠাতে হবে। <br>
+                            Bkash: 01735-473925 (Personal) | Nagad: 01543-678832 (Personal) | Rocket: 01957-645871 (Personal)
+                        </p>
+
+                        <!-- Transaction ID field -->
+                        <div id="transaction-field" class="mt-2">
+                            <label for="transaction_id" class="form-label">Transaction ID *</label>
+                            <input type="number" class="form-control" name="transaction_id" id="transaction_id">
+                        </div>
+                    </div>
+                    <div class="form-check mt-3">
+                        <input class="form-check-input" type="radio" name="payment_method" id="cod_inside" value="cod_inside" required>
+                        <label class="form-check-label fw-bold" for="cod_inside">
+                            Cash On Delivery (Inside Dhaka)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-check mt-3">
+                    <input type="checkbox" class="form-check-input" required id="terms">
+                    <label for="terms" class="form-check-label">
+                        Yes I have read and agree to the website
+                        <a href="#" onclick="event.preventDefault();">terms and conditions</a>,
+                        <a href="#" onclick="event.preventDefault();">privacy policy</a>, returns & refunds
+                    </label><label class="ps-1" style="color: #de001e;">*</label>
+                </div>
+
+                <button type="submit" class="btn-order mt-3">Place Order</button>
+            </form>
+        </div>
+
+        <!-- Order Summary -->
+        <div class="col-md-5 order-summary">
+            <h4 class="text-center">Your Order</h4>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>PRODUCT</th>
+                        <th class="text-end">SUBTOTAL</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <p>{{ product.name }}</p>
+                            <small>SKU: </small><small class="text-muted">{{ product.product_code }}</small><br>
+                            <small>Qty: {{ quantity }}</small>
+                        </td>
+                        <td class="text-end text-muted">{{ subtotal|floatformat:-2|intcomma }}৳</td>
+                    </tr>
+                    <tr>
+                        <td>Subtotal</td>
+                        <td class="text-end"><span id="subtotal">{{ subtotal|floatformat:-2|intcomma }}</span>৳</td>
+                    </tr>
+                    <tr>
+                        <td>Shipping</td>
+                        <td class="text-end"><span id="shipping"></span>৳</td>
+                    </tr>
+                    <tr>
+                        <th>Total</th>
+                        <th class="text-end text-primary"><span id="total">{{ total }}</span>৳</th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- JS -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const codOutside = document.getElementById("cod_outside");
+    const codInside = document.getElementById("cod_inside");
+    const transactionField = document.getElementById("transaction-field");
+    const transactionInput = document.getElementById("transaction_id");
+
+    const subtotalEl = document.getElementById("subtotal");
+    const shippingEl = document.getElementById("shipping");
+    const totalEl = document.getElementById("total");
+    const subtotal = parseFloat(subtotalEl.textContent);
+
+    function toggleTransactionField() {
+        if (codOutside.checked) {
+            transactionField.style.display = "block";
+            transactionInput.setAttribute("required", "required");
+        } else {
+            transactionField.style.display = "none";
+            transactionInput.removeAttribute("required");
+            transactionInput.value = "";
+        }
+    }
+
+    function updateShippingAndTotal() {
+        let shipping = 0;
+        if (codOutside.checked) {
+            shipping = 99;
+        } else if (codInside.checked) {
+            shipping = 50;
+        }
+        shippingEl.textContent = shipping;
+        totalEl.textContent = subtotal + shipping;
+    }
+
+    toggleTransactionField();
+    updateShippingAndTotal();
+
+    [codOutside, codInside].forEach(radio => {
+        radio.addEventListener("change", function() {
+            toggleTransactionField();
+            updateShippingAndTotal();
+        });
+    });
+
+    // District search filter
+    const districtSearch = document.getElementById("districtSearch");
+    const districtOptions = document.querySelectorAll(".district-option");
+    const districtInput = document.getElementById("districtInput");
+    const districtDropdown = document.getElementById("districtDropdown");
+
+    districtOptions.forEach(option => {
+        option.addEventListener("click", function(e) {
+            e.preventDefault();
+            districtDropdown.textContent = this.textContent;
+            districtInput.value = this.textContent;
+        });
+    });
+
+    districtSearch.addEventListener("keyup", function() {
+        const filter = this.value.toLowerCase();
+        districtOptions.forEach(option => {
+            const text = option.textContent.toLowerCase();
+            option.style.display = text.includes(filter) ? "" : "none";
+        });
+    });
+});
+</script>
+
 {% endblock %}

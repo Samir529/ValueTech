@@ -1,10 +1,10 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+# Register models here.
 from core.models import customUser
 from accounts.models import accountInfo
-# Register your models here.
-from store.models import Product, Category
-
+from orders.models import Order, OrderItem
+from store.models import Product, Category, subCategory
 
 admin.site.site_header = 'ValueTech core'
 admin.site.site_title = 'ValueTech core'
@@ -52,5 +52,8 @@ class ProductAdmin(admin.ModelAdmin):
 admin.site.register(customUser, CustomUserAdmin)
 admin.site.register(accountInfo)
 admin.site.register(Category)
+admin.site.register(subCategory)
 admin.site.register(Product, ProductAdmin)
+admin.site.register(Order)
+admin.site.register(OrderItem)
 

@@ -32,21 +32,21 @@
     <form class="row g-3" action="{% url 'register_account' %}" method="post" style="width: 400px">
         {% csrf_token %}
         <div class="col-md-6">
-            <label for="first_name" class="form-label">First Name</label><label style="color: red; margin-left: 5px">*</label>
+            <label for="first_name" class="form-label">First Name</label><label class="ps-1" style="color: #de001e;">*</label>
             <input type="text" name="first_name" class="form-control" placeholder="First Name" id="first_name"
                    aria-label="First Name" required>
         </div>
         <div class="col-md-6">
-            <label for="last_name" class="form-label">Last Name</label><label style="color: red; margin-left: 5px">*</label>
+            <label for="last_name" class="form-label">Last Name</label><label class="ps-1" style="color: #de001e;">*</label>
             <input type="text" name="last_name" class="form-control" placeholder="Last Name" id="last_name"
                    aria-label="Last Name" required>
         </div>
         <div class="col-md-7">
-            <label for="email" class="form-label">E-mail</label><label style="color: red; margin-left: 5px">*</label>
+            <label for="email" class="form-label">E-mail</label><label class="ps-1" style="color: #de001e;">*</label>
             <input type="email" name="email" class="form-control" id="email" placeholder="E-mail" style="width: 385px" required>
         </div>
         <div class="col-md-8">
-            <label for="phone_number" class="form-label">Phone Number</label><label style="color: red; margin-left: 5px">*</label>
+            <label for="phone_number" class="form-label">Phone Number</label><label class="ps-1" style="color: #de001e;">*</label>
             <input type="number" name="phone_number" minlength="14" class="form-control" id="phone_number"
                    placeholder="Phone Number" style="width: 385px"/>
         </div>

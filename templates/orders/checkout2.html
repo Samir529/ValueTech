@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+    <style>
+        .order-summary { background: #fff; border-radius: 8px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .order-summary h4 { font-weight: 600; margin-bottom: 15px; }
+        .form-section { background: lightblue; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .btn-order { background: #3d5afe; color: #fff; font-weight: 600; padding: 12px; border-radius: 6px; width: 100%; }
+        .btn-order:hover { background: #2c46d3; }
+    </style>
+<div class="container-fluid">
+    <div class="row">
+        <!-- Billing Form -->
+        <div class="col-md-7 form-section">
+            <h4>Billing Details</h4>
+            <form method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+
+                <div class="payment-methods mt-3">
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="payment_method" id="cod_outside" value="cod_outside" required>
+        <label class="form-check-label fw-bold" for="cod_outside">
+            Cash On Delivery (Outside Dhaka)
+        </label>
+        <p class="small-text text-muted">
+            For Ordering Outside Dhaka, The Courier Charge Must Be Paid in Advance.
+            বিকাশে ৯৯ টাকা অগ্রিম পাঠাতে হবে। <br>
+            Bkash: 01716-69 61 20 (Personal) | Nagad: 01521-33 41 38 (Personal)
+        </p>
+
+        <!-- Transaction ID field -->
+        <div id="transaction-field" class="mt-2">
+            <label for="transaction_id" class="form-label">Transaction ID *</label>
+            <input type="text" class="form-control" name="transaction_id" id="transaction_id">
+        </div>
+    </div>
+
+    <div class="form-check mt-3">
+        <input class="form-check-input" type="radio" name="payment_method" id="cod_inside" value="cod_inside" required>
+        <label class="form-check-label fw-bold" for="cod_inside">
+            Cash On Delivery (Inside Dhaka)
+        </label>
+    </div>
+</div>
+
+
+                <div class="form-check mt-3">
+                    <input type="checkbox" class="form-check-input" id="createAccount">
+                    <label for="createAccount" class="form-check-label">Create an account?</label>
+                </div>
+                <div class="form-check mt-2">
+                    <input type="checkbox" class="form-check-input" id="shipDifferent">
+                    <label for="shipDifferent" class="form-check-label">Ship to a different address?</label>
+                </div>
+
+                <div class="form-check mt-3">
+                    <input type="checkbox" class="form-check-input" required id="terms">
+                    <label for="terms" class="form-check-label">Yes I have read and agree to the website <a href="#">terms and conditions</a>, <a href="#">privacy policy</a>, returns & refunds *</label>
+                </div>
+
+                <button type="submit" class="btn-order mt-3">Place Order</button>
+            </form>
+        </div>
+
+        <!-- Order Summary -->
+        <div class="col-md-5 order-summary">
+            <h4>Your Order</h4>
+            <table class="table">
+                <thead>
+<tr>
+                <th>PRODUCT</th>
+                <th class="text-end">SUBTOTAL</th>
+            </tr>
+                </thead>
+
+                <tbody>
+<tr>
+                        <td>
+                            <strong>{{ product.name }}</strong><br>
+                            <small>SKU: {{ product.product_code }}</small>
+                            <small>Qty: {{ quantity }}</small>
+                        </td>
+                        <td class="text-end">{{ subtotal|intcomma }}৳</td>
+                    </tr>
+                    <tr>
+                        <td>Subtotal</td>
+                        <td class="text-end"><span id="subtotal">{{ subtotal }}</span>৳</td>
+                    </tr>
+            <tr>
+                <td>Shipping</td>
+                <td class="text-end"><span id="shipping">50</span>৳</td>
+            </tr>
+            <tr>
+                <th>Total</th>
+                <th class="text-end text-primary"><span id="total">{{ product.special_price|add:"50" }}</span>৳</th>
+            </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const codOutside = document.getElementById("cod_outside");
+    const codInside = document.getElementById("cod_inside");
+    const transactionField = document.getElementById("transaction-field");
+    const transactionInput = document.getElementById("transaction_id");
+
+    const subtotalEl = document.getElementById("subtotal");
+    const shippingEl = document.getElementById("shipping");
+    const totalEl = document.getElementById("total");
+
+    const subtotal = parseFloat(subtotalEl.textContent);
+
+    function toggleTransactionField() {
+        if (codOutside.checked) {
+            transactionField.style.display = "block";
+            transactionInput.setAttribute("required", "required");
+        } else {
+            transactionField.style.display = "none";
+            transactionInput.removeAttribute("required");
+            transactionInput.value = "";
+        }
+    }
+
+    function updateShippingAndTotal() {
+        let shipping = 0;
+        if (codOutside.checked) {
+            shipping = 99; // Outside Dhaka charge
+        } else if (codInside.checked) {
+            shipping = 50; // Inside Dhaka charge
+        }
+        shippingEl.textContent = shipping;
+        totalEl.textContent = subtotal + shipping;
+    }
+
+    // Run on page load
+    toggleTransactionField();
+    updateShippingAndTotal();
+
+    // Listen for changes
+    [codOutside, codInside].forEach(radio => {
+        radio.addEventListener("change", function() {
+            toggleTransactionField();
+            updateShippingAndTotal();
+        });
+    });
+});
+</script>
+
+{% endblock %}
