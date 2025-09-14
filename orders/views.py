@@ -67,12 +67,10 @@
 #
 
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
 from orders.models import Order, OrderItem
 from store.models import Product
 
 
-@login_required
 def checkout(request, slug):
     product = get_object_or_404(Product, slug=slug)
     quantity = int(request.GET.get("quantity", 1))  # default to 1
@@ -139,7 +137,6 @@ def checkout(request, slug):
     return render(request, "orders/checkout.html", context)
 
 
-@login_required
 def checkout_success(request, order_id, orderItem_id):
     # fetch order and item
     order = get_object_or_404(Order, id=order_id)
