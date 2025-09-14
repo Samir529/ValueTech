@@ -13,7 +13,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style1.css' %}"/>
     <style>
         body { background-color: #f1f1f1; font-family: 'Inter', Arial, sans-serif;}
     </style>
@@ -169,6 +169,12 @@
         }
     </style>
     <style>
+        .topbar {
+        background-color: #174080;
+        color: white;
+        font-size: 14px;
+        z-index: 1000;
+        }
         .topbar a {
         text-decoration: none;
         font-weight: 500;
@@ -186,7 +192,7 @@
 </head>
 <body>
 <!-- Topbar -->
-<div class="topbar py-1" style="background-color:#174080; color:white; font-size:14px;">
+<div class="topbar py-1">
   <div class="d-flex justify-content-center align-items-center flex-wrap gap-3">
     <div class="d-flex align-items-center px-3 py-1 rounded-pill" style="background:#12346B; border:1px solid #11346B;">
       <i class="fab fa-whatsapp text-light me-2"></i>

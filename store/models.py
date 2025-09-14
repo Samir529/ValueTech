@@ -64,9 +64,9 @@ class Product(models.Model):
     product_adding_date = models.DateTimeField(auto_now_add=True)   # stores full date + time
 
     # Pricing
-    regular_price = models.DecimalField(max_digits=10, decimal_places=2)
-    special_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    # price = models.DecimalField(max_digits=10, decimal_places=2)
+    regular_price = models.DecimalField(max_digits=10, decimal_places=0)
+    special_price = models.DecimalField(max_digits=10, decimal_places=0, blank=True, null=True)
+    # price = models.DecimalField(max_digits=10, decimal_places=0)
 
     # Stock
     stock = models.PositiveIntegerField(default=0)

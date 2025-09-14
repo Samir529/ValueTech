@@ -1,5 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
+{% load humanize %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -51,7 +52,7 @@
         {% endif %}
         <tr>
             <th>Subtotal</th>
-            <td>{{ order.subtotal }}৳</td>
+            <td>{{ order.subtotal|intcomma }}৳</td>
         </tr>
         <tr>
             <th>Shipping</th>
@@ -59,7 +60,7 @@
         </tr>
         <tr>
             <th>Total</th>
-            <td class="fw-bold">{{ order.total }}৳</td>
+            <td class="fw-bold">{{ order.total|intcomma }}৳</td>
         </tr>
     </table>
 

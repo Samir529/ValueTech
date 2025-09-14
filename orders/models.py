@@ -50,9 +50,9 @@ class Order(models.Model):
     payment_method = models.CharField(max_length=20, choices=PAYMENT_CHOICES)
     transaction_id = models.CharField(max_length=100, blank=True, null=True)
 
-    subtotal = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    shipping = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    subtotal = models.DecimalField(max_digits=10, decimal_places=0, default=0)
+    shipping = models.DecimalField(max_digits=10, decimal_places=0, default=0)
+    total = models.DecimalField(max_digits=10, decimal_places=0, default=0)
 
     created_at = models.DateTimeField(auto_now_add=True)
     completed = models.BooleanField(default=False)

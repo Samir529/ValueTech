@@ -66,32 +66,39 @@
 #     return render(request, "orders/checkout_success.html")
 #
 
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
 from orders.models import Order, OrderItem
 from store.models import Product
 
 
+@login_required
 def checkout(request, slug):
     product = get_object_or_404(Product, slug=slug)
     quantity = int(request.GET.get("quantity", 1))  # default to 1
     subtotal = product.special_price * quantity
 
+    # default initial shipping (matches with template which has cod_outside checked by default)
+    default_shipping = 100
+    initial_total = subtotal + default_shipping
+
     if request.method == "POST":
         # Create the order from POST data
         order = Order.objects.create(
-            first_name=request.POST.get("first_name"),
-            last_name=request.POST.get("last_name"),
-            phone=request.POST.get("phone"),
-            street_address=request.POST.get("street_address"),
-            town_city=request.POST.get("town_city"),
-            country=request.POST.get("country", "Bangladesh"),
-            district=request.POST.get("district"),
-            email=request.POST.get("email"),
-            notes=request.POST.get("notes"),
-            payment_method=request.POST.get("payment_method"),
-            transaction_id=request.POST.get("transaction_id"),
-            subtotal=subtotal,
-            shipping=99 if request.POST.get("payment_method") == "cod_outside" else 50,
+            first_name = request.POST.get("first_name"),
+            last_name = request.POST.get("last_name"),
+            phone = request.POST.get("phone"),
+            street_address = request.POST.get("street_address"),
+            town_city = request.POST.get("town_city"),
+            country = request.POST.get("country", "Bangladesh"),
+            district = request.POST.get("district"),
+            email = request.POST.get("email"),
+            notes = request.POST.get("notes"),
+            payment_method = request.POST.get("payment_method"),
+            transaction_id = request.POST.get("transaction_id"),
+            subtotal = subtotal,
+            shipping = 100 if request.POST.get("payment_method") == "cod_outside" else 60,
+            completed = False,
         )
 
         # Final total
@@ -99,13 +106,14 @@ def checkout(request, slug):
         order.save()
 
         # Save the ordered item
-        OrderItem.objects.create(
+        orderItem = OrderItem.objects.create(
             order=order,
             product=product,
             quantity=quantity,
         )
 
-        return render(request, "orders/checkout_success.html", {"order": order})
+        # After saving, redirect to success page
+        return redirect("checkout_success", order_id=order.id, orderItem_id=orderItem.id)
 
     # Districts list
     districts = [
@@ -123,8 +131,27 @@ def checkout(request, slug):
     context = {
         "product": product,
         "quantity": quantity,
-        "subtotal": subtotal,
+        "subtotal": subtotal,   # raw numeric subtotal
+        "shipping": default_shipping,  # initial shipping for display
+        "total": initial_total,  # initial total for display
         "districts": districts,
     }
     return render(request, "orders/checkout.html", context)
 
+
+@login_required
+def checkout_success(request, order_id, orderItem_id):
+    # fetch order and item
+    order = get_object_or_404(Order, id=order_id)
+    order_item = get_object_or_404(OrderItem, id=orderItem_id, order=order) # order = order ensures the item actually belongs to that order. Otherwise, someone
+                                                                            # could just hit / checkout / success / 1 / 999 and mark a random order item.
+
+    # mark order complete
+    if not order.completed: # only mark complete the first time
+        order.completed = True
+        order.save()
+
+    return render(request, "orders/checkout_success.html", {
+        "order": order,
+        "order_item": order_item
+    })

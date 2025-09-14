@@ -4,11 +4,18 @@
 {% load humanize %}
 {% block content %}
 <style>
-    .order-summary { background: #fff; border-radius: 8px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+    body { background: #E6FFE3; }
+    .order-summary { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
     .order-summary h4 { font-weight: 600; margin-bottom: 15px; }
-    .form-section { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-    .btn-order { background: #3d5afe; color: #fff; font-weight: 600; padding: 12px; border-radius: 6px; width: 100%; }
+    .order-summary a { text-decoration: none; font-weight: 600; }
+    .order-summary input { border: 1px solid dimgray; }
+    .form-section input { border-radius: 25px; border: 1px solid darkgray; height: 42px; }
+    .outside-rules { background: whitesmoke; padding: 15px; border-radius: 12px; }
+    .form-notes { height: 200px; border-radius: 25px; padding: 10px; }
+    .form-transaction-id { border-radius: 25px; border: 1px solid darkgray !important; height: 42px; }
+    .btn-order { background: #3d5afe; color: #fff; font-weight: 600; padding: 10px; border-radius: 6px; width: 100%; border: none; }
     .btn-order:hover { background: #2c46d3; }
+    .order-product-img { width: 90px; height: 90px; object-fit: contain; border-radius: 8px; }
     /* Custom dropdown with search */
     .custom-dropdown { position: relative; }
     .custom-dropdown .dropdown-menu {
@@ -23,7 +30,7 @@
     }
 </style>
 
-<div class="container-fluid">
+<div class="container-fluid ps-6">
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/"><i class="fas fa-home"></i></a></li>
@@ -31,17 +38,17 @@
       </ol>
     </nav>
 </div>
-<div class="container-fluid">
-    <div class="row">
-        <!-- Billing Form -->
-        <div class="col-md-7">
-            <h4>Billing Details</h4>
-            <form method="POST">
-                {% csrf_token %}
+<div class="content px-6">
+    <form method="POST">
+        {% csrf_token %}
+        <div class="row">
+            <!-- Billing Form -->
+            <div class="col-md-6 p-3 form-section">
+                <h4>Billing Details</h4>
 
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">First name</label><label class="ps-1" style="color: #de001e;">*</label>
+                        <label class="form-label">First name</label><span class="ps-1" style="color: #de001e;">*</span>
                         <input type="text" name="first_name" class="form-control" required>
                     </div>
                     <div class="col-md-6 mb-3">
@@ -50,16 +57,12 @@
                     </div>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Phone</label><label class="ps-1" style="color: #de001e;">*</label>
+                    <label class="form-label">Phone</label><span class="ps-1" style="color: #de001e;">*</span>
                     <input type="text" name="phone" class="form-control" required>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Street Address</label><label class="ps-1" style="color: #de001e;">*</label>
+                    <label class="form-label">Street Address</label><span class="ps-1" style="color: #de001e;">*</span>
                     <input type="text" name="street_address" class="form-control" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Email (optional)</label>
-                    <input type="email" name="email" class="form-control">
                 </div>
                 <div class="row">
                     <div class="col-md-6 mb-3">
@@ -67,7 +70,7 @@
                         <input type="text" name="town_city" class="form-control">
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">Country / Region</label><label class="ps-1" style="color: #de001e;">*</label>
+                        <label class="form-label">Country / Region</label><span class="ps-1" style="color: #de001e;">*</span>
                         <input type="text" name="country" class="form-control" value="Bangladesh" readonly>
                     </div>
                 </div>
@@ -94,29 +97,72 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Order Notes (optional)</label>
-                    <textarea name="notes" class="form-control"></textarea>
+                    <textarea name="notes" class="form-control form-notes"></textarea>
                 </div>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="col-md-6 order-summary">
+                <h4 class="text-center">Your Order</h4>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>PRODUCT</th>
+                            <th class="text-end">SUBTOTAL</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <img src="{{ product.product_image.url }}" alt="{{ product.name }}" class="order-product-img me-3">
+                                    <div>
+                                        <p class="mb-0">{{ product.name }}</p>
+                                        <small>SKU: </small><small class="text-muted">{{ product.product_code }}</small><br>
+                                        <small>Qty: {{ quantity }}</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-end text-muted">{{ subtotal|intcomma }}৳</td>
+                        </tr>
+                        <tr>
+                            <td>Subtotal</td>
+                            <td class="text-end"><span id="subtotal" data-subtotal="{{ subtotal }}">{{ subtotal|intcomma }}</span>৳</td>
+                        </tr>
+                        <tr>
+                            <td>Shipping</td>
+                            <td class="text-end"><span id="shipping">{{ shipping }}</span>৳</td>
+                        </tr>
+                        <tr>
+                            <th>Total</th>
+                            <th class="text-end text-primary"><span id="total">{{ total|intcomma }}</span>৳</th>
+                        </tr>
+                    </tbody>
+                </table>
 
                 <!-- Payment Methods -->
-                <div class="payment-methods mt-3">
+                <div class="payment-methods mt-4">
                     <div class="form-check">
                         <input class="form-check-input" type="radio" checked="checked" name="payment_method" id="cod_outside" value="cod_outside" required>
                         <label class="form-check-label fw-bold" for="cod_outside">
                             Cash On Delivery (Outside Dhaka)
                         </label>
-                        <p class="small-text text-muted form-section">
-                            For Ordering Outside Dhaka, The Courier Charge Must Be Paid in Advance. <br>
-                            বিকাশে ১০০ টাকা অগ্রিম পাঠাতে হবে। <br>
-                            Bkash: 01735-473925 (Personal) | Nagad: 01543-678832 (Personal) | Rocket: 01957-645871 (Personal)
-                        </p>
+                        <div class="outside-rules mt-2">
+                            <p class="small-text text-muted">
+                                For Ordering Outside Dhaka, The Courier Charge Must Be Paid in Advance. <br>
+                                ঢাকার বাইরে অর্ডার করার জন্য কুরিয়ার চার্জ ১০০ Taka অব্যশই আগে বিকাশ থেকে সেন্ড মানি করতে হবে। <br>
+                                Bkash Send Money No : 01735-473925 (Personal) || Rocket Send Money No : 01543-678832 (Personal)
+                                || Nagad Send Money No : 01957-645871 (Personal)
+                            </p>
 
-                        <!-- Transaction ID field -->
-                        <div id="transaction-field" class="mt-2">
-                            <label for="transaction_id" class="form-label">Transaction ID *</label>
-                            <input type="number" class="form-control" name="transaction_id" id="transaction_id">
+                            <!-- Transaction ID field -->
+                            <div id="transaction-field" class="mt-2">
+                                <label for="transaction_id" class="form-label">Transaction ID</label><span class="ps-1" style="color: #de001e;">*</span>
+                                <input type="number" class="form-control form-transaction-id" name="transaction_id" id="transaction_id">
+                            </div>
                         </div>
                     </div>
-                    <div class="form-check mt-3">
+                    <div class="form-check mt-4">
                         <input class="form-check-input" type="radio" name="payment_method" id="cod_inside" value="cod_inside" required>
                         <label class="form-check-label fw-bold" for="cod_inside">
                             Cash On Delivery (Inside Dhaka)
@@ -124,54 +170,21 @@
                     </div>
                 </div>
 
-                <div class="form-check mt-3">
+                <div class="form-check mt-4">
                     <input type="checkbox" class="form-check-input" required id="terms">
                     <label for="terms" class="form-check-label">
                         Yes I have read and agree to the website
                         <a href="#" onclick="event.preventDefault();">terms and conditions</a>,
-                        <a href="#" onclick="event.preventDefault();">privacy policy</a>, returns & refunds
-                    </label><label class="ps-1" style="color: #de001e;">*</label>
+                        <a href="#" onclick="event.preventDefault();">privacy policy</a>,
+                        <a href="#" onclick="event.preventDefault();">returns & refunds</a>
+                        <span style="color: #de001e;">*</span>
+                    </label>
                 </div>
 
-                <button type="submit" class="btn-order mt-3">Place Order</button>
-            </form>
+                <button type="submit" class="btn-order mt-4">Place Order</button>
+            </div>
         </div>
-
-        <!-- Order Summary -->
-        <div class="col-md-5 order-summary">
-            <h4 class="text-center">Your Order</h4>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>PRODUCT</th>
-                        <th class="text-end">SUBTOTAL</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            <p>{{ product.name }}</p>
-                            <small>SKU: </small><small class="text-muted">{{ product.product_code }}</small><br>
-                            <small>Qty: {{ quantity }}</small>
-                        </td>
-                        <td class="text-end text-muted">{{ subtotal|floatformat:-2|intcomma }}৳</td>
-                    </tr>
-                    <tr>
-                        <td>Subtotal</td>
-                        <td class="text-end"><span id="subtotal">{{ subtotal|floatformat:-2|intcomma }}</span>৳</td>
-                    </tr>
-                    <tr>
-                        <td>Shipping</td>
-                        <td class="text-end"><span id="shipping"></span>৳</td>
-                    </tr>
-                    <tr>
-                        <th>Total</th>
-                        <th class="text-end text-primary"><span id="total">{{ total }}</span>৳</th>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+     </form>
 </div>
 
 <!-- JS -->
@@ -185,7 +198,9 @@ document.addEventListener("DOMContentLoaded", function() {
     const subtotalEl = document.getElementById("subtotal");
     const shippingEl = document.getElementById("shipping");
     const totalEl = document.getElementById("total");
-    const subtotal = parseFloat(subtotalEl.textContent);
+
+    // read the raw numeric subtotal from data attribute (no commas)
+    const subtotal = parseInt(subtotalEl.dataset.subtotal) || 0;
 
     function toggleTransactionField() {
         if (codOutside.checked) {
@@ -198,15 +213,21 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
+    function formatAmount(n) {
+        // format with commas
+        return Number(n).toLocaleString("en-US");
+    }
+
     function updateShippingAndTotal() {
         let shipping = 0;
         if (codOutside.checked) {
-            shipping = 99;
+            shipping = 100;
         } else if (codInside.checked) {
-            shipping = 50;
+            shipping = 60;
         }
         shippingEl.textContent = shipping;
-        totalEl.textContent = subtotal + shipping;
+        const total = subtotal + shipping;
+        totalEl.textContent = formatAmount(total);
     }
 
     toggleTransactionField();
@@ -218,6 +239,7 @@ document.addEventListener("DOMContentLoaded", function() {
             updateShippingAndTotal();
         });
     });
+
 
     // District search filter
     const districtSearch = document.getElementById("districtSearch");

@@ -45,8 +45,8 @@
         <div class="col-md-7">
           <h4 class="product-title fw-bold">{{ product.name }}</h4>
           <p>
-            <span class="price-tag">{{ product.special_price|floatformat:-2|intcomma }}৳</span>
-            <span class="old-price">{{ product.regular_price|floatformat:-2|intcomma }}৳</span>
+            <span class="price-tag">{{ product.special_price|intcomma }}৳</span>
+            <span class="old-price">{{ product.regular_price|intcomma }}৳</span>
           </p>
 
           <p>Status:
@@ -128,15 +128,15 @@
               <img src="{{ related.product_image.url }}" class="card-img-top p-2" alt="{{ related.name }}">
               <div class="card-body text-center">
                 <h6>{{ related.name|truncatechars:25 }}</h6>
-                <p class="fw-bold text-danger mb-0">{{ related.special_price|floatformat:-2|intcomma }}৳</p>
+                <p class="fw-bold text-danger mb-0">{{ related.special_price|intcomma }}৳</p>
                 {% if related.regular_price %}
-                  <small class="text-muted text-decoration-line-through">{{ related.regular_price|floatformat:-2|intcomma }}৳</small>
+                  <small class="text-muted text-decoration-line-through">{{ related.regular_price|intcomma }}৳</small>
                 {% endif %}
               </div>
           </a>
           <hr>
          {% empty %}
-            <p class="ps-3">No related products.</p>
+            <p class="ps-4">No related products.</p>
          {% endfor %}
       </div>
 
@@ -149,14 +149,14 @@
               <img src="{{ viewed.product_image.url }}" class="card-img-top p-2" alt="{{ viewed.name }}">
               <div class="card-body text-center">
                 <h6 class="small">{{ viewed.name|truncatechars:25 }}</h6>
-                <p class="fw-bold text-danger mb-0">{{ viewed.special_price|floatformat:-2|intcomma }}৳</p>
+                <p class="fw-bold text-danger mb-0">{{ viewed.special_price|intcomma }}৳</p>
                 {% if viewed.regular_price %}
-                  <small class="text-muted text-decoration-line-through">{{ viewed.regular_price|floatformat:-2|intcomma }}৳</small>
+                  <small class="text-muted text-decoration-line-through">{{ viewed.regular_price|intcomma }}৳</small>
                 {% endif %}
               </div>
             </a>
         {% empty %}
-            <p class="ps-3">No recently viewed products.</p>
+            <p class="ps-4">No recently viewed products.</p>
         {% endfor %}
       </div>
     </div>

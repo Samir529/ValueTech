@@ -1,8 +1,18 @@
-{% extends 'base.html' %}
-{% block title %}Order Complete{% endblock %}
+{% extends "base.html" %}
 {% block content %}
-<div class="alert alert-success">
-  ✅ Your order has been placed successfully!
+<div class="container text-center my-5">
+    <h2 class="text-success">🎉 Order Placed Successfully!</h2>
+    <p>Thank you, {{ order.first_name }}. Your order <strong>#{{ order.id }}</strong> has been placed.</p>
+
+    <div class="card mt-4 shadow-sm">
+        <div class="card-body">
+            <h5>Order Summary</h5>
+            <p><strong>Total:</strong> {{ order.total }}৳</p>
+            <p><strong>Payment Method:</strong> {{ order.get_payment_method_display }}</p>
+            <p><strong>Shipping Address:</strong> {{ order.street_address }}, {{ order.town_city }}, {{ order.district }}</p>
+        </div>
+    </div>
+
+    <a href="/" class="btn btn-primary mt-4">Continue Shopping</a>
 </div>
-<a href="/" class="btn btn-outline-primary">Back to Home</a>
 {% endblock %}
