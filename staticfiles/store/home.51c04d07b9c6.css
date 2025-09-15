@@ -1,0 +1,138 @@
+/* Top Four Action Buttons */
+.top-action-button a:hover {
+    text-decoration: none;
+}
+
+
+/* Notice Bar */
+.notice-bar {
+    display: flex;  /* make flex container */
+    align-items: center;    /* vertically center */
+    justify-content: center;    /* horizontally center */
+    text-align: center;
+    overflow: hidden;   /* hide overflowing text */
+    position: relative;
+    background-color: white;
+    border-radius: 50px;
+    padding: 20px;
+}
+.notice-text {
+    display: inline-block;
+    white-space: nowrap;  /* keep text in a single line */
+    position: absolute;
+    right: 0;   /* Start from the right edge */
+    will-change: transform;
+    animation: move-left 20s linear infinite;
+}
+@keyframes move-left {
+    0% {
+        transform: translateX(100%);    /* Start completely off-screen right */
+    }
+    100% {
+        transform: translateX(-100%);   /* Move completely off-screen left */
+    }
+}
+
+
+/* Featured Category */
+.featured-category a {
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    /*box-shadow: 0 0 8px rgba(0,0,0,0.1); !* subtle, even shadow *!*/
+}
+.featured-category a:hover {
+    text-decoration: none;
+    /*box-shadow: 0 20px rgba(0,0,0,0.25); !* more pronounced, even shadow *!*/
+    box-shadow: 0 4px 5px rgba(0,0,0,0.1),  /* bottom */
+                4px 0 5px rgba(0,0,0,0.05), /* right */
+                -4px 0 5px rgba(0,0,0,0.05) !important; /* left */
+}
+.featured-category a:hover p {  /* When the card is hovered, only the text changes color */
+    color: tomato;
+}
+
+
+/* Featured Products */
+.featured-products .card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.featured-products .card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
+}
+.featured-products .card-body small.card-title {
+    min-height: 40px; /* keeps product name area consistent */
+    display: block;
+    overflow: hidden;
+}
+.featured-products .card-body .price-block {
+    margin-top: auto; /* pushes price to bottom */
+}
+.featured-products .card:hover {
+    box-shadow: 0 4px 4px rgba(0,0,0,0.1),  /* bottom */
+                4px 0 4px rgba(0,0,0,0.05), /* right */
+                -4px 0 4px rgba(0,0,0,0.05) !important; /* left */
+}
+.featured-products .card img {
+    position: relative;
+    z-index: 1;   /* image stays below */
+}
+.featured-products .card img:hover {
+    filter: brightness(1.08);
+}
+.featured-products .card-title a:hover {
+    color: tomato;
+}
+.featured-products .card .badge {
+    position: absolute;
+    z-index: 2;   /* ensures badge is above the image */
+}
+
+
+/* Latest Gadgets */
+.latest-gadgets .card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.latest-gadgets .card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
+}
+.latest-gadgets .card-body small.card-title {
+    min-height: 40px; /* keeps product name area consistent */
+    display: block;
+    overflow: hidden;
+}
+.latest-gadgets .card-body .price-block {
+    margin-top: auto; /* pushes price to bottom */
+}
+.latest-gadgets .card:hover {
+    box-shadow: 0 4px 4px rgba(0,0,0,0.1),  /* bottom */
+                4px 0 4px rgba(0,0,0,0.05), /* right */
+                -4px 0 4px rgba(0,0,0,0.05) !important; /* left */
+}
+.latest-gadgets .card img {
+    position: relative;
+    z-index: 1;   /* image stays below */
+}
+.latest-gadgets .card img:hover {
+    filter: brightness(1.08);
+}
+.latest-gadgets .card-title a:hover {
+    color: tomato;
+}
+.latest-gadgets .card .badge {
+    position: absolute;
+    z-index: 2;   /* ensures badge is above the image */
+}
