@@ -10,7 +10,8 @@
     .order-summary a { text-decoration: none; font-weight: 600; }
     .order-summary input { border: 1px solid dimgray; }
     .form-section input { border-radius: 25px; border: 1px solid darkgray; height: 42px; }
-    .outside-rules { background: whitesmoke; padding: 15px; border-radius: 12px; }
+    .cod-rules { background: whitesmoke; padding: 15px; border-radius: 12px; font-size: 15px; }
+    .cod-rules p { color: darkslategray; }
     .form-notes { height: 200px; border-radius: 25px; padding: 10px; }
     .form-transaction-id { border-radius: 25px; border: 1px solid darkgray !important; height: 42px; }
     .btn-order { background: #3d5afe; color: #fff; font-weight: 600; padding: 10px; border-radius: 6px; width: 100%; border: none; }
@@ -147,8 +148,8 @@
                         <label class="form-check-label fw-bold" for="cod_outside">
                             Cash On Delivery (Outside Dhaka)
                         </label>
-                        <div class="outside-rules mt-2">
-                            <p class="small-text text-muted">
+                        <div id="outside-cod-field" class="cod-rules mt-3">
+                            <p class="mb-0">
                                 For Ordering Outside Dhaka, The Courier Charge Must Be Paid in Advance. <br>
                                 ঢাকার বাইরে অর্ডার করার জন্য কুরিয়ার চার্জ ১০০ Taka অব্যশই আগে বিকাশ থেকে সেন্ড মানি করতে হবে। <br>
                                 Bkash Send Money No : 01735-473925 (Personal) || Rocket Send Money No : 01543-678832 (Personal)
@@ -156,7 +157,7 @@
                             </p>
 
                             <!-- Transaction ID field -->
-                            <div id="transaction-field" class="mt-2">
+                            <div class="mt-2">
                                 <label for="transaction_id" class="form-label">Transaction ID</label><span class="ps-1" style="color: #de001e;">*</span>
                                 <input type="number" class="form-control form-transaction-id" name="transaction_id" id="transaction_id">
                             </div>
@@ -167,6 +168,11 @@
                         <label class="form-check-label fw-bold" for="cod_inside">
                             Cash On Delivery (Inside Dhaka)
                         </label>
+                        <div id="inside-cod-field" class="cod-rules mt-3">
+                            <p class="mb-0">
+                                Pay with Cash Upon Delivery.
+                            </p>
+                        </div>
                     </div>
                 </div>
 
@@ -192,7 +198,8 @@
 document.addEventListener("DOMContentLoaded", function() {
     const codOutside = document.getElementById("cod_outside");
     const codInside = document.getElementById("cod_inside");
-    const transactionField = document.getElementById("transaction-field");
+    const outsideCodField = document.getElementById("outside-cod-field");
+    const insideCodField = document.getElementById("inside-cod-field");
     const transactionInput = document.getElementById("transaction_id");
 
     const subtotalEl = document.getElementById("subtotal");
@@ -202,12 +209,23 @@ document.addEventListener("DOMContentLoaded", function() {
     // read the raw numeric subtotal from data attribute (no commas)
     const subtotal = parseInt(subtotalEl.dataset.subtotal) || 0;
 
-    function toggleTransactionField() {
+    function toggleOutsideCodField() {
         if (codOutside.checked) {
-            transactionField.style.display = "block";
+            outsideCodField.style.display = "block";
             transactionInput.setAttribute("required", "required");
         } else {
-            transactionField.style.display = "none";
+            outsideCodField.style.display = "none";
+            transactionInput.removeAttribute("required");
+            transactionInput.value = "";
+        }
+    }
+
+    function toggleInsideCodField() {
+        if (codInside.checked) {
+            insideCodField.style.display = "block";
+            transactionInput.setAttribute("required", "required");
+        } else {
+            insideCodField.style.display = "none";
             transactionInput.removeAttribute("required");
             transactionInput.value = "";
         }
@@ -230,12 +248,14 @@ document.addEventListener("DOMContentLoaded", function() {
         totalEl.textContent = formatAmount(total);
     }
 
-    toggleTransactionField();
+    toggleOutsideCodField();
+    toggleInsideCodField();
     updateShippingAndTotal();
 
     [codOutside, codInside].forEach(radio => {
         radio.addEventListener("change", function() {
-            toggleTransactionField();
+            toggleOutsideCodField();
+            toggleInsideCodField();
             updateShippingAndTotal();
         });
     });

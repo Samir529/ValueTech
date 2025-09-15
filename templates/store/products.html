@@ -5,7 +5,7 @@
 {% block content %}
 <style>
     .filter-section { background: #fff; border-radius: 5px; padding: 15px; margin-bottom: 10px; }
-    .product-card { background: #fff; border-radius: 5px; padding: 10px; margin-bottom: 2px; transition: all .1s; }
+    .product-card { background: #fff; border-radius: 5px; padding: 10px; margin-bottom: 2px; transition: all .1s; display: flex; flex-direction: column; height: 400px; }
     .product-card:hover { transform: scale(1.02); box-shadow: 0 8px 16px rgba(0,0,0,0.1); }
     .product-card img {
         position: relative;
@@ -16,6 +16,19 @@
     .product-card .badge {
         position: absolute;
         z-index: 2;   /* ensures badge is above the image */
+    }
+    .product-card .card-body {
+        flex: 1; /* makes body stretch */
+        display: flex;
+        flex-direction: column;
+    }
+    .product-card .product-info {
+        flex: 1; /* forces equal height for product description area */
+        overflow: hidden;        /* hides overflow if too long */
+        text-overflow: ellipsis; /* adds ... if text is cut */
+    }
+    .product-card .buy-now {
+        margin-top: auto; /* pushes button to bottom */
     }
     .price { font-size: 16px; font-weight: bold; color: #d9534f; }
     .old-price { text-decoration: line-through; color: gray; font-size: 14px; }
@@ -83,38 +96,51 @@
         {% for product in products %}
         <div class="col-md-3 mb-1">
           <div class="product-card h-100 w-100 border-0 rounded-3 shadow-sm position-relative">
-            <!-- Discount Tag -->
-            {% if product.discount > 0 %}
-                <span class="badge m-2 px-2 py-1"
-                    style="top:0; right:0; font-size:12px; background: darkviolet">
-                    Save: {{ product.discount|intcomma }}৳ (-{{ product.discount_percentage|floatformat:0 }})%
-                </span>
-            {% endif %}
-            <a href="{% url 'product_details' product.slug %}">
-                <img src="{{ product.product_image.url }}"
-                     alt="{{ product.name }}"
-                     class="img-fluid mb-2 mx-auto d-block"
-                     style="width: 210px; height: 210px; object-fit: contain;">
-            </a>
-            <small class="card-title fw-bold">
-                <a href="{% url 'product_details' product.slug %}">
-                    {{ product.name }}
-                </a>
-            </small>
-            <p class="text-muted my-3">
-                <small>{{ product.specification }}</small>
-            </p>
-            <hr>
-            <div class="text-center">
-              <span class="price">{{ product.special_price|intcomma }}৳</span>
-                {% if product.regular_price %}
-                    <span class="old-price ms-2">{{ product.regular_price|intcomma }}৳</span>
+                <!-- Discount Tag -->
+                {% if product.discount > 0 %}
+                    <span class="badge m-2 px-2 py-1"
+                          style="top:0; right:0; font-size:12px; background: darkviolet">
+                        Save: {{ product.discount|intcomma }}৳ (-{{ product.discount_percentage|floatformat:0 }})%
+                    </span>
                 {% endif %}
+
+                <a href="{% url 'product_details' product.slug %}">
+                    <img src="{{ product.product_image.url }}"
+                         alt="{{ product.name }}"
+                         class="img-fluid mb-2 mx-auto d-block"
+                         style="width: 210px; height: 210px; object-fit: contain;">
+                </a>
+
+                <div class="card-body d-flex flex-column">
+                    <small class="card-title fw-bold">
+                        <a href="{% url 'product_details' product.slug %}">
+                            {{ product.name }}
+                        </a>
+                    </small>
+
+                    <div class="product-info">
+                        <p class="text-muted my-3">
+                            <small>{{ product.specification }}</small>
+                        </p>
+                    </div>
+
+                    <hr>
+                    <div class="text-center mb-2">
+                        <span class="price">{{ product.special_price|intcomma }}৳</span>
+                        {% if product.regular_price %}
+                            <span class="old-price ms-2">{{ product.regular_price|intcomma }}৳</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="text-center buy-now">
+                        <a href="{% url 'checkout' product.slug %}">
+                            <button class="button mt-3" style="border-radius: 10px; width: 180px">
+                                <span>Buy Now</span>
+                            </button>
+                        </a>
+                    </div>
+                </div>
             </div>
-            <div class="text-center">
-                <a href="{% url 'checkout' product.slug %}"><button class="button mt-3" style="border-radius: 10px; width: 180px"><span>Buy Now</span></button></a>
-            </div>
-          </div>
         </div>
         {% empty %}
             <p class="mt-3">No products found.</p>
