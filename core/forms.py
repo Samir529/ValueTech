@@ -23,6 +23,7 @@ class productForm(forms.ModelForm):
             }
         ),
     )
+
     class Meta:
         model = Product
         fields = (

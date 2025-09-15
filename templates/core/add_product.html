@@ -157,24 +157,13 @@
     </form>
     <a href="{% url 'staffPanel' %}"><button class="button2" style="margin-top: 15px; width: 385px;"><span>Back</span></button></a>
 </div>
-
+{% endblock %}
+{% block extra_js %}
 <!-- Select2 CSS -->
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
 <!-- jQuery (needed for Select2) -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- Select2 JS -->
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<script>
-  $(document).ready(function () {
-    // Applying Select2 only on existing_category field
-    $('#id_existing_category').select2({
-      placeholder: "Select or search category",
-      allowClear: true,
-      width: '100%'
-    });
-  });
-</script>
+<script src="{% static 'core/add_product.js' %}"></script>
 {% endblock %}
-
-
-
