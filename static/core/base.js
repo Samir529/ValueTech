@@ -56,3 +56,29 @@ window.addEventListener("scroll", function () {
     categoryBar.classList.remove("sticky");
     }
 });
+
+// Back-to-Top Button
+// Configuration
+const SHOW_AFTER_Y = 200; // px scrolled before showing the button
+
+const btn = document.getElementById('backToTop');
+let raf = null;
+
+// Show/hide on scroll with rAF for performance
+window.addEventListener('scroll', () => {
+    if (raf) return;
+    raf = requestAnimationFrame(() => {
+    if (window.scrollY > SHOW_AFTER_Y) {
+    btn.classList.add('show');
+    } else {
+    btn.classList.remove('show');
+    }
+    raf = null;
+    });
+    }, { passive: true });
+
+// Click -> smooth scroll to top
+btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});

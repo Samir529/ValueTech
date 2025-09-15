@@ -1,12 +1,8 @@
 ﻿{% extends "base.html"%}
+{% load static %}
 {% block content %}
-<body>
-<style>
-        label {
-            color: black
-        }
-        form label {font-weight: bold}
-</style>
+<link rel="stylesheet" type="text/css" href="{% static 'accounts/register_account.css' %}"/>
+
 <div class="container">
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
