@@ -37,9 +37,13 @@ function toggleNav() {
 //     menu.style.width = (currentWidth === "0px") ? "250" : "0px";
 // }
 
+
 // Activate all tooltips
 const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-const tooltipList = [...tooltipTriggerList].map(el => new bootstrap.Tooltip(el))
+const tooltipList = [...tooltipTriggerList].map(el => new bootstrap.Tooltip(el, {
+  trigger: 'hover focus'   // ensures tooltip hides on mouse leave or focus out
+}));
+
 
 // Make Navbar and Category bar sticky
 window.addEventListener("scroll", function () {
@@ -56,6 +60,7 @@ window.addEventListener("scroll", function () {
     categoryBar.classList.remove("sticky");
     }
 });
+
 
 // Back-to-Top Button
 // Configuration
