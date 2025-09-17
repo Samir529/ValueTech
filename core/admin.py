@@ -46,7 +46,7 @@ class ProductAdmin(admin.ModelAdmin):
          ),
     )
     search_fields = ("name",)
-    # ordering = ("product_adding_date",)
+    ordering = ("-product_adding_date",)
 
 
 admin.site.register(customUser, CustomUserAdmin)
