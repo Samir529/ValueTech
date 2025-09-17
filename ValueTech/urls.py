@@ -7,11 +7,10 @@ from store import views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('',views.store_home,name='home'),
+    path('', views.store_home, name='home'),
     path("core/", include("core.urls")),
     path("accounts/", include("accounts.urls")),
     path("store/", include("store.urls")),
     path("orders/", include("orders.urls")),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
