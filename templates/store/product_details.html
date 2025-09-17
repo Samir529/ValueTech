@@ -20,14 +20,14 @@
       <div class="row">
         <!-- Product Image -->
         <div class="col-md-5 text-center">
-          <img src="{{ product.product_image.url }}" alt="{{ product.name }}"
+          <img src="{{ product.image_url }}" alt="{{ product.name }}"
                class="img-fluid mb-3 shadow-sm" style="max-height: 380px; object-fit: contain;">
 
           <!-- Thumbnails -->
           <div class="d-flex justify-content-center mt-2">
-            <img src="{{ product.product_image.url }}" class="img-thumbnail" style="width:60px; height:60px;">
-            <img src="{{ product.product_image.url }}" class="img-thumbnail" style="width:60px; height:60px;">
-            <img src="{{ product.product_image.url }}" class="img-thumbnail" style="width:60px; height:60px;">
+            <img src="{{ product.image_url }}" class="img-thumbnail" style="width:60px; height:60px;">
+            <img src="{{ product.image_url }}" class="img-thumbnail" style="width:60px; height:60px;">
+            <img src="{{ product.image_url }}" class="img-thumbnail" style="width:60px; height:60px;">
           </div>
         </div>
 
@@ -115,7 +115,7 @@
           <hr>
           {% for related in related_products %}
           <a href="{% url 'product_details' related.slug %}" class="text-decoration-none text-dark">
-              <img src="{{ related.product_image.url }}" class="card-img-top p-2" alt="{{ related.name }}">
+              <img src="{{ related.image_url }}" class="card-img-top p-2" alt="{{ related.name }}">
               <div class="card-body text-center">
                 <h6>{{ related.name|truncatechars:25 }}</h6>
                 <p class="fw-bold text-danger mb-0">{{ related.special_price|intcomma }}৳</p>
@@ -136,7 +136,7 @@
         <hr>
         {% for viewed in recently_viewed %}
             <a href="{% url 'product_details' viewed.slug %}" class="text-decoration-none text-dark">
-              <img src="{{ viewed.product_image.url }}" class="card-img-top p-2" alt="{{ viewed.name }}">
+              <img src="{{ viewed.image_url }}" class="card-img-top p-2" alt="{{ viewed.name }}">
               <div class="card-body text-center">
                 <h6 class="small">{{ viewed.name|truncatechars:25 }}</h6>
                 <p class="fw-bold text-danger mb-0">{{ viewed.special_price|intcomma }}৳</p>

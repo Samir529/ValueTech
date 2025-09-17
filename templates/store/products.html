@@ -72,7 +72,7 @@
                 {% endif %}
 
                 <a href="{% url 'product_details' product.slug %}">
-                    <img src="{{ product.product_image.url }}"
+                    <img src="{{ product.image_url }}"
                          alt="{{ product.name }}"
                          class="img-fluid mb-2 mx-auto d-block"
                          style="width: 210px; height: 210px; object-fit: contain;">

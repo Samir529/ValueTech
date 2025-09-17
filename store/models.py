@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.text import slugify
+from django.templatetags.static import static
 
 
 def unique_slugify(instance, value, slug_field_name="slug"):
@@ -96,10 +97,15 @@ class Product(models.Model):
     # Product Image
     product_image = models.ImageField(
         upload_to="Products/",
-        default="/media/Products/no-image-available-icon-vector.JPG",
         blank=True,
         null=True,
     )
+
+    @property
+    def image_url(self):
+        if self.product_image and hasattr(self.product_image, "url"):
+            return self.product_image.url
+        return static("assets/images/Default images/no-image-available-icon-vector.jpg")
 
     def __str__(self):
         return self.name
