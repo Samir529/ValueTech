@@ -7,7 +7,7 @@ services:
       pip install --upgrade pip
       pip install -r requirements.txt
       python manage.py collectstatic --noinput
-    startCommand: gunicorn ValueTech.wsgi:application
+    startCommand: gunicorn ValueTech.wsgi:application --bind 0.0.0.0:$PORT --workers 3
     envVars:
       - key: DATABASE_URL
         fromDatabase:
