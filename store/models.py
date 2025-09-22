@@ -1,6 +1,8 @@
+# store/models.py
 from django.db import models
 from django.utils.text import slugify
 from django.templatetags.static import static
+
 
 
 def unique_slugify(instance, value, slug_field_name="slug"):
@@ -21,6 +23,7 @@ def unique_slugify(instance, value, slug_field_name="slug"):
     return unique_slug
 
 
+
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(max_length=100, unique=True, blank=True)
@@ -35,6 +38,7 @@ class Category(models.Model):
         if not self.slug:
             self.slug = unique_slugify(self, self.name)
         super().save(*args, **kwargs)
+
 
 
 class subCategory(models.Model):
@@ -54,6 +58,30 @@ class subCategory(models.Model):
         if not self.slug:
             self.slug = unique_slugify(self, self.name)
         super().save(*args, **kwargs)
+
+
+
+class typesOfSubCategory(models.Model):
+    category = models.ForeignKey(
+        Category, on_delete=models.CASCADE
+    )
+    sub_category = models.ForeignKey(
+        subCategory, on_delete=models.CASCADE
+    )
+    name = models.CharField(max_length=100, unique=True)
+    slug = models.SlugField(max_length=100, unique=True, blank=True)
+
+    class Meta:
+        verbose_name_plural = "Types of Sub Categories"
+
+    def __str__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = unique_slugify(self, self.name)
+        super().save(*args, **kwargs)
+
 
 
 class Product(models.Model):
@@ -101,12 +129,6 @@ class Product(models.Model):
         null=True,
     )
 
-    @property
-    def image_url(self):
-        if self.product_image and hasattr(self.product_image, "url"):
-            return self.product_image.url
-        return static("assets/images/Default images/no-image-available-icon-vector.jpg")
-
     def __str__(self):
         return self.name
 
@@ -114,4 +136,46 @@ class Product(models.Model):
         if not self.slug:
             self.slug = unique_slugify(self, self.name)
         super().save(*args, **kwargs)
+
+    @property
+    def image_url(self):
+        if self.product_image and hasattr(self.product_image, "url"):
+            return self.product_image.url
+        return static("assets/images/Default images/no-image-available-icon-vector.jpg")
+
+
+
+class ProductImage(models.Model):
+    product = models.ForeignKey(
+        Product, related_name="images", on_delete=models.CASCADE
+    )
+    image = models.ImageField(upload_to="Products/")
+
+    def __str__(self):
+        return f"{self.product.name} Image"
+
+
+
+class ProductColor(models.Model):
+    product = models.ForeignKey(
+        Product, related_name="colors", on_delete=models.CASCADE
+    )
+    color_name = models.CharField(max_length=50)
+    color_code = models.CharField(max_length=7, blank=True, null=True)  # HEX code (optional)
+
+    def __str__(self):
+        return f"{self.product.name} - {self.color_name}"
+
+
+
+class ProductSize(models.Model):
+    product = models.ForeignKey(
+        Product, related_name="sizes", on_delete=models.CASCADE
+    )
+    size = models.CharField(max_length=20)
+
+    def __str__(self):
+        return f"{self.product.name} - {self.size}"
+
+
 

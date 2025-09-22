@@ -4,6 +4,7 @@ from store.models import Product
 
 from django.http import JsonResponse
 from django.template.loader import render_to_string
+from store.utils import get_recently_viewed
 
 
 def store_home(request):
@@ -82,13 +83,26 @@ def product_details(request, slug):
     related_products = (
         Product.objects
         .filter(category=product.category)
-        .exclude(slug=product.slug)[:6]  # Limit to 6 products
+        .exclude(slug=product.slug)[:4]  # Limit to 4 products
     )
 
-    return render(request, "store/product_details.html", {
+    # --- Recently Viewed Tracking ---
+    recently_viewed = request.session.get("recently_viewed", [])
+    if slug not in recently_viewed:
+        recently_viewed.insert(0, slug)  # add current slug at start
+    # Keep only last 4
+    request.session["recently_viewed"] = recently_viewed[:4]
+    request.session.modified = True
+
+    context = {
         "product": product,
+        "images": product.images.all(),
+        "colors": product.colors.all(),
+        "sizes": product.sizes.all(),
         "related_products": related_products,
-    })
+        "recently_viewed": get_recently_viewed(request),
+    }
+    return render(request, "store/product_details.html", context)
 
 
 def filter_products(request):

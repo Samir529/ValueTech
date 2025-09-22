@@ -67,6 +67,7 @@
 #
 
 from django.shortcuts import render, redirect, get_object_or_404
+from django.http import Http404
 from orders.models import Order, OrderItem
 from store.models import Product
 
@@ -113,6 +114,10 @@ def checkout(request, slug):
             quantity=quantity,
         )
 
+        # After saving order + orderItem
+        request.session["last_order_id"] = order.id
+        request.session["last_order_item_id"] = orderItem.id
+
         # After saving, redirect to success page
         return redirect("checkout_success", order_id=order.id, orderItem_id=orderItem.id)
 
@@ -141,6 +146,14 @@ def checkout(request, slug):
 
 
 def checkout_success(request, order_id, orderItem_id):
+    # Get last order IDs from session
+    last_order_id = request.session.get("last_order_id")
+    last_order_item_id = request.session.get("last_order_item_id")
+
+    # If someone tries to open another order's URL, block it
+    if last_order_id != order_id or last_order_item_id != orderItem_id:
+        raise Http404("Order not found")
+
     # fetch order and item
     order = get_object_or_404(Order, id=order_id)
     order_item = get_object_or_404(OrderItem, id=orderItem_id, order=order) # order = order ensures the item actually belongs to that order. Otherwise, someone

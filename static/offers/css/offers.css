@@ -2,7 +2,7 @@
 .offers-container {
     max-width: 100%;
     margin-inline: auto;
-    padding: 0 5%;
+    padding: 0 3%;
     /*background: #f9f9fb;*/
 }
 
@@ -19,13 +19,13 @@
 .offers-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
+    gap: 30px;  /* horizontal + vertical gap between cards */
 }
 
 /* Offer Card */
 .offer-card {
     background: #fff;
-    border-radius: 12px;
+    border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     transition: transform 0.2s ease, box-shadow 0.2s ease;

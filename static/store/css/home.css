@@ -69,11 +69,20 @@
 }
 
 
-/* Featured Products */
+/* Products Grid */
+.product-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 10px; /* horizontal + vertical gap between cards */
+}
+
+
+/* Featured Products Card */
 .featured-products .card {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    position: relative;
 }
 .featured-products .card-body {
     display: flex;
@@ -110,11 +119,12 @@
 }
 
 
-/* Latest Gadgets */
+/* Latest Gadgets Card */
 .latest-gadgets .card {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    position: relative;
 }
 .latest-gadgets .card-body {
     display: flex;
