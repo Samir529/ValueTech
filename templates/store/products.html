@@ -6,24 +6,36 @@
 <link rel="stylesheet" type="text/css" href="{% static 'store/css/products.css' %}"/>
 
 <body>
-<div class="container-fluid">
+
+<div class="breadcrumb-container">
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/"><i class="fas fa-home"></i></a></li>
-        <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'product_list' %}" style="color: dimgray">Products</a></li>
+        {% if selected_category %}
+          <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'product_list_by_category' selected_category %}" style="color: dimgray">{{ selected_category }}</a></li>
+        {% else %}
+          <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'product_list' %}" style="color: dimgray">All Products</a></li>
+        {% endif %}
       </ol>
     </nav>
 </div>
-<div class="container-fluid mt-3">
+
+<div class="products-content">
   <div>
     {% if selected_category %}
-      <h3 class="fw-bold mb-3" style="color: royalblue; font-family: 'Candara', Arial, sans-serif;">
-          {{ selected_category }} Price in Bangladesh</h3>
+        {% if selected_category == 'New Arrival' %}
+          <h3 class="fw-bold mb-3" style="color: royalblue; font-family: 'Candara', Arial, sans-serif;">
+              {{ selected_category }} Products Price in Bangladesh</h3>
+        {% else %}
+          <h3 class="fw-bold mb-3" style="color: royalblue; font-family: 'Candara', Arial, sans-serif;">
+              {{ selected_category }} Price in Bangladesh</h3>
+        {% endif %}
     {% else %}
       <h3 class="fw-bold mb-3" style="color: royalblue; font-family: 'Candara', Arial, sans-serif;">
           All Products Price in Bangladesh</h3>
     {% endif %}
   </div>
+
   <!-- Sub Categories -->
   <div class="d-flex flex-wrap mb-3">
     <div class="category-pill active-pill" data-category="all">All Products</div>

@@ -1,0 +1,119 @@
+/* Container */
+.offers-container {
+    max-width: 100%;
+    margin-inline: auto;
+    padding: 0 5%;
+    /*background: #f9f9fb;*/
+}
+
+/* Page Title */
+.page-title {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 30px;
+    text-align: center;
+    color: #222;
+}
+
+/* Grid Layout */
+.offers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+/* Offer Card */
+.offer-card {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.offer-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+/* Image */
+.offer-img img {
+    padding: 20px 20px 0;
+    width: 100%;
+    height: auto; /* allow full image height */
+    object-fit: contain; /* keep full image inside the container */ /*object-fit: contain ensures the entire image
+                                                                    fits inside the width without being cropped.*/
+}
+
+/* Info */
+.offer-info {
+    padding: 15px;
+    text-align: center;
+}
+
+.offer-date {
+    font-size: 12px;
+    color: black;
+    margin-bottom: 6px;
+}
+
+.offer-outlet {
+    font-size: 12px;
+    color: black;
+    margin-bottom: 6px;
+}
+
+.offer-title {
+    font-size: 19px;
+    font-weight: 500;
+    margin-bottom: 16px;
+    color: #111;
+}
+
+.offer-title a:hover {
+    text-decoration-color: orangered;
+}
+
+.offer-desc {
+    font-size: 15px;
+    color: dimgray;
+    margin-bottom: 15px;
+}
+
+/* Button */
+.btn-offer {
+    display: inline-block;
+    background: #2a72e8;
+    color: #fff;
+    padding: 10px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background 0.2s ease;
+}
+
+.btn-offer:hover {
+    background: #1e40af;
+    color: #fff;
+    text-decoration: none;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+    .offer-img img {
+        height: 200px;
+    }
+    .offer-title {
+        font-size: 16px;
+    }
+}
+
+.no-offer {
+    text-align: center;
+    font-size: 16px;
+    color: #777;
+    margin-top: 40px;
+}

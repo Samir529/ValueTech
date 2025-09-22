@@ -3,6 +3,7 @@ from django.contrib.auth.admin import UserAdmin
 # Register models here.
 from core.models import customUser
 from accounts.models import accountInfo
+from offers.models import Offer
 from orders.models import Order, OrderItem
 from store.models import Product, Category, subCategory
 
@@ -57,3 +58,10 @@ admin.site.register(Product, ProductAdmin)
 admin.site.register(Order)
 admin.site.register(OrderItem)
 
+
+@admin.register(Offer)
+class OfferAdmin(admin.ModelAdmin):
+    list_display = ("title", "start_date", "end_date", "outlet", "created_at")
+    list_filter = ("start_date", "end_date", "outlet")
+    search_fields = ("title", "description")
+    ordering = ("-created_at",)

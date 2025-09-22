@@ -47,11 +47,11 @@
     </div>
     <div class="d-flex align-items-center px-3 py-1 rounded-pill" style="background:#12346B; border:1px solid #11346B;">
       <i class="fas fa-star text-light me-2"></i>
-      <a href="#" class="text-light">New Arrival</a>
+      <a href="{% url 'product_list_by_category' 'New Arrival' %}" class="text-light">New Arrival</a>
     </div>
     <div class="d-flex align-items-center px-3 py-1 rounded-pill" style="background:#12346B; border:1px solid #11346B;">
       <i class="fas fa-headset text-light me-2"></i>
-      <a href="#" class="text-light">Customer Service</a>
+      <a href="#" onclick="event.preventDefault();" class="text-light">Customer Service</a>
     </div>
     <div class="d-flex align-items-center px-3 py-1 rounded-pill" style="background:#12346B; border:1px solid #11346B;">
       <i class="fas fa-gears text-light me-2"></i>
@@ -90,7 +90,7 @@
         <!-- Offers -->
         <div class="me-2 d-flex align-items-center">
           <span data-bs-toggle="tooltip" data-bs-placement="top" title="Offers">
-            <a href="#" onclick="event.preventDefault();" style="text-decoration: none;" class="d-flex align-items-center">
+            <a href="/offers/" style="text-decoration: none;" class="d-flex align-items-center">
               <svg xmlns="http://www.w3.org/2000/svg" width="30" height="29" fill=limegreen class="me-1 navbar-icon-2" viewBox="0 2 20 24">
                 <path d="M20 7h-2.18c.11-.31.18-.65.18-1a3 3 0 0 0-5.91-.75L12 6.1l-.09-.85A3 3 0 0 0 6 6c0 .35.07.69.18 1H4a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-9a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1ZM15 4a1 1 0 0 1 1 1 1 1 0 0 1-2 0 1 1 0 0 1 1-1ZM9 4a1 1 0 0 1 1 1 1 1 0 0 1-2 0 1 1 0 0 1 1-1Zm2 16H6v-7h5Zm7 0h-5v-7h5Zm1-9H5V9h14Z"/>
               </svg>
@@ -240,7 +240,7 @@
     </svg>
 </a>
 
-<div class="content-wrapper {% block wrapper_class %}{% endblock %}">
+<div>
     {% block content%}
     {%endblock%}
 </div>

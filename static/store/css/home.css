@@ -1,3 +1,16 @@
+.banner-content {
+    max-width: fit-content;
+    margin-inline: auto;
+    padding: 30px 2% 0;   /* top = 30px, left/right = 2%, bottom = 0 */
+}
+
+.home-content {
+    width: 100%;        /* stretch full width of parent/screen */
+    margin-inline: auto;
+    padding: 0 2%;
+}
+
+
 /* Top Four Action Buttons */
 .top-action-button a:hover {
     text-decoration: none;

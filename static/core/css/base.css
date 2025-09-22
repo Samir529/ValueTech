@@ -1,15 +1,57 @@
-body { background-color: #f1f1f1; font-family: 'Inter', Arial, sans-serif; }
+body {
+    background-color: #f1f1f1;
+    font-family: 'Inter', Arial, sans-serif;
+}
 
 
+/*
+  .content
+  -----------------------
+  This class styles a content container that:
+    1. Shrinks or grows to fit its inner content.
+    2. Is centered horizontally inside its parent container.
+    3. Has horizontal padding for spacing on the sides.
+*/
 .content {
+    /*
+      Maximum width of the element is determined by its content.
+      The element will shrink or grow to fit the content naturally.
+    */
     max-width: fit-content;
+
+    /*
+      Horizontally centers the element within its parent container.
+      The left and right margins automatically take up equal space.
+    */
     margin-inline: auto;
+
+    /*
+      Adds horizontal padding inside the element.
+      - Top & bottom padding: 0 (no extra vertical space)
+      - Left & right padding: 5% of the parent container's width
+      This keeps content from touching the edges and adds breathing room.
+    */
+    padding: 10px 5%;
 }
-.content-wrapper {
-    padding-top: 14px; /* default = 14px gap */
+/*.content-wrapper {*/
+/*    padding-top: 14px; !* default = 14px gap *!*/
+/*}*/
+/*.content-wrapper.without-gap {*/
+/*    padding-top: 0; !* no gap *!*/
+/*}*/
+
+
+/* Breadcrumb CSS */
+.breadcrumb-container {
+    padding: 13px 3%;
+    font-size: 15px;
 }
-.content-wrapper.without-gap {
-    padding-top: 0; /* no gap */
+.breadcrumb i {
+    margin-right: 8px;
+}
+.breadcrumb-item + .breadcrumb-item::before {
+    content: "/";
+    margin-left: 8px;
 }
 
 
@@ -153,16 +195,6 @@ outline: none; /* we'll style focus ring below */
 #backToTop svg, #whatsappBtn svg { width: 22px; height: 22px; }
 
 
-/* Breadcrumb CSS */
-.breadcrumb i {
-margin-right: 8px;
-}
-.breadcrumb-item + .breadcrumb-item::before {
-content: "/";
-margin-left: 8px;
-}
-
-
 /* Topbar */
 .topbar {
 background-color: #174080;
@@ -173,7 +205,7 @@ z-index: 1000;
 .topbar a {
 text-decoration: none;
 font-weight: 500;
-transition: color 0.2s ease;
+transition: color 0.1s ease;
 }
 .topbar a:hover {
 color: aquamarine !important;

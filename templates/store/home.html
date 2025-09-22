@@ -6,7 +6,7 @@
 <link rel="stylesheet" type="text/css" href="{% static 'store/css/home.css' %}"/>
 
 <!-- ================= Banner / Carousel ================= -->
-<div class="container-fluid mt-3">
+<div class="banner-content">
   <div class="row g-3">
     <!-- Left: Carousel / Banner -->
     <div class="col-lg-8 col-md-8 mb-3">
@@ -14,31 +14,31 @@
         <div class="carousel-inner rounded shadow-sm">
           <!-- Slide 1 -->
           <div class="carousel-item active">
-            <a href="#" onclick="event.preventDefault();">
+            <a href="/offers/">
                 <img src="{% static 'assets/images/banners/banner1.jpg' %}" class="d-block w-100" height=450 alt="Banner 1">
             </a>
           </div>
           <!-- Slide 2 -->
           <div class="carousel-item">
-            <a href="#" onclick="event.preventDefault();">
+            <a href="/offers/">
                 <img src="{% static 'assets/images/banners/banner2.jpg' %}" class="d-block w-100" height=450 alt="Banner 2">
             </a>
           </div>
           <!-- Slide 3 -->
           <div class="carousel-item">
-            <a href="#" onclick="event.preventDefault();">
+            <a href="/offers/">
                 <img src="{% static 'assets/images/banners/banner6.jpg' %}" class="d-block w-100" height=450 alt="Banner 2">
             </a>
           </div>
           <!-- Slide 4 -->
           <div class="carousel-item">
-            <a href="#" onclick="event.preventDefault();">
+            <a href="/offers/">
                 <img src="{% static 'assets/images/banners/banner7.jpg' %}" class="d-block w-100" height=450 alt="Banner 2">
             </a>
           </div>
           <!-- Slide 5 -->
           <div class="carousel-item">
-            <a href="#" onclick="event.preventDefault();">
+            <a href="/offers/">
                 <img src="{% static 'assets/images/banners/banner3.jpg' %}" class="d-block w-100" height=450 alt="Banner 3">
             </a>
           </div>
@@ -57,13 +57,13 @@
     <div class="col-lg-4 col-md-4">
       <!-- Side Banner 1 -->
       <div class="carousel-inner rounded shadow-sm mb-2">
-        <a href="#" onclick="event.preventDefault();">
+        <a href="/offers/">
             <img src="{% static 'assets/images/banners/banner4.jpg' %}" class="d-block w-100" height=221 alt="Banner 4">
         </a>
       </div>
       <!-- Side Banner 2 -->
       <div class="carousel-inner rounded shadow-sm">
-        <a href="#" onclick="event.preventDefault();">
+        <a href="/offers/">
             <img src="{% static 'assets/images/banners/banner5.jpg' %}" class="d-block w-100" height=221 alt="Banner 5">
         </a>
       </div>
@@ -71,8 +71,9 @@
   </div>
 </div>
 
+
 <!-- Notice Bar -->
-<div class="container-fluid mt-3">
+<div class="home-content mt-3">
     <div class="notice-bar">
         <small class="notice-text">
             <span id="current-date"></span>, All our branches are open. Additionally, our online activities are open and operational.
@@ -80,8 +81,9 @@
     </div>
 </div>
 
+
 <!-- ====== Top Four Action Buttons ====== -->
-<div class="container-fluid top-action-button mt-5">
+<div class="home-content top-action-button mt-5">
   <div class="row g-4 text-center">
     <div class="col-6 col-md-3">
       <a href="#" onclick="event.preventDefault();" class="d-block p-3 bg-white shadow-sm rounded">
@@ -122,8 +124,9 @@
   </div>
 </div>
 
+
 <!-- ====== Featured Category Section ====== -->
-<div class="container-fluid featured-category my-5">
+<div class="home-content featured-category my-5">
   <h5 class="fw-bold text-center">Featured Category</h5>
   <h6 class="text-center">Get Your Desired Product from Featured Category!</h6>
 
@@ -275,8 +278,9 @@
   </div>
 </div>
 
+
 <!-- ====== Featured Products Section ====== -->
-<div class="container-fluid featured-products my-5">
+<div class="home-content featured-products my-5">
   <h5 class="fw-bold text-center">Featured Products</h5>
   <h6 class="text-center">Check & Get Your Desired Product!</h6>
 
@@ -324,85 +328,86 @@
   </div>
 </div>
 
+
 <!-- ================= Promotional Banners ================= -->
-<div class="container-fluid my-7">
+<div class="home-content my-7">
   <div class="row g-2">
     <div class="col-md-6">
-      <a href="#" onclick="event.preventDefault();">
+      <a href="/offers/">
         <img src="{% static 'assets/images/banners/promo1.jpg' %}" class="img-fluid rounded shadow-sm" alt="Promo 1">
       </a>
     </div>
     <div class="col-md-6">
-      <a href="#" onclick="event.preventDefault();">
+      <a href="/offers/">
         <img src="{% static 'assets/images/banners/promo2.jpg' %}" class="img-fluid rounded shadow-sm" alt="Promo 2">
       </a>
     </div>
   </div>
 </div>
 
+
 <!-- ================= Latest Gadgets ================= -->
-<div class="container latest-gadgets my-5">
+<div class="container mt-5">
   <div class="mb-4">
     <div class="d-flex justify-content-between align-items-center">
       <h5 class="fw-bold">Latest Gadgets</h5>
-      <a href="#" onclick="event.preventDefault();" class="text-decoration-none">View All &raquo;</a>
+      <a href="{% url 'product_list_by_category' 'Latest Gadgets' %}" class="text-decoration-none">View All &raquo;</a>
     </div>
     <h6>Check & Get Latest Gadgets!</h6>
   </div>
-  <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3">
+</div>
+
+<div class="home-content latest-gadgets">
+  <div class="row row-cols-2 row-cols-md-3 row-cols-lg-5 g-2 mt-4">
     {% for product in latest_gadgets %}
-    <div class="col">
-      <div class="card h-100 border-0 rounded-3 shadow-sm position-relative">
+    <div class="col d-flex">
+      <div class="card h-100 w-100 border-0 rounded-3 shadow-sm">
         <!-- Discount Tag -->
         {% if product.discount > 0 %}
-        <span class="badge m-2 px-2 py-1"
-              style="top:0; right:0; font-size:12px; background: darkviolet">
-          Save: {{ product.discount|intcomma }}৳ (-{{ product.discount_percentage|floatformat:0 }}%)
-        </span>
+            <span class="badge m-2 px-2 py-1"
+                style="top:0; right:0; font-size:12px; background: darkviolet">
+                Save: {{ product.discount|intcomma }}৳ (-{{ product.discount_percentage|floatformat:0 }})%
+            </span>
         {% endif %}
         <!-- Product Image -->
         <a href="{% url 'product_details' product.slug %}">
-          <img src="{{ product.image_url }}"
-               alt="{{ product.name }}"
-               class="img-fluid mb-2 mx-auto d-block"
-               style="width: 210px; height: 210px; object-fit: contain;">
+            <img src="{{ product.image_url }}"
+                 class="img-fluid mb-2 mx-auto d-block"
+                 alt="{{ product.name }}"
+                 style="width: 230px; height: 230px; object-fit: contain;">
         </a>
         <!-- Card Body -->
-        <div class="card-body p-2">
-          <small class="card-title fw-bold d-block">
-            <a href="{% url 'product_details' product.slug %}">{{ product.name }}</a>
+        <div class="card-body">
+          <small class="card-title">
+              <a href="{% url 'product_details' product.slug %}">
+                  {{ product.name }}
+              </a>
           </small>
-          <p class="text-muted my-2">
-            <small>{{ product.specification }}</small>
-          </p>
-          <hr>
-          <div class="text-center">
-            <span class="price">{{ product.special_price|intcomma }}৳</span>
-            {% if product.regular_price %}
-              <span class="old-price ms-2">{{ product.regular_price|intcomma }}৳</span>
-            {% endif %}
-          </div>
-          <div class="text-center mt-3">
-            <a href="{% url 'checkout' product.slug %}">
-              <button class="button" style="border-radius: 10px; width: 180px">
-                <span>Buy Now</span>
-              </button>
-            </a>
+          <div class="price-block mt-3">
+              <span class="fw-bold text-danger mb-0 d-inline">
+                {{ product.special_price|intcomma }}৳
+              </span>
+              {% if product.regular_price %}
+                <small class="text-muted text-decoration-line-through ms-2">
+                    {{ product.regular_price|intcomma }}৳
+                </small>
+              {% endif %}
           </div>
         </div>
       </div>
     </div>
     {% empty %}
-      <p>No gadgets found.</p>
+        <p>No gadgets found.</p>
     {% endfor %}
   </div>
 </div>
 
+
 <!-- ================= Paragraph ================= -->
-<div class="container-fluid">
+<div class="home-content mt-5">
     <section class="p-3">
         <h4 class="section-title">Leading Computer, Laptop & Gaming PC Retail & Online Shop in Bangladesh</h4>
-        <p>
+        <p class="mb-0">
           Technology has become a part of our daily lives, and we depend on tech products daily for a vast portion of our lives.
           There is hardly a home in Bangladesh without a tech product. This is where we come in. ValueTech Ltd. started as a Tech
           roduct Shop in September 2025. We focus on giving the best customer service in Bangladesh, following our motto of
@@ -416,7 +421,7 @@
     </section>
     <section class="p-3 bg-light">
         <h5 class="section-title">Best Laptop Shop in Bangladesh</h5>
-        <p>
+        <p class="mb-0">
           ValueTech is the most popular Laptop Brand Shop in BD. ValueTech Laptop Shop has the perfect device, whether you are a
           freelancer, officegoer, or student. Gamers love our collection of Gaming Laptops because we always bring the latest
           laptops in Bangladesh. As the best laptop shop in BD, a customer’s budget is our first concern. We bring the latest
@@ -431,7 +436,7 @@
     </section>
     <section class="p-3">
         <h5 class="section-title">Best Desktop PC Shop In Bangladesh</h5>
-        <p>
+        <p class="mb-0">
           ValueTech has the most comprehensive array of Desktop PCs. We offer top-of-the-line Custom PC, Brand PC, All-in-One PC,
           and Portable Mini PC at ValueTech outlets, the trusted and most popular Desktop PC shop in Bangladesh, which are spread
           nationwide. Get your new iMac Desktop or Apple Mac Mini with an international warranty and servicing plan. You can always
@@ -445,7 +450,7 @@
     </section>
     <section class="p-3 bg-light">
         <h5 class="section-title">Best Gaming PC Shop In Bangladesh</h5>
-        <p>
+        <p class="mb-0">
           We at ValueTech love gaming. Therefore, we aim to provide a holistic gaming experience with our best gaming PC shop in
           Bangladesh, “ValueTech Rig House.” The Rig House is a specialized shop for PC builds with high-end PC components.
           ValueTech Rig House is highly decorated with the best gaming PC parts for customers to build online Gaming or editing
@@ -461,7 +466,7 @@
     </section>
     <section class="p-3">
         <h5 class="section-title">Best Office Equipment Shop In Bangladesh</h5>
-        <p>
+        <p class="mb-0">
           ValueTech Ltd. is Bangladesh's most trusted Office Equipment Shop. For more than 18 years, we have been providing the best
           Office Solution. Take a quick drive to the nearest ValueTech retail center and furnish your home office, Start-up business
           desk, or corporate space with the best Office Equipment and office supplies. Find Laptops, Desktops, Antiviruses, CCTV & IP
@@ -471,7 +476,7 @@
     </section>
     <section class="p-3 bg-light">
         <h5 class="section-title">Largest Gadget Shop In Bangladesh</h5>
-        <p>
+        <p class="mb-0">
           We bring in the most sought gadgets at ValueTech. Only genuine and leading brands of Smart Watch, Earbuds, TV, Power Bank,
           and Mobile Phone Accessories are available at our Gadget Shop. We are also concerned for creative professionals for whom
           we bring exciting gadgets like Drones, Studio Equipment, DSLR Camera, Gimbals & Stream Decks from internationally reputed
@@ -483,7 +488,7 @@
     </section>
     <section class="p-3">
         <h5 class="section-title">Top Mobile Shop in Bangladesh</h5>
-        <p>
+        <p class="mb-0">
           ValueTech mobile phone shop offers the latest smartphones and feature phones from top mobile brands. Samsung, Motorola,
           Google Pixel, Vivo, Huawei, Xiaomi, OPPO, Mi, Realme, and OnePlus are among the Android smartphone brands at our mobile
           shop. ValueTech is a one-stop solution for buying iPhones in Bangladesh. Offering extensive warranty, EMI & home delivery
@@ -494,7 +499,7 @@
     </section>
     <section class="p-3 bg-light">
         <h5 class="section-title">Best Home Appliance Shop in Bangladesh</h5>
-        <p>
+        <p class="mb-0">
           ValueTech is a popular home appliance shop in Bangladesh with a variety of top-quality home appliances including air
           conditioners, washing machines, ovens, refrigerators, geysers, vacuum cleaners, sewing machines, electric room heaters,
           and more. ValueTech offers home appliances from renowned brands like Samsung, LG, Hitachi, Whirlpool, Singer, Haier,
@@ -505,7 +510,7 @@
     </section>
     <section class="p-3">
         <h5 class="section-title">Trusted Online Shopping From Bangladesh at The Best E-Commerce Website</h5>
-        <p>
+        <p class="mb-0">
           ValueTech believes the most in customer satisfaction. To meet the surging demand for online shopping from Bangladesh,
           we launched our E-Commerce website. Our highly trusted online shop has been regarded as one of the best E-Commerce
           websites with most visits. ValueTech is revolutionizing online shopping in Bangladesh, featuring a brilliant search
@@ -520,7 +525,7 @@
     </section>
     <section class="p-3 bg-light">
         <h5 class="section-title">Best Price, Product, After-sales Customer Service, & Fastest Delivery</h5>
-        <p>
+        <p class="mb-0">
           ValueTech Ltd. has taken care of its customers since the beginning. Whether a customer is purchasing or inquiring,
           our customers get the highest priority. We deliver the best product for the best price with extended after-sales
           support & the highest standard of customer service. We offer your desired product within the fastest delivery

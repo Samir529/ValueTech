@@ -5,7 +5,7 @@
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'orders/css/checkout.css' %}"/>
 
-<div class="container-fluid ps-6">
+<div class="breadcrumb-container">
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/"><i class="fas fa-home"></i></a></li>
@@ -13,7 +13,8 @@
       </ol>
     </nav>
 </div>
-<div class="content px-6">
+
+<div class="checkout-content">
     <form method="POST">
         {% csrf_token %}
         <div class="row">

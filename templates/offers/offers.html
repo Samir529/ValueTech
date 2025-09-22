@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'offers/css/offers.css' %}"/>
+
+<div class="breadcrumb-container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/"><i class="fas fa-home"></i></a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'offers' %}" style="color: dimgray">Offer</a></li>
+      </ol>
+    </nav>
+</div>
+
+<div class="offers-container">
+    <h1 class="page-title">Exclusive Offers</h1>
+
+    <div class="offers-grid">
+        {% for offer in offers %}
+        <div class="offer-card">
+            <div class="offer-img">
+                <a href="{{ offer.button_link|default:'#' }}" onclick="event.preventDefault();">
+                    <img src="{{ offer.image.url }}" alt="{{ offer.title }}">
+                </a>
+            </div>
+            <div class="offer-info">
+                <div class="d-flex justify-content-between align-items-center">
+                    <!-- Left side: dates -->
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-calendar fa-lg text-muted me-1"></i>
+                        <p class="offer-date mb-0">
+                            {{ offer.start_date|date:"d M Y" }}-{{ offer.end_date|date:"d M Y" }}
+                        </p>
+                    </div>
+                    <!-- Right side: outlet -->
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-store fa-lg text-muted me-1"></i>
+                        <p class="offer-outlet mb-0">
+                            {{ offer.outlet }}
+                        </p>
+                    </div>
+                </div>
+                <hr>
+
+                <h3 class="offer-title">
+                    <a href="{{ offer.button_link|default:'#' }}" onclick="event.preventDefault();">
+                        {{ offer.title }}
+                    </a>
+                </h3>
+                <p class="offer-desc">
+                    {{ offer.description }}
+                </p>
+                <a href="{{ offer.button_link|default:'#' }}" onclick="event.preventDefault();" class="btn-offer">
+                    {{ offer.button_text }}
+                </a>
+            </div>
+        </div>
+        {% empty %}
+            <p class="no-offer">No active offers available.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -43,6 +43,8 @@ ALLOWED_HOSTS = [
 CSRF_TRUSTED_ORIGINS = [
     "http://127.0.0.1:8000",
     "http://localhost:8000",
+    "https://127.0.0.1:8000",
+    "https://localhost:8000",
     "https://valuetech.onrender.com",
     "https://valuetech.pythonanywhere.com/"
 ]
@@ -73,6 +75,7 @@ INSTALLED_APPS = [
     'accounts',
     'orders',
     'store',
+    'offers',
     'crispy_forms',
     'crispy_bootstrap5',
     'django_filters',

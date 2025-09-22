@@ -4,7 +4,7 @@
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'accounts/css/register_account.css' %}"/>
 
-<div class="container">
+<div class="breadcrumb-container">
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/"><i class="fas fa-home"></i></a></li>
@@ -13,8 +13,8 @@
       </ol>
     </nav>
 </div>
+
 <div class="content">
-    <br>
     {% if messages %}
         {% for message in messages %}
             <!-- Error message container -->

@@ -1,4 +1,9 @@
 body { background: #E6FFE3; }
+.checkout-content {
+    max-width: fit-content;
+    margin-inline: auto;
+    padding: 10px 3%;
+}
 .order-summary { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
 .order-summary h4 { font-weight: 600; margin-bottom: 15px; }
 .order-summary a { text-decoration: none; font-weight: 600; }

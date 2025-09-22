@@ -76,6 +76,9 @@ def checkout(request, slug):
     quantity = int(request.GET.get("quantity", 1))  # default to 1
     subtotal = product.special_price * quantity
 
+    payment_method = request.POST.get("payment_method")
+    transaction_id = request.POST.get("transaction_id") if payment_method == "cod_outside" else None
+
     # default initial shipping (matches with template which has cod_outside checked by default)
     default_shipping = 100
     initial_total = subtotal + default_shipping
@@ -92,8 +95,8 @@ def checkout(request, slug):
             district = request.POST.get("district"),
             email = request.POST.get("email"),
             notes = request.POST.get("notes"),
-            payment_method = request.POST.get("payment_method"),
-            transaction_id = request.POST.get("transaction_id"),
+            payment_method = payment_method,
+            transaction_id = transaction_id,
             subtotal = subtotal,
             shipping = 100 if request.POST.get("payment_method") == "cod_outside" else 60,
             completed = False,

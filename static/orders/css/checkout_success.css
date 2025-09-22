@@ -1,0 +1,16 @@
+body { background: #f9fafc; font-family: Arial, sans-serif; }
+.checkout-success-container {
+    max-width: 100%;
+    margin-inline: auto;
+    padding: 0 5%;
+}
+.success-wrapper {
+    max-width: 700px;
+    margin: 10px auto;
+    background: #fff;
+    padding: 10px 30px 45px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+.success-icon { font-size: 70px; color: #4caf50; }
+.btn-back { background: #3d5afe; color: #fff; font-weight: 600; padding: 12px; border-radius: 6px; width: 100%; }
+.btn-back:hover { background: #2c46d3; text-decoration: none; color: #fff; }

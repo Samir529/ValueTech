@@ -6,8 +6,9 @@
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'store/css/product_details.css' %}"/>
 
-<section class="p-2 bg-white">
-    <div class="container-fluid">
+<section class="bg-white">
+
+    <div class="breadcrumb-container">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/"><i class="fas fa-home"></i></a></li>
@@ -16,7 +17,8 @@
           </ol>
         </nav>
     </div>
-    <div class="container-fluid my-5">
+
+    <div class="product-view-content">
       <div class="row">
         <!-- Product Image -->
         <div class="col-md-5 text-center">
@@ -78,7 +80,7 @@
     </div>
 </section>
 
-<div class="container-fluid mt-3">
+<div class="product-details-content">
   <!-- Tabs Section -->
   <div class="row">
     <div class="col-md-9">

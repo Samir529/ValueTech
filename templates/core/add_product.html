@@ -4,7 +4,7 @@
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'core/css/add_product.css' %}"/>
 
-<div class="container">
+<div class="breadcrumb-container">
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/"><i class="fas fa-home"></i></a></li>
@@ -13,8 +13,8 @@
       </ol>
     </nav>
 </div>
+
 <div class="content">
-    <br>
     <h2 class="fw-bold mb-4">Add New Product</h2>
     <hr>
     <form method="POST" enctype="multipart/form-data" class="fw-bold mt-3">
@@ -150,9 +150,13 @@
             <label class="form-check-label" for="confirm">Confirm</label>
         </div>
         <!-- Submit -->
-        <button type="submit" class="button" style="margin-top: 15px; width: 385px;"><span>Save Product</span></button>
+        <div class="text-center">
+            <button type="submit" class="button" style="margin-top: 15px; width: 385px;"><span>Save Product</span></button>
+        </div>
     </form>
-    <a href="{% url 'staffPanel' %}"><button class="button2" style="margin-top: 15px; width: 385px;"><span>Back</span></button></a>
+    <div class="text-center">
+        <a href="{% url 'staffPanel' %}"><button class="button2" style="margin-top: 15px; width: 385px;"><span>Back</span></button></a>
+    </div>
 </div>
 {% endblock %}
 {% block extra_js %}

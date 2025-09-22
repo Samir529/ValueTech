@@ -7,7 +7,9 @@ from django.template.loader import render_to_string
 
 
 def store_home(request):
-    products = (
+    # Base queryset with annotation
+    # All products with discount + discount percentage annotated
+    annotated_qs = (
         Product.objects
         .annotate(                              # ORM-powered with annotate(). So I don’t have to loop and calculate inside the view.
             discount=ExpressionWrapper(         # That would be more efficient if I have lots of products. This way the database itself
@@ -22,7 +24,18 @@ def store_home(request):
         .order_by('-product_adding_date')
     )
 
-    context = {'products': products}
+    # Take the first 20 products
+    products = annotated_qs[:20]
+
+    # Latest Gadgets
+    # Take the first 20 gadgets
+    latest_gadgets = annotated_qs.filter(category__name="Gadget")[:20]  # show latest 20 gadgets from gadget category
+    # latest_gadgets = products[:20]  # show latest 20 products
+
+    context = {
+        'products': products,
+        'latest_gadgets': latest_gadgets
+    }
     return render(request, 'store/home.html', context)
 
 
@@ -47,7 +60,14 @@ def product_list(request, category=None):
     )
 
     if category:  # filter only if a category is passed
-        products = products.filter(category__name__iexact=category)
+
+        # View All Latest Gadgets
+        if category == 'Latest Gadgets':
+            products = products.filter(category__name="Gadget")  # show all gadgets from gadget category
+        elif category == 'New Arrival':
+            products = products
+        else:
+            products = products.filter(category__name__iexact=category)
 
     context = {
         'products': products,

@@ -30,11 +30,8 @@ document.addEventListener("DOMContentLoaded", function() {
     function toggleInsideCodField() {
         if (codInside.checked) {
             insideCodField.style.display = "block";
-            transactionInput.setAttribute("required", "required");
         } else {
             insideCodField.style.display = "none";
-            transactionInput.removeAttribute("required");
-            transactionInput.value = "";
         }
     }
 
