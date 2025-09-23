@@ -312,13 +312,18 @@
               </a>
           </small>
           <div class="price-block mt-3">
-              <span class="fw-bold text-danger mb-0 d-inline">
-                {{ product.special_price|intcomma }}৳
-              </span>
-              {% if product.regular_price %}
+              {% if product.special_price %}
+                <span class="fw-bold text-danger mb-0 d-inline">
+                    {{ product.special_price|intcomma }}৳
+                </span>
                 <small class="text-muted text-decoration-line-through ms-2">
                     {{ product.regular_price|intcomma }}৳
                 </small>
+
+              {% else %}
+                <span class="fw-bold text-danger mb-0 d-inline">
+                    {{ product.regular_price|intcomma }}৳
+                </span>
               {% endif %}
           </div>
         </div>
@@ -387,13 +392,18 @@
               </a>
           </small>
           <div class="price-block mt-3">
-              <span class="fw-bold text-danger mb-0 d-inline">
-                {{ product.special_price|intcomma }}৳
-              </span>
-              {% if product.regular_price %}
+              {% if product.special_price %}
+                <span class="fw-bold text-danger mb-0 d-inline">
+                    {{ product.special_price|intcomma }}৳
+                </span>
                 <small class="text-muted text-decoration-line-through ms-2">
                     {{ product.regular_price|intcomma }}৳
                 </small>
+
+              {% else %}
+                <span class="fw-bold text-danger mb-0 d-inline">
+                    {{ product.regular_price|intcomma }}৳
+                </span>
               {% endif %}
           </div>
         </div>

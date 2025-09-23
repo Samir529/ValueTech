@@ -80,19 +80,27 @@ def product_list(request, category=None):
 def product_details(request, slug):
     product = get_object_or_404(Product, slug=slug)
 
+    # --- Related Products ---
     related_products = (
         Product.objects
         .filter(category=product.category)
-        .exclude(slug=product.slug)[:4]  # Limit to 4 products
+        .exclude(slug=product.slug)
+        .order_by('-product_adding_date')[:4]  # newest first, Limit to 4 products
     )
 
     # --- Recently Viewed Tracking ---
     recently_viewed = request.session.get("recently_viewed", [])
+
+    # always move the current product to the front
     if slug not in recently_viewed:
         recently_viewed.insert(0, slug)  # add current slug at start
-    # Keep only last 4
-    request.session["recently_viewed"] = recently_viewed[:4]
+
+    # Save back to session (keep more than 4, so we can exclude current later)
+    request.session["recently_viewed"] = recently_viewed[:10]
     request.session.modified = True
+
+    # --- Exclude current product from recently viewed list & limit to 4 others ---
+    recently_viewed_products = get_recently_viewed(request, exclude_slug=slug, limit=4)
 
     context = {
         "product": product,
@@ -100,7 +108,7 @@ def product_details(request, slug):
         "colors": product.colors.all(),
         "sizes": product.sizes.all(),
         "related_products": related_products,
-        "recently_viewed": get_recently_viewed(request),
+        "recently_viewed": recently_viewed_products,  # ordered helper
     }
     return render(request, "store/product_details.html", context)
 

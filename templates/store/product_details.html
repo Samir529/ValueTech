@@ -37,8 +37,19 @@
         <div class="col-md-7">
           <h4 class="product-title fw-bold">{{ product.name }}</h4>
           <p>
-            <span class="price-tag">{{ product.special_price|intcomma }}৳</span>
-            <span class="old-price">{{ product.regular_price|intcomma }}৳</span>
+            {% if product.special_price %}
+              <span class="price-tag">
+                  {{ product.special_price|intcomma }}৳
+              </span>
+              <small class="old-price">
+                  {{ product.regular_price|intcomma }}৳
+              </small>
+
+            {% else %}
+              <span class="price-tag">
+                  {{ product.regular_price|intcomma }}৳
+              </span>
+            {% endif %}
           </p>
 
           <p>Status:
@@ -136,11 +147,18 @@
                   </a>
                   <!-- prices aligned with name -->
                   <div>
-                    <span class="special-price">{{ related.special_price|intcomma }}৳</span>
-                    {% if related.regular_price %}
+                    {% if related.special_price %}
+                      <span class="new-price">
+                        {{ related.special_price|intcomma }}৳
+                      </span>
                       <small class="text-muted text-decoration-line-through ms-2">
                         {{ related.regular_price|intcomma }}৳
                       </small>
+
+                    {% else %}
+                      <span class="new-price">
+                        {{ related.regular_price|intcomma }}৳
+                      </span>
                     {% endif %}
                   </div>
                 </div>
@@ -175,12 +193,19 @@
                 </a>
                 <!-- prices aligned with name -->
                 <div>
-                  <span class="special-price">{{ viewed.special_price|intcomma }}৳</span>
-                  {% if viewed.regular_price %}
-                    <small class="text-muted text-decoration-line-through ms-2">
-                      {{ viewed.regular_price|intcomma }}৳
-                    </small>
-                  {% endif %}
+                  {% if viewed.special_price %}
+                      <span class="new-price">
+                        {{ viewed.special_price|intcomma }}৳
+                      </span>
+                      <small class="text-muted text-decoration-line-through ms-2">
+                        {{ viewed.regular_price|intcomma }}৳
+                      </small>
+
+                    {% else %}
+                      <span class="new-price">
+                        {{ viewed.regular_price|intcomma }}৳
+                      </span>
+                    {% endif %}
                 </div>
               </div>
             </div>

@@ -5,11 +5,12 @@ from core.models import customUser
 from accounts.models import accountInfo
 from offers.models import Offer
 from orders.models import Order, OrderItem
-from store.models import Product, Category, subCategory
+from store.models import Product, Category, subCategory, ProductImage, ProductColor, ProductSize, typesOfSubCategory
 
 admin.site.site_header = 'ValueTech core'
 admin.site.site_title = 'ValueTech core'
 admin.site.index_title = 'ValueTech administration'
+
 
 class CustomUserAdmin(UserAdmin):
     model = customUser
@@ -51,10 +52,18 @@ class ProductAdmin(admin.ModelAdmin):
 
 
 admin.site.register(customUser, CustomUserAdmin)
+
 admin.site.register(accountInfo)
+
 admin.site.register(Category)
 admin.site.register(subCategory)
+admin.site.register(typesOfSubCategory)
+
 admin.site.register(Product, ProductAdmin)
+admin.site.register(ProductImage)
+admin.site.register(ProductColor)
+admin.site.register(ProductSize)
+
 admin.site.register(Order)
 admin.site.register(OrderItem)
 

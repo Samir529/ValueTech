@@ -2,6 +2,7 @@
 from django.db import models
 from django.utils.text import slugify
 from django.templatetags.static import static
+from django.core.exceptions import ValidationError
 
 
 
@@ -132,7 +133,16 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
+    # Price validation
+    def clean(self):
+        # Make sure special price < regular price
+        if self.special_price is not None and self.special_price >= self.regular_price:
+            raise ValidationError({
+                "special_price": "Special price must be less than the regular price."
+            })
+
     def save(self, *args, **kwargs):
+        self.full_clean()  # <-- call clean() before saving
         if not self.slug:
             self.slug = unique_slugify(self, self.name)
         super().save(*args, **kwargs)

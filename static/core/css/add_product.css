@@ -1,1 +1,9 @@
-.form-control { border-radius: 15px; }
+body { background: #e1f2f7; }
+.add-product-container {
+    max-width: 80%;
+    margin-inline: auto;
+    padding: 40px 4%;
+    background: #f9f9fb;
+    border-radius: 40px;
+}
+.form-control { border-radius: 14px; }

@@ -106,9 +106,18 @@
                     <hr class="card mt-0">
 
                     <div class="text-center mb-2">
-                        <span class="price">{{ product.special_price|intcomma }}৳</span>
-                        {% if product.regular_price %}
-                            <span class="old-price ms-2">{{ product.regular_price|intcomma }}৳</span>
+                        {% if product.special_price %}
+                            <span class="fw-bold text-danger mb-0 d-inline">
+                                {{ product.special_price|intcomma }}৳
+                            </span>
+                            <small class="text-muted text-decoration-line-through ms-2">
+                                {{ product.regular_price|intcomma }}৳
+                            </small>
+
+                        {% else %}
+                            <span class="fw-bold text-danger mb-0 d-inline">
+                                {{ product.regular_price|intcomma }}৳
+                            </span>
                         {% endif %}
                     </div>
 

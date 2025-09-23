@@ -81,6 +81,7 @@ class productForm(forms.ModelForm):
         existing_category = cleaned_data.get("existing_category")
         new_category = cleaned_data.get("new_category")
 
+        # Category validation
         if not existing_category and not new_category:
             raise forms.ValidationError("Please select from existing category OR add a new category.")
 
@@ -99,6 +100,14 @@ class productForm(forms.ModelForm):
         else:
             cleaned_data["category"] = existing_category
 
+        # --- Price validation (attach to field) ---
+        regular_price = cleaned_data.get("regular_price")
+        special_price = cleaned_data.get("special_price")
+
+        if special_price is not None and regular_price is not None:
+            if special_price >= regular_price:
+                self.add_error("special_price", "Special price must be less than the regular price.")
+
         return cleaned_data
 
     def save(self, commit=True):
@@ -106,5 +115,6 @@ class productForm(forms.ModelForm):
         product.category = self.cleaned_data["category"]
         if commit:
             product.save()
+
         return product
 
