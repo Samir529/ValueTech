@@ -24,3 +24,42 @@ document.addEventListener("DOMContentLoaded", function () {
         hiddenQty.value = val;
     });
 });
+
+
+// Product's Extra images, Sizes, Color etc.
+let currentIndex = 0;
+const images = [...document.querySelectorAll('.thumb-img')].map(img => img.src);
+
+function changeImage(src) {
+    document.getElementById('mainProductImage').src = src;
+    document.getElementById('modalImage').src = src;
+    currentIndex = images.indexOf(src);
+}
+
+function prevImage() {
+    if (currentIndex > 0) currentIndex--;
+    else currentIndex = images.length - 1;
+    document.getElementById('modalImage').src = images[currentIndex];
+}
+
+function nextImage() {
+    if (currentIndex < images.length - 1) currentIndex++;
+    else currentIndex = 0;
+    document.getElementById('modalImage').src = images[currentIndex];
+}
+
+// Disable color buttons until size is selected
+const sizeBtns = document.querySelectorAll(".size-btn");
+const colorBtns = document.querySelectorAll(".color-btn");
+
+if (sizeBtns.length > 0 && colorBtns.length > 0) {
+    colorBtns.forEach(btn => btn.disabled = true);
+
+    sizeBtns.forEach(btn => {
+        btn.addEventListener("click", () => {
+            sizeBtns.forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            colorBtns.forEach(c => c.disabled = false);
+        });
+    });
+}

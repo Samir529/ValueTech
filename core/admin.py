@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+from django.utils.html import format_html
 # Register models here.
 from core.models import customUser
 from accounts.models import accountInfo
@@ -30,9 +31,31 @@ class CustomUserAdmin(UserAdmin):
     ordering = ("email",)
 
 
+class ProductImageInline(admin.TabularInline):   # or StackedInline
+    model = ProductImage
+    extra = 3    # show 3 empty form by default
+    readonly_fields = ["image_preview"]
+
+    def image_preview(self, obj):
+        if obj.image:
+            return format_html('<img src="{}" style="width: 60px; height: 60px; object-fit: cover;" />', obj.image.url)
+        return "-"
+    image_preview.short_description = "Preview"
+
+class ProductColorInline(admin.TabularInline):
+    model = ProductColor
+    extra = 3
+
+class ProductSizeInline(admin.TabularInline):
+    model = ProductSize
+    extra = 3
+
 class ProductAdmin(admin.ModelAdmin):
     model = Product
     list_display = ("name", "category", "brand", "product_adding_date", "status", "product_code")
+    prepopulated_fields = {"slug": ("name",)}  # auto fill slug from name
+    inlines = [ProductImageInline, ProductColorInline, ProductSizeInline]
+
     list_filter = ("status", "category", "brand")
     fieldsets = (
         (None, {"fields": ("category", "name", "slug", "product_code", "brand", "model", "color", "regular_price",

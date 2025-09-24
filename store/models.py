@@ -5,6 +5,7 @@ from django.templatetags.static import static
 from django.core.exceptions import ValidationError
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
+from colorfield.fields import ColorField
 
 
 
@@ -164,7 +165,7 @@ class ProductImage(models.Model):
     image = models.ImageField(upload_to="Products/")
 
     def __str__(self):
-        return f"{self.product.name} Image"
+        return f"Image for {self.product.name}"
 
 
 
@@ -173,7 +174,8 @@ class ProductColor(models.Model):
         Product, related_name="colors", on_delete=models.CASCADE
     )
     color_name = models.CharField(max_length=50)
-    color_code = models.CharField(max_length=7, blank=True, null=True)  # HEX code (optional)
+    # color_code = models.CharField(max_length=7, blank=True, null=True)  # HEX code (optional)
+    color_code = ColorField(max_length=7, blank=True, null=True)  # adds a color picker in admin
 
     def __str__(self):
         return f"{self.product.name} - {self.color_name}"
@@ -209,7 +211,7 @@ def delete_product_main_image(sender, instance, **kwargs):
 @receiver(post_delete, sender=ProductImage)
 def delete_product_gallery_image(sender, instance, **kwargs):
     """
-    Delete gallery image from storage only if
+    Delete gallery/extra image from storage only if
     no other ProductImage is using the same file.
     """
     image = instance.image

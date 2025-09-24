@@ -79,6 +79,7 @@ def product_list(request, category=None):
 
 def product_details(request, slug):
     product = get_object_or_404(Product, slug=slug)
+    extra_images = product.images.all()  # all related ProductImage
 
     # --- Related Products ---
     related_products = (
@@ -104,7 +105,7 @@ def product_details(request, slug):
 
     context = {
         "product": product,
-        "images": product.images.all(),
+        "extra_images": extra_images,
         "colors": product.colors.all(),
         "sizes": product.sizes.all(),
         "related_products": related_products,

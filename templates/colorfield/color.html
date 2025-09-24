@@ -1,0 +1,6 @@
+<input type="color"
+       name="{{ widget.name }}"
+       value="{{ widget.value|stringformat:'s' }}"
+       {% for name, value in widget.attrs.items %}
+           {{ name }}="{{ value }}"
+       {% endfor %}>

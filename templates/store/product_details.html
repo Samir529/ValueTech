@@ -22,14 +22,26 @@
       <div class="row">
         <!-- Product Image -->
         <div class="col-md-5 text-center">
-          <img src="{{ product.image_url }}" alt="{{ product.name }}"
-               class="img-fluid mb-3 shadow-sm" style="max-height: 380px; object-fit: contain;">
+          <img id="mainProductImage" src="{{ product.image_url }}" alt="{{ product.name }}"
+               class="img-fluid mb-3 shadow-sm" style="max-height: 380px; object-fit: contain; cursor: pointer;"
+               data-bs-toggle="modal" data-bs-target="#imageModal">
 
           <!-- Thumbnails -->
+<!--          <div class="d-flex justify-content-center mt-2">-->
+<!--            <img src="{{ product.image_url }}" class="img-thumbnail" style="width:60px; height:60px;">-->
+<!--            <img src="{{ product.image_url }}" class="img-thumbnail" style="width:60px; height:60px;">-->
+<!--            <img src="{{ product.image_url }}" class="img-thumbnail" style="width:60px; height:60px;">-->
+<!--          </div>-->
+
+          <!-- Show extra images -->
           <div class="d-flex justify-content-center mt-2">
-            <img src="{{ product.image_url }}" class="img-thumbnail" style="width:60px; height:60px;">
-            <img src="{{ product.image_url }}" class="img-thumbnail" style="width:60px; height:60px;">
-            <img src="{{ product.image_url }}" class="img-thumbnail" style="width:60px; height:60px;">
+            {% for img in extra_images %}
+              <img src="{{ img.image.url }}" class="img-thumbnail thumb-img me-2"
+                   style="width:60px; height:60px; cursor: pointer;"
+                   onclick="changeImage('{{ img.image.url }}')">
+            {% empty %}
+                <p>No extra images available.</p>
+            {% endfor %}
           </div>
         </div>
 
@@ -70,7 +82,31 @@
           <!-- Key Features -->
           <h6 class="fw-bold mt-4">Key Features</h6>
           <p>Model: <span>{{ product.model }}</span></p>
-          <p>Color: <span>{{ product.color }}</span></p>
+
+          <!-- Sizes -->
+          {% if sizes %}
+          <div class="mt-3">
+            <h6>Size:</h6>
+            {% for size in sizes %}
+              <button class="btn btn-outline-dark size-btn me-2" data-size="{{ size.size }}">{{ size.size }}</button>
+            {% endfor %}
+          </div>
+          {% endif %}
+
+          <!-- Colors -->
+          {% if colors %}
+          <div class="mt-3">
+            <h6>Color:</h6>
+            {% for color in colors %}
+              <button class="btn btn-outline-secondary color-btn me-2"
+                      data-color="{{ color.color_name }}"
+                      {% if color.color_code %} style="background: {{ color.color_code }};" {% endif %}>
+                {{ color.color_name }}
+              </button>
+            {% endfor %}
+          </div>
+          {% endif %}
+
           <a href="#specifications" class="text-danger" style="text-decoration: underline;">View More Info</a>
 
           <!-- Quantity + Buttons -->
@@ -90,6 +126,22 @@
       </div>
     </div>
 </section>
+
+<!-- Modal for images -->
+<div class="modal fade" id="imageModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content bg-transparent border-0">
+      <div class="modal-body text-center">
+        <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal"></button>
+        <img id="modalImage" src="{{ product.image_url }}" class="img-fluid" style="max-height: 600px;">
+      </div>
+      <div class="d-flex justify-content-between">
+        <button class="btn btn-dark m-2" onclick="prevImage()">‹</button>
+        <button class="btn btn-dark m-2" onclick="nextImage()">›</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="product-details-content">
   <!-- Tabs Section -->
