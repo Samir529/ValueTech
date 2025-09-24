@@ -142,31 +142,86 @@
         </div>
 
         <!-- Color + Product Code -->
+<!--        <h5 class="mt-4">Product Colors</h5>-->
+        <div id="color-formset">
+            <div class="row">
+              {{ formset.management_form }}
+              {% for form in formset %}
+
+                  <!-- Color Name -->
+                  <div class="col-md-5 mb-3">
+                    {{ form.color_name.label_tag }}
+                    {% if form.color_name.errors %}
+                      {{ form.color_name|add_class:"form-control is-invalid" }}
+                      <div class="text-danger">
+                        {% for error in form.color_name.errors %}
+                          {{ error }}
+                        {% endfor %}
+                      </div>
+                    {% else %}
+                      {{ form.color_name|add_class:"form-control" }}
+                    {% endif %}
+                  </div>
+
+                  <!-- Color Code -->
+                  <div class="col-md-3 mb-3 py-2 px-3 shadow-sm">
+                    {{ form.color_code.label_tag }}
+                    {% if form.color_code.errors %}
+                        {{ form.color_code|add_class:"form-control is-invalid" }}
+                      <div class="text-danger">
+                        {% for error in form.color_code.errors %}
+                          {{ error }}
+                        {% endfor %}
+                      </div>
+                    {% else %}
+                        {{ form.color_code|add_class:"form-control" }}
+                    {% endif %}
+                  </div>
+              {% endfor %}
+
+              <!-- Product Code -->
+              <div class="col-md-4 mb-3">
+                {{ form.product_code.label_tag }}
+                {% if form.product_code.errors %}
+                  {{ form.product_code|add_class:"form-control is-invalid" }}
+                  <div class="text-danger">
+                    {% for error in form.product_code.errors %}
+                      {{ error }}
+                    {% endfor %}
+                  </div>
+                {% else %}
+                  {{ form.product_code|add_class:"form-control" }}
+                {% endif %}
+              </div>
+            </div>
+        </div>
+
+        <!-- Prices -->
         <div class="row">
           <div class="col-md-6 mb-3">
-            {{ form.color.label_tag }}
-            {% if form.color.errors %}
-              {{ form.color|add_class:"form-control is-invalid" }}
+            {{ form.regular_price.label_tag }}
+            {% if form.regular_price.errors %}
+              {{ form.regular_price|add_class:"form-control is-invalid" }}
               <div class="text-danger">
-                {% for error in form.color.errors %}
+                {% for error in form.regular_price.errors %}
                   {{ error }}
                 {% endfor %}
               </div>
             {% else %}
-              {{ form.color|add_class:"form-control" }}
+              {{ form.regular_price|add_class:"form-control" }}
             {% endif %}
           </div>
           <div class="col-md-6 mb-3">
-            {{ form.product_code.label_tag }}
-            {% if form.product_code.errors %}
-              {{ form.product_code|add_class:"form-control is-invalid" }}
+            {{ form.special_price.label_tag }}
+            {% if form.special_price.errors %}
+              {{ form.special_price|add_class:"form-control is-invalid" }}
               <div class="text-danger">
-                {% for error in form.product_code.errors %}
+                {% for error in form.special_price.errors %}
                   {{ error }}
                 {% endfor %}
               </div>
             {% else %}
-              {{ form.product_code|add_class:"form-control" }}
+              {{ form.special_price|add_class:"form-control" }}
             {% endif %}
           </div>
         </div>
@@ -201,36 +256,6 @@
           {% endif %}
         </div>
 
-        <!-- Prices -->
-        <div class="row">
-          <div class="col-md-6 mb-3">
-            {{ form.regular_price.label_tag }}
-            {% if form.regular_price.errors %}
-              {{ form.regular_price|add_class:"form-control is-invalid" }}
-              <div class="text-danger">
-                {% for error in form.regular_price.errors %}
-                  {{ error }}
-                {% endfor %}
-              </div>
-            {% else %}
-              {{ form.regular_price|add_class:"form-control" }}
-            {% endif %}
-          </div>
-          <div class="col-md-6 mb-3">
-            {{ form.special_price.label_tag }}
-            {% if form.special_price.errors %}
-              {{ form.special_price|add_class:"form-control is-invalid" }}
-              <div class="text-danger">
-                {% for error in form.special_price.errors %}
-                  {{ error }}
-                {% endfor %}
-              </div>
-            {% else %}
-              {{ form.special_price|add_class:"form-control" }}
-            {% endif %}
-          </div>
-        </div>
-
         <!-- Stock + Status -->
         <div class="row">
           <div class="col-md-5 mb-3">
@@ -246,7 +271,7 @@
               {{ form.stock|add_class:"form-control" }}
             {% endif %}
           </div>
-          <div class="col-md-5 mb-3 ms-4 py-2 shadow-sm">
+          <div class="col-md-5 mb-3 ms-4 py-2 px-3 shadow-sm">
             {{ form.status.label_tag }}
             {% if form.status.errors %}
               {{ form.status|add_class:"form-control is-invalid" }}

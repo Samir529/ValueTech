@@ -53,11 +53,13 @@ window.addEventListener("scroll", function () {
     const topbarHeight = topbar ? topbar.offsetHeight : 0;
 
     if (window.scrollY >= topbarHeight) {
-    navbar.classList.add("sticky");
-    categoryBar.classList.add("sticky");
+        navbar.classList.add("sticky");
+        categoryBar.classList.add("sticky");
+        document.body.style.paddingTop = navbar.offsetHeight + 'px';
     } else {
-    navbar.classList.remove("sticky");
-    categoryBar.classList.remove("sticky");
+        navbar.classList.remove("sticky");
+        categoryBar.classList.remove("sticky");
+        document.body.style.paddingTop = '0';
     }
 });
 

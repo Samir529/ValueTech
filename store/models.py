@@ -118,7 +118,6 @@ class Product(models.Model):
     product_code = models.CharField(max_length=100, unique=True)
     brand = models.CharField(max_length=100)
     model = models.CharField(max_length=100)
-    color = models.CharField(max_length=100, blank=True, null=True)
     specification = models.TextField()
     description = models.TextField()
 
@@ -173,7 +172,7 @@ class ProductColor(models.Model):
     product = models.ForeignKey(
         Product, related_name="colors", on_delete=models.CASCADE
     )
-    color_name = models.CharField(max_length=50)
+    color_name = models.CharField(max_length=50, blank=True, null=True)
     # color_code = models.CharField(max_length=7, blank=True, null=True)  # HEX code (optional)
     color_code = ColorField(max_length=7, blank=True, null=True)  # adds a color picker in admin
 

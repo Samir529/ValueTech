@@ -58,16 +58,16 @@ class ProductAdmin(admin.ModelAdmin):
 
     list_filter = ("status", "category", "brand")
     fieldsets = (
-        (None, {"fields": ("category", "name", "slug", "product_code", "brand", "model", "color", "regular_price",
+        (None, {"fields": ("category", "name", "slug", "product_code", "brand", "model", "regular_price",
                            "special_price", "status", "stock", "specification", "description", "warranty",
                            "warranty_details", "product_image")}),
     )
     add_fieldsets = (
         (None, {
             "classes": ("wide",),
-            "fields": ("category", "name", "slug", "product_code", "product_adding_date", "brand", "model", "color",
-                       "regular_price", "special_price", "status", "stock", "specification", "description", "warranty",
-                        "warranty_details", "product_image")}
+            "fields": ("category", "name", "slug", "product_code", "product_adding_date", "brand", "model",
+                       "regular_price", "special_price", "status", "stock", "specification", "description",
+                       "warranty", "warranty_details", "product_image")}
          ),
     )
     search_fields = ("name",)

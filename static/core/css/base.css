@@ -245,10 +245,10 @@ gap: 4px;
     width: 100%;
     z-index: 999;
     /*box-shadow: 0 2px 8px rgba(0,0,0,0.1);*/
-    padding-top: 10px;  /* shrinks navbar smoothly */
-    padding-bottom: 10px;   /* shrinks navbar smoothly */
+    padding-top: 5px;  /* shrinks navbar smoothly */
+    padding-bottom: 5px;   /* shrinks navbar smoothly */
     animation: slideDown 0.3s forwards; /* slide animation */
-    height: 80px;   /* (60+10+10) */
+    height: 70px;   /* (60+5+5) */
 }
 /* Slide animation */
 @keyframes slideDown {
@@ -312,7 +312,7 @@ gap: 4px;
 /* Sticky Category Bar */
 .category-bar.sticky {
     position: fixed;
-    top: 80px; /* adjust to match navbar height */ /* (60+10+10) */
+    top: 70px; /* adjust to match navbar height */ /* (60+5+5) */
     left: 0;
     width: 100%;
     z-index: 998;

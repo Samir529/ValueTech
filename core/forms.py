@@ -1,6 +1,6 @@
 from django import forms
-from store.models import Category, Product
 from colorfield.widgets import ColorWidget
+from store.models import Category, Product, ProductColor
 
 
 class productForm(forms.ModelForm):
@@ -32,7 +32,6 @@ class productForm(forms.ModelForm):
             "slug",
             "brand",
             "model",
-            "color",
             "specification",
             "description",
             "regular_price",
@@ -67,7 +66,6 @@ class productForm(forms.ModelForm):
             "brand": forms.TextInput(attrs={"placeholder": "Enter brand name", "class": "form-control"}),
             "model": forms.TextInput(attrs={"placeholder": "Enter model number/name", "class": "form-control"}),
             # "color": forms.TextInput(attrs={"placeholder": "e.g. Black, Blue, Gray", "class": "form-control"}),
-            "color": ColorWidget(attrs={"style": "width: 80px; height: 40px;"}),
             "specification": forms.Textarea(attrs={"rows": 3, "placeholder": "Enter specifications", "class": "form-control"}),
             "description": forms.Textarea(attrs={"rows": 4, "placeholder": "Enter product description", "class": "form-control"}),
             "regular_price": forms.NumberInput(attrs={"placeholder": "Enter regular price", "class": "form-control"}),
@@ -119,4 +117,18 @@ class productForm(forms.ModelForm):
             product.save()
 
         return product
+
+
+class ProductColorForm(forms.ModelForm):
+    class Meta:
+        model = ProductColor
+        fields = ["color_name", "color_code"]
+        labels = {
+            "color_name": "Color Name",
+            "color_code": "Color Code",
+        }
+        widgets = {
+            "color_name": forms.TextInput(attrs={"placeholder": "e.g. Black, Blue, Gray", "class": "form-control"}),
+            'color_code': ColorWidget(attrs={'style': 'width: 80px; height: 40px;'})
+        }
 

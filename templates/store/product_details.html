@@ -23,7 +23,7 @@
         <!-- Product Image -->
         <div class="col-md-5 text-center">
           <img id="mainProductImage" src="{{ product.image_url }}" alt="{{ product.name }}"
-               class="img-fluid mb-3 shadow-sm" style="max-height: 380px; object-fit: contain; cursor: pointer;"
+               class="img-fluid mb-3" style="max-height: 400px; object-fit: contain; cursor: pointer;"
                data-bs-toggle="modal" data-bs-target="#imageModal">
 
           <!-- Thumbnails -->
@@ -36,7 +36,7 @@
           <!-- Show extra images -->
           <div class="d-flex justify-content-center mt-2">
             {% for img in extra_images %}
-              <img src="{{ img.image.url }}" class="img-thumbnail thumb-img me-2"
+              <img src="{{ img.image.url }}" class="img-thumbnail thumb-img"
                    style="width:60px; height:60px; cursor: pointer;"
                    onclick="changeImage('{{ img.image.url }}')">
             {% empty %}
@@ -127,21 +127,42 @@
     </div>
 </section>
 
+
 <!-- Modal for images -->
 <div class="modal fade" id="imageModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content bg-transparent border-0">
-      <div class="modal-body text-center">
-        <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal"></button>
-        <img id="modalImage" src="{{ product.image_url }}" class="img-fluid" style="max-height: 600px;">
-      </div>
-      <div class="d-flex justify-content-between">
-        <button class="btn btn-dark m-2" onclick="prevImage()">‹</button>
-        <button class="btn btn-dark m-2" onclick="nextImage()">›</button>
+      <div class="modal-body text-center position-relative p-0">
+
+        <!-- Image wrapper (for close button only) -->
+        <div class="position-relative d-inline-block">
+          <!-- Image -->
+          <img id="modalImage" src="{{ product.image_url }}"
+               class="img-fluid" style="max-height: 600px;">
+
+          <!-- Close button INSIDE image (top-right) -->
+          <button type="button"
+                  class="btn-close position-absolute top-0 end-0 m-2"
+                  data-bs-dismiss="modal"></button>
+        </div>
+
+        <!-- Prev button BESIDE image (vertically centered) -->
+        <button type="button"
+                class="btn btn-dark position-absolute top-50 start-0 translate-middle-y"
+                style="margin-left: 80px;"
+                onclick="prevImage()">‹</button>
+
+        <!-- Next button BESIDE image (vertically centered) -->
+        <button type="button"
+                class="btn btn-dark position-absolute top-50 end-0 translate-middle-y"
+                style="margin-right: 80px;"
+                onclick="nextImage()">›</button>
+
       </div>
     </div>
   </div>
 </div>
+
 
 <div class="product-details-content">
   <!-- Tabs Section -->
