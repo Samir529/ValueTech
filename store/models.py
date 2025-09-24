@@ -3,6 +3,8 @@ from django.db import models
 from django.utils.text import slugify
 from django.templatetags.static import static
 from django.core.exceptions import ValidationError
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
 
 
 
@@ -186,6 +188,36 @@ class ProductSize(models.Model):
 
     def __str__(self):
         return f"{self.product.name} - {self.size}"
+
+
+
+# Delete main product image file from media folder when product is deleted
+@receiver(post_delete, sender=Product)
+def delete_product_main_image(sender, instance, **kwargs):
+    """
+    Delete main product image from storage only if
+    no other Product is using the same file.
+    """
+    image = instance.product_image
+    if image and image.name:  # check file exists in field
+        qs = Product.objects.filter(product_image=image.name)
+        if not qs.exists():  # no other product uses it
+            image.delete(save=False)
+
+
+
+@receiver(post_delete, sender=ProductImage)
+def delete_product_gallery_image(sender, instance, **kwargs):
+    """
+    Delete gallery image from storage only if
+    no other ProductImage is using the same file.
+    """
+    image = instance.image
+    if image and image.name:  # file exists
+        qs = ProductImage.objects.filter(image=image.name)
+        if not qs.exists():  # no other gallery references it
+            image.delete(save=False)
+
 
 
 

@@ -81,6 +81,7 @@ INSTALLED_APPS = [
     'django_filters',
     'django.contrib.humanize',
     'django_extensions',
+    'widget_tweaks',
 ]
 
 

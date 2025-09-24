@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 {% extends "base.html" %}
 {% load static %}
+{% load widget_tweaks %}  {# for add_class filter #}
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'core/css/add_product.css' %}"/>
 
@@ -38,6 +39,13 @@
 <!--        </div>-->
 <!--        {% endif %}-->
 
+        <!-- Global form error -->
+        {% if form.errors %}
+          <div class="alert alert-danger">
+              Please correct the error below.
+          </div>
+        {% endif %}
+
         <!-- Non-field errors (e.g. category logic) -->
         {% if form.non_field_errors %}
         <div class="alert alert-danger">
@@ -70,38 +78,65 @@
             </div>
         </div>
 
+        <!-- Example field rendering -->
         <!-- Product Name -->
         <div class="mb-3">
           {{ form.name.label_tag }}
-          {{ form.name }}
           {% if form.name.errors %}
-            <div class="text-danger">{{ form.name.errors }}</div>
+            {{ form.name|add_class:"form-control is-invalid" }}
+            <div class="text-danger">
+              {% for error in form.name.errors %}
+                {{ error }}
+              {% endfor %}
+            </div>
+          {% else %}
+            {{ form.name|add_class:"form-control" }}
           {% endif %}
         </div>
 
+        <!-- Repeating the same pattern for other fields... -->
         <!-- Custom Slug -->
         <div class="mb-3">
           {{ form.slug.label_tag }}
-          {{ form.slug }}
           {% if form.slug.errors %}
-            <div class="text-danger">{{ form.slug.errors }}</div>
+            {{ form.slug|add_class:"form-control is-invalid" }}
+            <div class="text-danger">
+              {% for error in form.slug.errors %}
+                {{ error }}
+              {% endfor %}
+            </div>
+          {% else %}
+            {{ form.slug|add_class:"form-control" }}
           {% endif %}
         </div>
 
+        <!-- Example with two fields side by side -->
         <!-- Brand + Model -->
         <div class="row">
           <div class="col-md-6 mb-3">
             {{ form.brand.label_tag }}
-            {{ form.brand }}
             {% if form.brand.errors %}
-              <div class="text-danger">{{ form.brand.errors }}</div>
+              {{ form.brand|add_class:"form-control is-invalid" }}
+              <div class="text-danger">
+                {% for error in form.brand.errors %}
+                  {{ error }}
+                {% endfor %}
+              </div>
+            {% else %}
+              {{ form.brand|add_class:"form-control" }}
             {% endif %}
           </div>
           <div class="col-md-6 mb-3">
             {{ form.model.label_tag }}
-            {{ form.model }}
             {% if form.model.errors %}
-              <div class="text-danger">{{ form.model.errors }}</div>
+              {{ form.model|add_class:"form-control is-invalid" }}
+              <div class="text-danger">
+                {% for error in form.model.errors %}
+                  {{ error }}
+                {% endfor %}
+              </div>
+            {% else %}
+              {{ form.model|add_class:"form-control" }}
             {% endif %}
           </div>
         </div>
@@ -110,16 +145,28 @@
         <div class="row">
           <div class="col-md-6 mb-3">
             {{ form.color.label_tag }}
-            {{ form.color }}
             {% if form.color.errors %}
-              <div class="text-danger">{{ form.color.errors }}</div>
+              {{ form.color|add_class:"form-control is-invalid" }}
+              <div class="text-danger">
+                {% for error in form.color.errors %}
+                  {{ error }}
+                {% endfor %}
+              </div>
+            {% else %}
+              {{ form.color|add_class:"form-control" }}
             {% endif %}
           </div>
           <div class="col-md-6 mb-3">
             {{ form.product_code.label_tag }}
-            {{ form.product_code }}
             {% if form.product_code.errors %}
-              <div class="text-danger">{{ form.product_code.errors }}</div>
+              {{ form.product_code|add_class:"form-control is-invalid" }}
+              <div class="text-danger">
+                {% for error in form.product_code.errors %}
+                  {{ error }}
+                {% endfor %}
+              </div>
+            {% else %}
+              {{ form.product_code|add_class:"form-control" }}
             {% endif %}
           </div>
         </div>
@@ -127,18 +174,30 @@
         <!-- Specification -->
         <div class="mb-3">
           {{ form.specification.label_tag }}
-          {{ form.specification }}
           {% if form.specification.errors %}
-            <div class="text-danger">{{ form.specification.errors }}</div>
+            {{ form.specification|add_class:"form-control is-invalid" }}
+            <div class="text-danger">
+              {% for error in form.specification.errors %}
+                {{ error }}
+              {% endfor %}
+            </div>
+          {% else %}
+            {{ form.specification|add_class:"form-control" }}
           {% endif %}
         </div>
 
         <!-- Description -->
         <div class="mb-3">
           {{ form.description.label_tag }}
-          {{ form.description }}
           {% if form.description.errors %}
-            <div class="text-danger">{{ form.description.errors }}</div>
+            {{ form.description|add_class:"form-control is-invalid" }}
+            <div class="text-danger">
+              {% for error in form.description.errors %}
+                {{ error }}
+              {% endfor %}
+            </div>
+          {% else %}
+            {{ form.description|add_class:"form-control" }}
           {% endif %}
         </div>
 
@@ -146,16 +205,28 @@
         <div class="row">
           <div class="col-md-6 mb-3">
             {{ form.regular_price.label_tag }}
-            {{ form.regular_price }}
             {% if form.regular_price.errors %}
-              <div class="text-danger">{{ form.regular_price.errors }}</div>
+              {{ form.regular_price|add_class:"form-control is-invalid" }}
+              <div class="text-danger">
+                {% for error in form.regular_price.errors %}
+                  {{ error }}
+                {% endfor %}
+              </div>
+            {% else %}
+              {{ form.regular_price|add_class:"form-control" }}
             {% endif %}
           </div>
           <div class="col-md-6 mb-3">
             {{ form.special_price.label_tag }}
-            {{ form.special_price }}
             {% if form.special_price.errors %}
-              <div class="text-danger">{{ form.special_price.errors }}</div>
+              {{ form.special_price|add_class:"form-control is-invalid" }}
+              <div class="text-danger">
+                {% for error in form.special_price.errors %}
+                  {{ error }}
+                {% endfor %}
+              </div>
+            {% else %}
+              {{ form.special_price|add_class:"form-control" }}
             {% endif %}
           </div>
         </div>
@@ -164,16 +235,28 @@
         <div class="row">
           <div class="col-md-5 mb-3">
             {{ form.stock.label_tag }}
-            {{ form.stock }}
             {% if form.stock.errors %}
-              <div class="text-danger small">{{ form.stock.errors }}</div>
+              {{ form.stock|add_class:"form-control is-invalid" }}
+              <div class="text-danger small">
+                {% for error in form.stock.errors %}
+                  {{ error }}
+                {% endfor %}
+              </div>
+            {% else %}
+              {{ form.stock|add_class:"form-control" }}
             {% endif %}
           </div>
-          <div class="col-md-6 mb-3 shadow">
+          <div class="col-md-5 mb-3 ms-4 py-2 shadow-sm">
             {{ form.status.label_tag }}
-            {{ form.status }}
             {% if form.status.errors %}
-              <div class="text-danger small">{{ form.status.errors }}</div>
+              {{ form.status|add_class:"form-control is-invalid" }}
+              <div class="text-danger small">
+                {% for error in form.status.errors %}
+                  {{ error }}
+                {% endfor %}
+              </div>
+            {% else %}
+              {{ form.status|add_class:"form-control" }}
             {% endif %}
           </div>
         </div>
@@ -182,16 +265,28 @@
         <div class="row">
           <div class="col-md-6 mb-3">
             {{ form.warranty.label_tag }}
-            {{ form.warranty }}
             {% if form.warranty.errors %}
-              <div class="text-danger">{{ form.warranty.errors }}</div>
+              {{ form.warranty|add_class:"form-control is-invalid" }}
+              <div class="text-danger">
+                {% for error in form.warranty.errors %}
+                  {{ error }}
+                {% endfor %}
+              </div>
+            {% else %}
+              {{ form.warranty|add_class:"form-control" }}
             {% endif %}
           </div>
           <div class="col-md-6 mb-3">
             {{ form.warranty_details.label_tag }}
-            {{ form.warranty_details }}
             {% if form.warranty_details.errors %}
-              <div class="text-danger">{{ form.warranty_details.errors }}</div>
+              {{ form.warranty_details|add_class:"form-control is-invalid" }}
+              <div class="text-danger">
+                {% for error in form.warranty_details.errors %}
+                  {{ error }}
+                {% endfor %}
+              </div>
+            {% else %}
+              {{ form.warranty_details|add_class:"form-control" }}
             {% endif %}
           </div>
         </div>
@@ -199,9 +294,15 @@
         <!-- Product Image -->
         <div class="mb-3">
           {{ form.product_image.label_tag }}
-          {{ form.product_image }}
           {% if form.product_image.errors %}
-            <div class="text-danger">{{ form.product_image.errors }}</div>
+            {{ form.product_image|add_class:"form-control is-invalid" }}
+            <div class="text-danger">
+              {% for error in form.product_image.errors %}
+                {{ error }}
+              {% endfor %}
+            </div>
+          {% else %}
+            {{ form.product_image|add_class:"form-control" }}
           {% endif %}
         </div>
 
@@ -213,13 +314,17 @@
 
         <!-- Submit -->
         <div class="text-center">
-            <button type="submit" class="button" style="margin-top: 15px; width: 385px;"><span>Save Product</span></button>
+            <button type="submit" class="button" style="margin-top: 15px; width: 385px;">
+                <span>Save Product</span>
+            </button>
         </div>
     </form>
 
     <div class="text-center">
         <a href="{% url 'staffPanel' %}">
-            <button class="button2" style="margin-top: 15px; width: 385px;"><span>Back</span></button>
+            <button class="button2" style="margin-top: 15px; width: 385px;">
+                <span>Back</span>
+            </button>
         </a>
     </div>
 </div>
