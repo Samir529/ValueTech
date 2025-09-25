@@ -194,6 +194,7 @@
 <div class="category-bar">
   <div class="container d-flex flex-wrap justify-content-center">
 
+    <!-- Categories -->
     {% for category in categories %}
       <div class="category-bar-dropdown">
         <a href="{% url 'product_list_by_category' category.slug %}" class="dropbtn">
