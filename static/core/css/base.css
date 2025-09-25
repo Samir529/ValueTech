@@ -281,9 +281,9 @@ gap: 4px;
     scrollbar-width: none;     /* Hide scrollbar Firefox */
     -ms-overflow-style: none;  /* Hide scrollbar IE/Edge */
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    padding-top: 14px;
-    padding-bottom: 14px;
-    height: 45px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    height: 42px;
 }
 .category-bar::-webkit-scrollbar {
     display: none;             /* Hide scrollbar Chrome/Safari */
@@ -320,6 +320,136 @@ gap: 4px;
     border-top: 1px solid darkgray;
     border-bottom: 1px solid darkgray;
     animation: slideDown 0.3s forwards;
+}
+
+/* Category Bar Dropdown */
+/* Dropdown wrapper */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+/* Main dropdown content */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #fff;
+  min-width: 180px;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  z-index: 999;
+}
+/* Show subcategories on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+/* Subcategory wrapper */
+.dropdown-sub {
+  position: relative;
+}
+/* Subcategory types (flyout to right) */
+.dropdown-sub-content {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 100%;   /* fly out to right */
+  background: #fff;
+  min-width: 180px;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  z-index: 1000;
+}
+.dropdown-sub:hover .dropdown-sub-content {
+  display: block;
+}
+
+
+/* Side Dropdown Category Menu */
+/* Side menu wrapper */
+.side-menu {
+  position: fixed;
+  top: 0;
+  left: -300px; /* hidden by default */
+  width: 280px;
+  height: 100%;
+  background: #fff;
+  border-right: 1px solid #ccc;
+  box-shadow: 2px 0 6px rgba(0,0,0,0.2);
+  transition: left 0.3s ease;
+  z-index: 1001;
+  overflow-y: auto;
+}
+/* Show menu */
+.side-menu.open {
+  left: 0;
+}
+/* Header */
+.side-menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  font-weight: bold;
+  background: #f5f5f5;
+  border-bottom: 1px solid #ddd;
+}
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+}
+/* Overlay */
+#overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.4);
+  z-index: 1000;
+}
+#overlay.show {
+  display: block;
+}
+/* Menu styles */
+.menu-list, .submenu, .sub-submenu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.menu-item, .submenu-item {
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 12px 15px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  color: #000;
+}
+.menu-item:hover, .submenu-item:hover {
+  background: #f0f0f0;
+}
+/* Nested menus */
+.submenu, .sub-submenu {
+  display: none;
+  padding-left: 15px;
+  border-left: 2px solid #eee;
+}
+.submenu.open, .sub-submenu.open {
+  display: block;
+}
+.sub-submenu a {
+  display: block;
+  padding: 8px 15px;
+  font-size: 13px;
+  color: #444;
+  text-decoration: none;
+}
+.sub-submenu a:hover {
+  color: orangered;
 }
 
 

@@ -11,8 +11,12 @@
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/"><i class="fas fa-home"></i></a></li>
-        {% if selected_category %}
-          <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'product_list_by_category' selected_category %}" style="color: dimgray">{{ selected_category }}</a></li>
+        {% if category_name %}
+          <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'new_arrivals' %}" style="color: dimgray">{{ category_name }}</a></li>
+        {% elif slug == 'latest-gadgets' %}
+          <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'product_list_by_category' slug %}" style="color: dimgray">Latest Gadgets</a></li>
+        {% elif selected_category %}
+          <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'product_list_by_category' selected_category.slug %}" style="color: dimgray">{{ selected_category.name }}</a></li>
         {% else %}
           <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'product_list' %}" style="color: dimgray">All Products</a></li>
         {% endif %}
@@ -22,14 +26,15 @@
 
 <div class="products-content">
   <div>
-    {% if selected_category %}
-        {% if selected_category == 'New Arrival' %}
-          <h3 class="fw-bold mb-3" style="color: royalblue; font-family: 'Candara', Arial, sans-serif;">
-              {{ selected_category }} Products Price in Bangladesh</h3>
-        {% else %}
-          <h3 class="fw-bold mb-3" style="color: royalblue; font-family: 'Candara', Arial, sans-serif;">
-              {{ selected_category }} Price in Bangladesh</h3>
-        {% endif %}
+    {% if category_name %}
+      <h3 class="fw-bold mb-3" style="color: royalblue; font-family: 'Candara', Arial, sans-serif;">
+          {{ category_name }} Products Price in Bangladesh</h3>
+    {% elif slug == 'latest-gadgets' %}
+      <h3 class="fw-bold mb-3" style="color: royalblue; font-family: 'Candara', Arial, sans-serif;">
+          Latest Gadgets Price in Bangladesh</h3>
+    {% elif selected_category %}
+      <h3 class="fw-bold mb-3" style="color: royalblue; font-family: 'Candara', Arial, sans-serif;">
+          {{ selected_category.name }} Price in Bangladesh</h3>
     {% else %}
       <h3 class="fw-bold mb-3" style="color: royalblue; font-family: 'Candara', Arial, sans-serif;">
           All Products Price in Bangladesh</h3>

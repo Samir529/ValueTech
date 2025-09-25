@@ -64,6 +64,40 @@ window.addEventListener("scroll", function () {
 });
 
 
+// Side Dropdown Category Menu
+document.addEventListener("DOMContentLoaded", function() {
+  const menu = document.getElementById("sideCategoryMenu");
+  const overlay = document.getElementById("overlay");
+  const openBtn = document.querySelector(".category-toggle");
+  const closeBtn = document.querySelector(".close-btn");
+
+  // Open side menu
+  openBtn.addEventListener("click", () => {
+    menu.classList.add("open");
+    overlay.classList.add("show");
+  });
+
+  // Close side menu
+  closeBtn.addEventListener("click", () => {
+    menu.classList.remove("open");
+    overlay.classList.remove("show");
+  });
+
+  overlay.addEventListener("click", () => {
+    menu.classList.remove("open");
+    overlay.classList.remove("show");
+  });
+
+  // Toggle submenus
+  document.querySelectorAll("[data-toggle]").forEach(btn => {
+    btn.addEventListener("click", function() {
+      const target = document.getElementById(this.dataset.toggle);
+      target.classList.toggle("open");
+    });
+  });
+});
+
+
 // Back-to-Top Button
 // Configuration
 const SHOW_AFTER_Y = 200; // px scrolled before showing the button

@@ -47,7 +47,7 @@
     </div>
     <div class="d-flex align-items-center px-3 py-1 rounded-pill" style="background:#12346B; border:1px solid #11346B;">
       <i class="fas fa-star text-light me-2"></i>
-      <a href="{% url 'product_list_by_category' 'New Arrival' %}" class="text-light">New Arrival</a>
+      <a href="{% url 'new_arrivals' %}" class="text-light">New Arrival</a>
     </div>
     <div class="d-flex align-items-center px-3 py-1 rounded-pill" style="background:#12346B; border:1px solid #11346B;">
       <i class="fas fa-headset text-light me-2"></i>
@@ -193,26 +193,84 @@
 <!-- Category Section -->
 <div class="category-bar">
   <div class="container d-flex flex-wrap justify-content-center">
-    <a href="{% url 'product_list_by_category' 'Desktop' %}">Desktop</a>
-    <a href="{% url 'product_list_by_category' 'Laptop' %}">Laptop</a>
-    <a href="{% url 'product_list_by_category' 'Component' %}">Component</a>
-    <a href="{% url 'product_list_by_category' 'Monitor' %}">Monitor</a>
-    <a href="{% url 'product_list_by_category' 'Power' %}">Power</a>
-    <a href="{% url 'product_list_by_category' 'Phone' %}">Phone</a>
-    <a href="{% url 'product_list_by_category' 'Tablet' %}">Tablet</a>
-    <a href="{% url 'product_list_by_category' 'Office Equipment' %}">Office Equipment</a>
-    <a href="{% url 'product_list_by_category' 'Camera' %}">Camera</a>
-    <a href="{% url 'product_list_by_category' 'Security' %}">Security</a>
-    <a href="{% url 'product_list_by_category' 'Networking' %}">Networking</a>
-    <a href="{% url 'product_list_by_category' 'Software' %}">Software</a>
-    <a href="{% url 'product_list_by_category' 'Server & Storage' %}">Server & Storage</a>
-    <a href="{% url 'product_list_by_category' 'Accessories' %}">Accessories</a>
-    <a href="{% url 'product_list_by_category' 'Gadget' %}">Gadget</a>
-    <a href="{% url 'product_list_by_category' 'Gaming' %}">Gaming</a>
-    <a href="{% url 'product_list_by_category' 'TV' %}">TV</a>
-    <a href="{% url 'product_list_by_category' 'Appliance' %}">Appliance</a>
+
+    {% for category in categories %}
+      <div class="dropdown">
+        <a href="{% url 'product_list_by_category' category.slug %}" class="dropbtn">
+          {{ category.name }}
+        </a>
+
+        <!-- Subcategories -->
+        {% if category.subcategory_set.all %}
+        <div class="dropdown-content">
+          {% for sub in category.subcategory_set.all %}
+            <div class="dropdown-sub">
+              <a href="{% url 'product_list_by_category' sub.slug %}">
+                {{ sub.name }}
+              </a>
+
+              <!-- Types of Subcategory -->
+              {% if sub.typesofsubcategory_set.all %}
+              <div class="dropdown-sub-content">
+                {% for type in sub.typesofsubcategory_set.all %}
+                  <a href="{% url 'product_list_by_category' type.slug %}">
+                    {{ type.name }}
+                  </a>
+                {% endfor %}
+              </div>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+    {% endfor %}
+
   </div>
 </div>
+
+<!-- Mobile Category Button -->
+<button class="category-toggle d-lg-none">☰ Categories</button>
+
+<!-- Side Category Menu -->
+<div id="sideCategoryMenu" class="side-menu">
+  <div class="side-menu-header">
+    <span>Categories</span>
+    <button class="close-btn">&times;</button>
+  </div>
+  <ul class="menu-list">
+    {% for category in categories %}
+      <li>
+        <button class="menu-item" data-toggle="sub-{{ category.slug }}">
+          {{ category.name }}
+        </button>
+
+        <!-- Subcategories -->
+        <ul id="sub-{{ category.slug }}" class="submenu">
+          {% for sub in category.subcategory_set.all %}
+            <li>
+              <button class="submenu-item" data-toggle="types-{{ sub.slug }}">
+                {{ sub.name }}
+              </button>
+
+              <!-- Types of Subcategory -->
+              <ul id="types-{{ sub.slug }}" class="sub-submenu">
+                {% for type in sub.typesofsubcategory_set.all %}
+                  <li>
+                    <a href="{% url 'product_list_by_type' type.slug %}">
+                      {{ type.name }}
+                    </a>
+                  </li>
+                {% endfor %}
+              </ul>
+            </li>
+          {% endfor %}
+        </ul>
+      </li>
+    {% endfor %}
+  </ul>
+</div>
+<div id="overlay"></div>
 
 <!-- Side Navigation Menu -->
 <div id="sidenavjs" class="sidenav">

@@ -31,6 +31,9 @@ def unique_slugify(instance, value, slug_field_name="slug"):
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(max_length=100, unique=True, blank=True)
+    serial = models.IntegerField(blank=True, null=True)
+    display_at_bar = models.BooleanField(default=False)
+    category_adding_date = models.DateTimeField(auto_now_add=True)  # stores full date + time
 
     class Meta:
         verbose_name_plural = "Categories"

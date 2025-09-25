@@ -1,6 +1,6 @@
 from django.db.models import F, ExpressionWrapper, IntegerField, FloatField
 from django.shortcuts import render, get_object_or_404
-from store.models import Product
+from store.models import Product, Category, subCategory, typesOfSubCategory
 
 from django.http import JsonResponse
 from django.template.loader import render_to_string
@@ -44,7 +44,12 @@ def base(request):
     return render(request, 'base.html')
 
 
-def product_list(request, category=None):
+def category_view(request):
+    categories = Category.objects.all().prefetch_related('subcategory_set__typesofsubcategory_set')
+    return render(request, 'base.html', {"categories": categories})
+
+
+def product_list(request, slug=None):
     products = (
         Product.objects
         .annotate(
@@ -60,21 +65,81 @@ def product_list(request, category=None):
         .order_by('-product_adding_date')
     )
 
-    if category:  # filter only if a category is passed
+    selected_category = None
+    selected_subcategory = None
+    selected_type = None
 
-        # View All Latest Gadgets
-        if category == 'Latest Gadgets':
+    # if category:  # filter only if a category is passed
+    #
+    #     # View All Latest Gadgets
+    #     if category == 'Latest Gadgets':
+    #         products = products.filter(category__name="Gadget")  # show all gadgets from gadget category
+    #     elif category == 'New Arrival':
+    #         products = products
+    #     else:
+    #         products = products.filter(category__name__iexact=category)
+
+    if slug:    # filter only if a category slug is passed
+        # Special filter: latest-gadgets = show all latest gadgets
+        if slug == 'latest-gadgets':
             products = products.filter(category__name="Gadget")  # show all gadgets from gadget category
-        elif category == 'New Arrival':
-            products = products
+
         else:
-            products = products.filter(category__name__iexact=category)
+            # Try matching Category
+            try:
+                selected_category = Category.objects.get(slug=slug)
+                products = products.filter(category=selected_category)
+            except Category.DoesNotExist:
+                pass
+
+            # Try matching SubCategory
+            if not products.exists():
+                try:
+                    selected_subcategory = subCategory.objects.get(slug=slug)
+                    products = products.filter(category=selected_subcategory.category,
+                                               category__subcategory=selected_subcategory)
+                except subCategory.DoesNotExist:
+                    pass
+
+            # Try matching Type
+            if not products.exists():
+                try:
+                    selected_type = typesOfSubCategory.objects.get(slug=slug)
+                    products = products.filter(category=selected_type.category,
+                                               category__subcategory=selected_type.sub_category)
+                except typesOfSubCategory.DoesNotExist:
+                    pass
 
     context = {
         'products': products,
-        'selected_category': category,
+        'slug': slug,
+        'selected_category': selected_category,
+        'selected_subcategory': selected_subcategory,
+        'selected_type': selected_type,
     }
     return render(request, 'store/products.html', context)
+
+
+def new_arrival_products(request):
+    # New Arrival = show all products
+    products = (
+        Product.objects
+        .annotate(
+            discount=ExpressionWrapper(
+                F('regular_price') - F('special_price'),
+                output_field=IntegerField()
+            ),
+            discount_percentage=ExpressionWrapper(
+                (F('regular_price') - F('special_price')) * 100.0 / F('regular_price'),
+                output_field=FloatField()
+            )
+        )
+        .order_by('-product_adding_date')
+    )
+    return render(request, "store/products.html", {
+        "products": products,
+        "category_name": "New Arrival",
+    })
 
 
 def product_details(request, slug):
