@@ -225,3 +225,67 @@ def delete_product_gallery_image(sender, instance, **kwargs):
 
 
 
+class Attribute(models.Model):
+    """High-level attribute (Battery, Belt)"""
+    name = models.CharField(max_length=100, unique=True)
+    slug = models.SlugField(max_length=120, unique=True, blank=True)
+
+    def __str__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = unique_slugify(self, self.name)
+        super().save(*args, **kwargs)
+
+
+class AttributeValue(models.Model):
+    """Concrete value for an Attribute (200mah, 300mah, silicone, magnetic)"""
+    attribute = models.ForeignKey(Attribute, related_name='values', on_delete=models.CASCADE)
+    value = models.CharField(max_length=120)
+    slug = models.SlugField(max_length=140, blank=True)
+
+    class Meta:
+        unique_together = (('attribute', 'value'),)
+
+    def __str__(self):
+        return f"{self.attribute.name}: {self.value}"
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = unique_slugify(self, self.value)
+        super().save(*args, **kwargs)
+
+
+class Variant(models.Model):
+    """A product variant defined by a set of AttributeValue(s)."""
+    product = models.ForeignKey('Product', related_name='variants', on_delete=models.CASCADE)
+    sku = models.CharField(max_length=120, blank=True, null=True, unique=True)
+    attribute_values = models.ManyToManyField(AttributeValue, related_name='variants')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ('-created_at',)
+
+    def __str__(self):
+        parts = [f"{av.attribute.name}={av.value}" for av in self.attribute_values.all()]
+        return f"{self.product.name} ({', '.join(parts)})" if parts else f"{self.product.name} - variant"
+
+
+    def get_price(self):
+        return self.regular_price or self.product.regular_price
+
+
+class VariantColorStock(models.Model):
+    """Per-variant per-color stock (nested under Variant in admin)."""
+    variant = models.ForeignKey(Variant, related_name='color_stocks', on_delete=models.CASCADE)
+    # reusing ProductColor model (it references product already)
+    color = models.ForeignKey('ProductColor', on_delete=models.PROTECT)
+    stock = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        unique_together = (('variant', 'color'),)
+
+    def __str__(self):
+        return f"{self.variant} — {self.color.color_name}: {self.stock}"
+

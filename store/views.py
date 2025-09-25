@@ -69,17 +69,8 @@ def product_list(request, slug=None):
     selected_subcategory = None
     selected_type = None
 
-    # if category:  # filter only if a category is passed
-    #
-    #     # View All Latest Gadgets
-    #     if category == 'Latest Gadgets':
-    #         products = products.filter(category__name="Gadget")  # show all gadgets from gadget category
-    #     elif category == 'New Arrival':
-    #         products = products
-    #     else:
-    #         products = products.filter(category__name__iexact=category)
-
     if slug:    # filter only if a category slug is passed
+
         # Special filter: latest-gadgets = show all latest gadgets
         if slug == 'latest-gadgets':
             products = products.filter(category__name="Gadget")  # show all gadgets from gadget category
@@ -201,4 +192,15 @@ def filter_products(request):
 
     html = render_to_string("store/product_grid.html", {"products": products})
     return JsonResponse({"html": html})
+
+
+def product_variants_json(request, slug):
+    product = get_object_or_404(Product, slug=slug)
+    variants = product.variants.prefetch_related('attribute_values__attribute', 'color_stocks__color')
+    out = []
+    for v in variants:
+        attrs = {av.attribute.name: av.value for av in v.attribute_values.all()}
+        colors = [{'id': cs.color.id, 'name': cs.color.color_name, 'code': cs.color.color_code, 'stock': cs.stock} for cs in v.color_stocks.all()]
+        out.append({'id': v.id, 'sku': v.sku, 'attributes': attrs, 'colors': colors, 'price': str(v.get_price())})
+    return JsonResponse({'variants': out})
 

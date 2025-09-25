@@ -21,5 +21,7 @@ urlpatterns = [
     # Filtering grid
     path('product_grid/', views.filter_products, name='filter_products'),
 
+    path('product_variants_json/', views.product_variants_json, name='product_variants_json'),
+
 ]
 

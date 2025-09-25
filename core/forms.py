@@ -1,6 +1,7 @@
 from django import forms
+from django.core.exceptions import ValidationError
 from colorfield.widgets import ColorWidget
-from store.models import Category, Product, ProductColor
+from store.models import Category, Product, ProductColor, Variant
 
 
 class productForm(forms.ModelForm):
@@ -131,4 +132,23 @@ class ProductColorForm(forms.ModelForm):
             "color_name": forms.TextInput(attrs={"placeholder": "e.g. Black, Blue, Gray", "class": "form-control"}),
             'color_code': ColorWidget(attrs={'style': 'width: 80px; height: 40px;'})
         }
+
+
+class VariantForm(forms.ModelForm):
+    class Meta:
+        model = Variant
+        fields = '__all__'
+
+    def clean(self):
+        cleaned = super().clean()
+        av_qs = cleaned.get('attribute_values')
+        if av_qs is None:
+            return cleaned
+
+        # ensure no two selected values belong to the same attribute
+        attrs = [av.attribute_id for av in av_qs]
+        if len(attrs) != len(set(attrs)):
+            raise ValidationError('Each selected attribute must be for a different Attribute (you'
+                                  ' selected two values for the same Attribute).')
+        return cleaned
 

@@ -277,7 +277,7 @@ gap: 4px;
     border-bottom: 1px solid darkgray;
     white-space: nowrap;       /* Prevent line breaks */
     overflow-x: auto;          /* Scroll if too long */
-    overflow-y: hidden;
+    overflow: visible !important;   /* allow dropdowns to escape */
     scrollbar-width: none;     /* Hide scrollbar Firefox */
     -ms-overflow-style: none;  /* Hide scrollbar IE/Edge */
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
@@ -322,46 +322,120 @@ gap: 4px;
     animation: slideDown 0.3s forwards;
 }
 
+
+
 /* Category Bar Dropdown */
 /* Dropdown wrapper */
-.dropdown {
+/* make each dropdown parent a positioning context */
+.category-bar-dropdown {
   position: relative;
-  display: inline-block;
+  flex: 0 0 auto; /* don’t let flexbox shrink it */
 }
+
 /* Main dropdown content */
-.dropdown-content {
+/* MAIN dropdown (subcategories) */
+.category-bar-dropdown-content {
   display: none;
   position: absolute;
-  top: 100%;
+  top: calc(100% + 8px);       /* move down a bit from category bar */
   left: 0;
   background: #fff;
-  min-width: 180px;
+  min-width: 220px;            /* adjust as needed */
   border: 1px solid #ccc;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  z-index: 999;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+  z-index: 5000;
+  padding: 6px 0;              /* vertical padding inside dropdown */
+  overflow: visible;           /* allow inner flyouts to escape */
 }
-/* Show subcategories on hover */
-.dropdown:hover .dropdown-content {
+
+/* ensure each sub row stacks vertically, with left padding */
+.category-bar-dropdown-content .category-bar-dropdown-sub {
   display: block;
+  width: 100%;
 }
-/* Subcategory wrapper */
-.dropdown-sub {
-  position: relative;
+
+/* style the links inside the dropdown: full-width rows + left spacing */
+.category-bar-dropdown-content .category-bar-dropdown-sub > a,
+.category-bar-dropdown-content > a {
+  display: block;
+  padding: 8px 36px 8px 14px;  /* top/right/bottom/left -> left padding = 14px */
+  color: #111;
+  text-decoration: none;
+  white-space: nowrap;
+  position: relative;          /* for arrow placement */
 }
-/* Subcategory types (flyout to right) */
-.dropdown-sub-content {
+
+/* nicer hover for dropdown items */
+.category-bar-dropdown-content .category-bar-dropdown-sub > a:hover {
+  background: #f7f7f7;
+  color: orangered;
+}
+
+/* ARROW: only for subcategories that have a types-flyout.
+   If we prefer to render a <span class="arrow"></span> in the template use that instead; this uses ::after */
+.category-bar-dropdown-sub.has-types > a::after,
+.category-bar-dropdown-sub > a .arrow { /* supports both patterns (class on parent OR span.inside link) */
+  content: "";
+  position: absolute;
+  right: 12px;                /* distance from right edge of the dropdown item */
+  top: 50%;
+  transform: translateY(-50%) rotate(-45deg); /* right-pointing arrow */
+  border: solid #333;
+  border-width: 0 2px 2px 0;
+  padding: 4px;
+  pointer-events: none;
+}
+
+/* rotate arrow when the item (or its flyout) is active/hovered -> optional */
+.category-bar-dropdown-sub:hover > a::after,
+.category-bar-dropdown-sub.open > a::after {
+  transform: translateY(-50%) rotate(45deg);  /* rotate if you want a visual change */
+}
+
+/* TYPES FLYOUT (the right-side panel) */
+.category-bar-dropdown-sub-content {
   display: none;
   position: absolute;
-  top: 0;
-  left: 100%;   /* fly out to right */
+  top: 0;                      /* align with the subcategory row top (you can tweak) */
+  left: calc(100% + 6px);      /* fly out to the right + small gap */
   background: #fff;
-  min-width: 180px;
+  min-width: 200px;
   border: 1px solid #ccc;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  z-index: 1000;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+  z-index: 5100;
+  padding: 6px 0;
 }
-.dropdown-sub:hover .dropdown-sub-content {
+
+/* ensure items in the flyout are block (vertical stacking) and have left spacing */
+.category-bar-dropdown-sub-content a {
   display: block;
+  padding: 8px 12px;
+  white-space: nowrap;
+  color: #111;
+}
+
+/* show flyouts on hover */
+.category-bar-dropdown:hover .category-bar-dropdown-content,
+.category-bar-dropdown-sub:hover > .category-bar-dropdown-sub-content {
+  display: block;
+}
+
+/* small responsive tweak if long labels wrap or container causes issues */
+.category-bar .container { overflow: visible !important; }
+
+/* safety: make sure the sticky bar doesn't clip dropdowns */
+.category-bar.sticky {
+  overflow: visible !important;
+}
+
+
+.category-bar-dropdown-content::before {
+  content: "";
+  position: absolute;
+  top: -8px;    /* same as the gap */
+  left: 0;
+  right: 0;
+  height: 8px;  /* fills the gap */
 }
 
 

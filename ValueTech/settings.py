@@ -82,6 +82,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'django_extensions',
     'widget_tweaks',
+    'nested_admin'
 ]
 
 
