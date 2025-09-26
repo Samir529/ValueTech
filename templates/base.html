@@ -205,14 +205,6 @@
         {% if category.subcategory_set.all %}
         <div class="category-bar-dropdown-content">
           {% for sub in category.subcategory_set.all %}
-<!--            <div class="category-bar-dropdown-sub">-->
-<!--              <a href="{% url 'product_list_by_category' sub.slug %}">-->
-<!--                {{ sub.name }}-->
-<!--                {% if sub.typesofsubcategory_set.all %}-->
-<!--                    <span class="arrow"></span>-->
-<!--                {% endif %}-->
-<!--              </a>-->
-
             <div class="category-bar-dropdown-sub {% if sub.typesofsubcategory_set.all %}has-types{% endif %}">
               <a href="{% url 'product_list_by_category' sub.slug %}">
                 {{ sub.name }}
@@ -221,6 +213,7 @@
                   <span class="arrow" aria-hidden="true"></span>
                 {% endif %}
               </a>
+              <hr class="card m-0">
 
               <!-- Types of Subcategory -->
               {% if sub.typesofsubcategory_set.all %}
@@ -229,6 +222,7 @@
                   <a href="{% url 'product_list_by_category' type.slug %}">
                     {{ type.name }}
                   </a>
+                  <hr class="card m-0">
                 {% endfor %}
               </div>
               {% endif %}

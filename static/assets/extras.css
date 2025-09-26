@@ -1,0 +1,241 @@
+/* Category Bar Dropdown */
+/* --- Dropdown Wrapper --- */
+/* make each dropdown parent a positioning context */
+.category-bar-dropdown {
+    position: relative;
+    flex: 0 0 auto; /* don’t let flexbox shrink it */
+    height: 100%;       /* full height hover */
+}
+
+/* Main Dropdown Content (Subcategories) */
+.category-bar-dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;          /* start directly below category bar */
+    left: 0;
+    background: #fff;
+    min-width: 220px;       /* adjust as needed */
+    border: 1px solid #ccc;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+    z-index: 5000;
+    padding: 6px 0;     /* vertical padding inside dropdown */
+}
+
+/* Subcategories rows */
+/* ensure each sub row stacks vertically, with left padding */
+.category-bar-dropdown-content .category-bar-dropdown-sub {
+    display: block;
+    width: 100%;
+}
+
+/* Dropdown links */
+/* style the links inside the dropdown: full-width rows + left spacing */
+.category-bar-dropdown-content .category-bar-dropdown-sub > a,
+.category-bar-dropdown-content > a {
+    display: block;
+    padding: 8px 36px 8px 14px; /* top/right/bottom/left -> left padding = 14px */
+    color: #111;
+    text-decoration: none;
+    white-space: nowrap;
+    font-size: 13.5px;      /* font size */
+    position: relative;     /* for arrow placement */
+}
+/* nicer hover for dropdown items */
+.category-bar-dropdown-content .category-bar-dropdown-sub > a:hover {
+    background: #f7f7f7;
+    color: orangered;
+}
+
+/* ARROW: only for subcategories that have a types-flyout */
+.category-bar-dropdown-sub.has-types > a::after,
+.category-bar-dropdown-sub > a .arrow {
+    content: "";
+    position: absolute;
+    right: 12px;        /* distance from right edge of the dropdown item */
+    top: 50%;
+    transform: translateY(-50%) rotate(-45deg); /* right-pointing arrow */
+    border: solid #333;
+    border-width: 0 2px 2px 0;
+    padding: 4px;
+    pointer-events: none;
+}
+/* rotate arrow when the item (or its flyout) is active/hovered -> optional */
+.category-bar-dropdown-sub:hover > a::after,
+.category-bar-dropdown-sub.open > a::after {
+    transform: translateY(-50%) rotate(45deg);  /* rotate if you want a visual change */
+}
+
+/* TYPES FLYOUT (the right-side panel) */
+.category-bar-dropdown-sub-content {
+    display: none;
+    position: absolute;
+    top: 0;                     /* align with the subcategory row top (you can tweak) */
+    left: calc(100% + 6px);     /* fly out to the right + small gap */
+    background: #fff;
+    min-width: 200px;
+    border: 1px solid #ccc;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+    z-index: 5100;
+    padding: 6px 0;
+}
+/* ensure items in the flyout are block (vertical stacking) and have left spacing */
+.category-bar-dropdown-sub-content a {
+    display: block;
+    padding: 8px 12px;
+    white-space: nowrap;
+    color: #111;
+    font-size: 13.5px;  /* font size */
+}
+
+/* Show dropdowns on hover (full-height) */
+.category-bar-dropdown:hover .category-bar-dropdown-content,
+.category-bar-dropdown-sub:hover > .category-bar-dropdown-sub-content {
+    display: block;
+}
+
+/* Small tweak for container overflow */
+/* small responsive tweak if long labels wrap or container overflow or if container causes issues */
+.category-bar .container { overflow: visible !important; }
+
+/* Optional top gap filler for dropdowns */
+.category-bar-dropdown-content::before {
+    content: "";
+    position: absolute;
+    top: -8px;      /* same as the gap */
+    left: 0;
+    right: 0;
+    height: 8px;    /* fills the gap */
+}
+
+
+
+
+/* Category Bar Dropdown 2 */
+/* ================= Category Bar Full Hover ================= */
+.category-bar-dropdown {
+    position: relative;
+    flex: 0 0 auto; /* don't shrink */
+    height: 100%;   /* full height of category bar */
+}
+
+/* Make the main category link take full height */
+.category-bar-dropdown > a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;          /* full height */
+    width: 100%;           /* full width of dropdown container */
+    padding: 0 12px;       /* horizontal spacing */
+    font-weight: 600;
+    font-size: 13.5px;
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+}
+
+/* Hover effect on full area */
+.category-bar-dropdown:hover > a {
+    background-color: orangered;
+    color: #fff;
+}
+
+/* ================= Dropdown ================= */
+.category-bar-dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;             /* below the category bar */
+    left: 0;
+    min-width: 200px;      /* adjust as needed */
+    background: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+    z-index: 5000;
+    padding: 6px 0;
+}
+
+/* Show dropdown on hover */
+.category-bar-dropdown:hover > .category-bar-dropdown-content {
+    display: block;
+}
+
+/* Dropdown links */
+.category-bar-dropdown-content > a,
+.category-bar-dropdown-content .category-bar-dropdown-sub > a {
+    display: block;
+    padding: 8px 20px;
+    color: #111;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+/* Hover effect inside dropdown */
+.category-bar-dropdown-content > a:hover,
+.category-bar-dropdown-content .category-bar-dropdown-sub > a:hover {
+    background-color: #f7f7f7;
+    color: orangered;
+}
+
+/* Subcategory arrow for types */
+.category-bar-dropdown-sub.has-types > a::after {
+    content: "►";
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 12px;
+    color: #333;
+}
+
+/* Types flyout (right-side submenu) */
+.category-bar-dropdown-sub-content {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 100%;         /* fly out to the right */
+    min-width: 180px;
+    background: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+    z-index: 5100;
+    padding: 6px 0;
+}
+
+/* Show flyout on hover */
+.category-bar-dropdown-sub:hover > .category-bar-dropdown-sub-content {
+    display: block;
+}
+
+/* Flyout links */
+.category-bar-dropdown-sub-content a {
+    display: block;
+    padding: 8px 14px;
+    color: #111;
+    text-decoration: none;
+}
+.category-bar-dropdown-sub-content a:hover {
+    background: #f7f7f7;
+    color: orangered;
+}
+
+/* Ensure sticky bar dropdowns overflow properly */
+.category-bar.sticky,
+.category-bar {
+    overflow: visible !important;
+}
+
+/* Optional: add transition for smoother hover */
+.category-bar-dropdown > a,
+.category-bar-dropdown-content a,
+.category-bar-dropdown-sub-content a {
+    transition: all 0.2s ease-in-out;
+}
+
+
+
+
+
+
+
+
+
