@@ -11,6 +11,7 @@ from orders.models import Order, OrderItem
 from store.models import Product, Category, subCategory, ProductImage, ProductColor, ProductSize, typesOfSubCategory, \
     VariantColorStock, Variant, Attribute, AttributeValue
 from core.forms import VariantForm
+from store.forms import CategoryBulkAddForm, SubCategoryBulkAddForm, TypesOfSubCategoryBulkAddForm
 
 
 admin.site.site_header = 'ValueTech admin'
@@ -21,6 +22,8 @@ admin.site.index_title = 'ValueTech administration'
 
 class CustomUserAdmin(UserAdmin):
     model = customUser
+    save_as = True
+
     list_display = ("email", "is_staff", "is_active", "account_creation_date")
     list_filter = ("is_staff", "is_active")
     fieldsets = (
@@ -100,25 +103,28 @@ class VariantAdmin(nested_admin.NestedModelAdmin):
 
 
 
+@admin.register(Product)
 class ProductAdmin(nested_admin.NestedModelAdmin):
     model = Product
     readonly_fields = ["image_preview"]
+    save_as = True  # adds "Save as new" button
 
     # list_display = ("name", "category", "brand", "product_adding_date", "status", "product_code")
-    list_display = ("name", "category", "brand", "status", "product_code", "image_preview")
+    list_display = ("name", "get_categories", "brand", "status", "product_code", "image_preview")
     prepopulated_fields = {"slug": ("name",)}  # auto fill slug from name
+    filter_horizontal = ('category', 'sub_category', 'types_of_sub_category')
     inlines = [ProductImageInline, ProductColorInline, ProductSizeInline, VariantInline]
 
     list_filter = ("status", "category", "brand")
     fieldsets = (
-        (None, {"fields": ("category", "name", "slug", "product_code", "brand", "model", "regular_price",
+        (None, {"fields": ("category", "sub_category", "types_of_sub_category", "name", "slug", "product_code", "brand", "model", "regular_price",
                            "special_price", "status", "stock", "specification", "description", "warranty",
                            "warranty_details", "product_image", "image_preview")}),
     )
     add_fieldsets = (
         (None, {
             "classes": ("wide",),
-            "fields": ("category", "name", "slug", "product_code", "product_adding_date", "brand", "model",
+            "fields": ("category", "sub_category", "types_of_sub_category", "name", "slug", "product_code", "product_adding_date", "brand", "model",
                        "regular_price", "special_price", "status", "stock", "specification", "description",
                        "warranty", "warranty_details", "product_image")}
          ),
@@ -135,37 +141,84 @@ class ProductAdmin(nested_admin.NestedModelAdmin):
         return "-"
     image_preview.short_description = "Preview"
 
+    def get_categories(self, obj):
+        return ", ".join([c.name for c in obj.category.all()])
+
+    get_categories.short_description = "Categories"
+
+    def get_sub_categories(self, obj):
+        return ", ".join([sc.name for sc in obj.sub_categories.all()])
+
+    get_sub_categories.short_description = "Sub Categories"
+
+    def get_types(self, obj):
+        return ", ".join([t.name for t in obj.types_of_sub_categories.all()])
+
+    get_types.short_description = "Types of Sub Categories"
+
+
 
 
 admin.site.register(customUser, CustomUserAdmin)
 
 
-
-admin.site.register(accountInfo)
-
-
-
-admin.site.register(Category)
-admin.site.register(subCategory)
-admin.site.register(typesOfSubCategory)
+# Generic base admin with save_as enabled
+class SaveAsAdmin(admin.ModelAdmin):
+    save_as = True  # applies "Save as new" globally
 
 
-
-admin.site.register(Product, ProductAdmin)
-admin.site.register(ProductImage)
-admin.site.register(ProductColor)
-admin.site.register(ProductSize)
+@admin.register(accountInfo)
+class AccountInfoAdmin(SaveAsAdmin):
+    pass
 
 
+@admin.register(Category)
+class CategoryAdmin(SaveAsAdmin):
+    form = CategoryBulkAddForm
+    prepopulated_fields = {"slug": ("name",)}
 
-admin.site.register(Order)
-admin.site.register(OrderItem)
 
+@admin.register(subCategory)
+class SubCategoryAdmin(SaveAsAdmin):
+    form = SubCategoryBulkAddForm
+    prepopulated_fields = {"slug": ("name",)}
+
+
+@admin.register(typesOfSubCategory)
+class TypesOfSubCategoryAdmin(SaveAsAdmin):
+    form = TypesOfSubCategoryBulkAddForm
+    prepopulated_fields = {"slug": ("name",)}
+
+
+@admin.register(ProductImage)
+class ProductImageAdmin(SaveAsAdmin):
+    pass
+
+
+@admin.register(ProductColor)
+class ProductColorAdmin(SaveAsAdmin):
+    pass
+
+
+@admin.register(ProductSize)
+class ProductSizeAdmin(SaveAsAdmin):
+    pass
+
+
+@admin.register(Order)
+class OrderAdmin(SaveAsAdmin):
+    pass
+
+
+@admin.register(OrderItem)
+class OrderItemAdmin(SaveAsAdmin):
+    pass
 
 
 @admin.register(Offer)
-class OfferAdmin(admin.ModelAdmin):
+class OfferAdmin(SaveAsAdmin):
     readonly_fields = ["image_preview"]
+    save_as = True  # adds "Save as new" button
 
     list_display = ("title", "start_date", "end_date", "outlet", "created_at")
     list_filter = ("start_date", "end_date", "outlet")

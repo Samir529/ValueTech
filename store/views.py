@@ -76,30 +76,22 @@ def product_list(request, slug=None):
             products = products.filter(category__name="Gadget")  # show all gadgets from gadget category
 
         else:
-            # Try matching Category
+            # Try matching SubCategory first
             try:
-                selected_category = Category.objects.get(slug=slug)
-                products = products.filter(category=selected_category)
-            except Category.DoesNotExist:
-                pass
-
-            # Try matching SubCategory
-            if not products.exists():
-                try:
-                    selected_subcategory = subCategory.objects.get(slug=slug)
-                    products = products.filter(category=selected_subcategory.category,
-                                               category__subcategory=selected_subcategory)
-                except subCategory.DoesNotExist:
-                    pass
-
-            # Try matching Type
-            if not products.exists():
+                selected_subcategory = subCategory.objects.get(slug=slug)
+                products = products.filter(sub_category=selected_subcategory)
+            except subCategory.DoesNotExist:
+                # If not subcategory, try matching Type
                 try:
                     selected_type = typesOfSubCategory.objects.get(slug=slug)
-                    products = products.filter(category=selected_type.category,
-                                               category__subcategory=selected_type.sub_category)
+                    products = products.filter(types_of_sub_category=selected_type)
                 except typesOfSubCategory.DoesNotExist:
-                    pass
+                    # Finally try matching Category
+                    try:
+                        selected_category = Category.objects.get(slug=slug)
+                        products = products.filter(category=selected_category)
+                    except Category.DoesNotExist:
+                        pass
 
     context = {
         'products': products,

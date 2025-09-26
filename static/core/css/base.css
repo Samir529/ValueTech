@@ -347,9 +347,9 @@ gap: 4px;
     top: 100%;          /* start directly below category bar */
     left: 0;
     background: #fff;
-    min-width: 220px;       /* adjust as needed */
+    min-width: 210px;       /* adjust as needed */
     border: 1px solid #ccc;
-    box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.18);
     z-index: 5000;
     padding: 6px 0;     /* vertical padding inside dropdown */
 }
@@ -366,7 +366,7 @@ gap: 4px;
 .category-bar-dropdown-content .category-bar-dropdown-sub > a,
 .category-bar-dropdown-content > a {
     display: block;
-    padding: 8px 36px 8px 14px; /* top/right/bottom/left -> left padding = 14px */
+    padding: 5px 36px 5px 14px; /* top/right/bottom/left -> left padding = 14px */
     color: #111;
     text-decoration: none;
     white-space: nowrap;
@@ -384,11 +384,11 @@ gap: 4px;
 .category-bar-dropdown-sub > a .arrow {
     content: "►";       /* won’t show unless we use ::before or ::after */
     position: absolute;
-    right: 12px;        /* distance from right edge of the dropdown item */
+    right: 6px;        /* distance from right edge of the dropdown item */
     top: 50%;
     transform: translateY(-50%); /* right-pointing arrow */
     border: #333;
-    font-size: 9px;
+    font-size: 8px;
     color: lime;
     border-width: 0 2px 2px 0;
     padding: 4px;
@@ -411,14 +411,14 @@ gap: 4px;
     background: #fff;
     min-width: 200px;
     border: 1px solid #ccc;
-    box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.18);
     z-index: 5100;
     padding: 6px 0;
 }
 /* ensure items in the flyout are block (vertical stacking) and have left spacing */
 .category-bar-dropdown-sub-content a {
     display: block;
-    padding: 8px 14px;
+    padding: 5px 14px;
     white-space: nowrap;
     color: #111;
     font-size: 13.5px;  /* font size */

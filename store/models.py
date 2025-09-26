@@ -52,7 +52,7 @@ class subCategory(models.Model):
     category = models.ForeignKey(
         Category, on_delete=models.CASCADE
     )
-    name = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=100)
     slug = models.SlugField(max_length=100, unique=True, blank=True)
 
     class Meta:
@@ -75,7 +75,7 @@ class typesOfSubCategory(models.Model):
     sub_category = models.ForeignKey(
         subCategory, on_delete=models.CASCADE
     )
-    name = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=100)
     slug = models.SlugField(max_length=100, unique=True, blank=True)
 
     class Meta:
@@ -92,9 +92,9 @@ class typesOfSubCategory(models.Model):
 
 
 class Product(models.Model):
-    category = models.ForeignKey(
-        Category, related_name="products", on_delete=models.CASCADE
-    )
+    category = models.ManyToManyField(Category, related_name="products")
+    sub_category = models.ManyToManyField(subCategory, related_name="products", blank=True)
+    types_of_sub_category = models.ManyToManyField(typesOfSubCategory, related_name="products", blank=True)
     name = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, unique=True, primary_key=True, blank=True)
     product_adding_date = models.DateTimeField(auto_now_add=True)   # stores full date + time

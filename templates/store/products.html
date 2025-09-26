@@ -17,6 +17,10 @@
           <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'product_list_by_category' slug %}" style="color: dimgray">Latest Gadgets</a></li>
         {% elif selected_category %}
           <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'product_list_by_category' selected_category.slug %}" style="color: dimgray">{{ selected_category.name }}</a></li>
+        {% elif selected_subcategory %}
+          <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'product_list_by_category' selected_subcategory.slug %}" style="color: dimgray">{{ selected_subcategory.name }}</a></li>
+        {% elif selected_type %}
+          <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'product_list_by_category' selected_type.slug %}" style="color: dimgray">{{ selected_type.name }}</a></li>
         {% else %}
           <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'product_list' %}" style="color: dimgray">All Products</a></li>
         {% endif %}
@@ -28,16 +32,28 @@
   <div>
     {% if category_name %}
       <h3 class="fw-bold mb-3" style="color: royalblue; font-family: 'Candara', Arial, sans-serif;">
-          {{ category_name }} Products Price in Bangladesh</h3>
+          {{ category_name }} Products Price in Bangladesh
+      </h3>
     {% elif slug == 'latest-gadgets' %}
       <h3 class="fw-bold mb-3" style="color: royalblue; font-family: 'Candara', Arial, sans-serif;">
-          Latest Gadgets Price in Bangladesh</h3>
+          Latest Gadgets Price in Bangladesh
+      </h3>
     {% elif selected_category %}
       <h3 class="fw-bold mb-3" style="color: royalblue; font-family: 'Candara', Arial, sans-serif;">
-          {{ selected_category.name }} Price in Bangladesh</h3>
+          {{ selected_category.name }} Price in Bangladesh
+      </h3>
+    {% elif selected_subcategory %}
+      <h3 class="fw-bold mb-3" style="color: royalblue; font-family: 'Candara', Arial, sans-serif;">
+          {{ selected_subcategory.name }} Price in Bangladesh
+      </h3>
+    {% elif selected_type %}
+      <h3 class="fw-bold mb-3" style="color: royalblue; font-family: 'Candara', Arial, sans-serif;">
+          {{ selected_type.name }} Price in Bangladesh
+      </h3>
     {% else %}
       <h3 class="fw-bold mb-3" style="color: royalblue; font-family: 'Candara', Arial, sans-serif;">
-          All Products Price in Bangladesh</h3>
+          All Products Price in Bangladesh
+      </h3>
     {% endif %}
   </div>
 
