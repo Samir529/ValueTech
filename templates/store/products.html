@@ -17,10 +17,13 @@
           <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'product_list_by_category' slug %}" style="color: dimgray">Latest Gadgets</a></li>
         {% elif selected_category %}
           <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'product_list_by_category' selected_category.slug %}" style="color: dimgray">{{ selected_category.name }}</a></li>
-        {% elif selected_subcategory %}
-          <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'product_list_by_category' selected_subcategory.slug %}" style="color: dimgray">{{ selected_subcategory.name }}</a></li>
-        {% elif selected_type %}
-          <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'product_list_by_category' selected_type.slug %}" style="color: dimgray">{{ selected_type.name }}</a></li>
+        {% elif selected_sub_category %}
+          <li class="breadcrumb-item"><a href="{% url 'product_list_by_category' selected_sub_category.category.slug %}">{{ selected_sub_category.category }}</a></li>
+          <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'product_list_by_category' selected_sub_category.slug %}" style="color: dimgray">{{ selected_sub_category.name }}</a></li>
+        {% elif selected_brand_or_type %}
+          <li class="breadcrumb-item"><a href="{% url 'product_list_by_category' selected_brand_or_type.category.slug %}">{{ selected_brand_or_type.category }}</a></li>
+          <li class="breadcrumb-item"><a href="{% url 'product_list_by_category' selected_brand_or_type.sub_category.slug %}">{{ selected_brand_or_type.sub_category }}</a></li>
+          <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'product_list_by_category' selected_brand_or_type.slug %}" style="color: dimgray">{{ selected_brand_or_type.name }}</a></li>
         {% else %}
           <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'product_list' %}" style="color: dimgray">All Products</a></li>
         {% endif %}
@@ -42,13 +45,13 @@
       <h3 class="fw-bold mb-3" style="color: royalblue; font-family: 'Candara', Arial, sans-serif;">
           {{ selected_category.name }} Price in Bangladesh
       </h3>
-    {% elif selected_subcategory %}
+    {% elif selected_sub_category %}
       <h3 class="fw-bold mb-3" style="color: royalblue; font-family: 'Candara', Arial, sans-serif;">
-          {{ selected_subcategory.name }} Price in Bangladesh
+          {{ selected_sub_category.name }} Price in Bangladesh
       </h3>
-    {% elif selected_type %}
+    {% elif selected_brand_or_type %}
       <h3 class="fw-bold mb-3" style="color: royalblue; font-family: 'Candara', Arial, sans-serif;">
-          {{ selected_type.name }} Price in Bangladesh
+          {{ selected_brand_or_type.name }} Price in Bangladesh
       </h3>
     {% else %}
       <h3 class="fw-bold mb-3" style="color: royalblue; font-family: 'Candara', Arial, sans-serif;">

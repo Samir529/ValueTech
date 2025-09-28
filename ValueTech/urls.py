@@ -13,5 +13,6 @@ urlpatterns = [
     path("store/", include("store.urls")),
     path("orders/", include("orders.urls")),
     path("offers/", include("offers.urls")),
+    path("chaining/", include("smart_selects.urls")),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

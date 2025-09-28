@@ -1,6 +1,6 @@
 # store/forms.py
 from django import forms
-from store.models import Category, unique_slugify, subCategory, typesOfSubCategory
+from store.models import Category, unique_slugify, subCategory, brandsOrTypesOfSubCategory
 
 
 class CategoryBulkAddForm(forms.ModelForm):
@@ -71,15 +71,15 @@ class SubCategoryBulkAddForm(forms.ModelForm):
         return instance
 
 
-class TypesOfSubCategoryBulkAddForm(forms.ModelForm):
+class BrandsOrTypesOfSubCategoryBulkAddForm(forms.ModelForm):
     bulk_names = forms.CharField(
         widget=forms.Textarea(attrs={"rows": 4, "placeholder": "Enter comma-separated type names"}),
         required=False,
-        help_text="Add multiple types at once, separated by commas."
+        help_text="Add multiple brands or types at once, separated by commas."
     )
 
     class Meta:
-        model = typesOfSubCategory
+        model = brandsOrTypesOfSubCategory
         fields = "__all__"
 
     def save(self, commit=True):
@@ -95,16 +95,16 @@ class TypesOfSubCategoryBulkAddForm(forms.ModelForm):
         bulk_names = self.cleaned_data.get("bulk_names")
         if bulk_names:
             names = [name.strip() for name in bulk_names.split(",") if name.strip()]
-            types_list = []
+            brands_or_types_list = []
             for name in names:
-                type_obj = typesOfSubCategory(
+                brand_or_type_obj = brandsOrTypesOfSubCategory(
                     category=instance.category,
                     sub_category=instance.sub_category,
                     name=name
                 )
-                type_obj.slug = unique_slugify(type_obj, name)
-                types_list.append(type_obj)
-            typesOfSubCategory.objects.bulk_create(types_list)
+                brand_or_type_obj.slug = unique_slugify(brand_or_type_obj, name)
+                brands_or_types_list.append(brand_or_type_obj)
+            brandsOrTypesOfSubCategory.objects.bulk_create(brands_or_types_list)
 
         return instance
 

@@ -1,6 +1,6 @@
 from django.db.models import F, ExpressionWrapper, IntegerField, FloatField
 from django.shortcuts import render, get_object_or_404
-from store.models import Product, Category, subCategory, typesOfSubCategory
+from store.models import Product, Category, subCategory, brandsOrTypesOfSubCategory
 
 from django.http import JsonResponse
 from django.template.loader import render_to_string
@@ -30,7 +30,7 @@ def store_home(request):
 
     # Latest Gadgets
     # Take the first 20 gadgets
-    latest_gadgets = annotated_qs.filter(category__name="Gadget")[:20]  # show latest 20 gadgets from gadget category
+    latest_gadgets = annotated_qs.filter(categories__name="Gadget")[:20]  # show latest 20 gadgets from gadget category
     # latest_gadgets = products[:20]  # show latest 20 products
 
     context = {
@@ -50,55 +50,59 @@ def category_view(request):
 
 
 def product_list(request, slug=None):
-    products = (
-        Product.objects
-        .annotate(
-            discount=ExpressionWrapper(
-                F('regular_price') - F('special_price'),
-                output_field=IntegerField()
-            ),
-            discount_percentage=ExpressionWrapper(
-                (F('regular_price') - F('special_price')) * 100.0 / F('regular_price'),
-                output_field=FloatField()
-            )
-        )
-        .order_by('-product_adding_date')
-    )
-
+    products = None
     selected_category = None
-    selected_subcategory = None
-    selected_type = None
+    selected_sub_category = None
+    selected_brand_or_type = None
 
     if slug:    # filter only if a category slug is passed
 
         # Special filter: latest-gadgets = show all latest gadgets
         if slug == 'latest-gadgets':
-            products = products.filter(category__name="Gadget")  # show all gadgets from gadget category
+            products = Product.objects.filter(categories__name="Gadget")  # show all gadgets from gadget category
 
         else:
             # Try matching SubCategory first
             try:
-                selected_subcategory = subCategory.objects.get(slug=slug)
-                products = products.filter(sub_category=selected_subcategory)
+                selected_sub_category = subCategory.objects.get(slug=slug)
+                products = Product.objects.filter(sub_categories=selected_sub_category)
             except subCategory.DoesNotExist:
-                # If not subcategory, try matching Type
+                # If not sub_category, try matching brand_or_type
                 try:
-                    selected_type = typesOfSubCategory.objects.get(slug=slug)
-                    products = products.filter(types_of_sub_category=selected_type)
-                except typesOfSubCategory.DoesNotExist:
+                    selected_brand_or_type = brandsOrTypesOfSubCategory.objects.get(slug=slug)
+                    products = Product.objects.filter(brands_or_types=selected_brand_or_type)
+                except brandsOrTypesOfSubCategory.DoesNotExist:
                     # Finally try matching Category
                     try:
                         selected_category = Category.objects.get(slug=slug)
-                        products = products.filter(category=selected_category)
+                        products = Product.objects.filter(categories=selected_category)
                     except Category.DoesNotExist:
                         pass
+    else:
+        products = Product.objects.all()
+
+    if products is not None:
+        products = (
+            products
+            .annotate(
+                discount=ExpressionWrapper(
+                    F('regular_price') - F('special_price'),
+                    output_field=IntegerField()
+                ),
+                discount_percentage=ExpressionWrapper(
+                    (F('regular_price') - F('special_price')) * 100.0 / F('regular_price'),
+                    output_field=FloatField()
+                )
+            )
+            .order_by('-product_adding_date')
+        )
 
     context = {
         'products': products,
         'slug': slug,
         'selected_category': selected_category,
-        'selected_subcategory': selected_subcategory,
-        'selected_type': selected_type,
+        'selected_sub_category': selected_sub_category,
+        'selected_brand_or_type': selected_brand_or_type,
     }
     return render(request, 'store/products.html', context)
 
@@ -129,11 +133,32 @@ def product_details(request, slug):
     product = get_object_or_404(Product, slug=slug)
     extra_images = product.images.all()  # all related ProductImage
 
+    # --- Breadcrumb categories ---
+    # 1. From query param (if clicked via category page)
+    current_category = None
+    cat_slug = request.GET.get("categories")
+    if cat_slug:
+        current_category = Category.objects.filter(slug=cat_slug).first()
+
+    # 2. Fallback to primary_category or first assigned category
+    if not current_category:
+        current_category = product.primary_category or product.categories.first()
+
+    current_sub_category = None
+    sub_cat_slug = request.GET.get("sub_categories")
+    if sub_cat_slug:
+        current_sub_category = subCategory.objects.filter(slug=sub_cat_slug).first()
+
+    # 2. Fallback to primary_sub_category or first assigned category
+    if not current_sub_category:
+        current_sub_category = product.primary_sub_category or product.sub_categories.first()  # assuming ManyToManyField to subCategory
+
+
     # --- Related Products ---
     related_products = (
         Product.objects
-        .filter(category=product.category)
-        .exclude(slug=product.slug)
+        .filter(categories__in=product.categories.all())
+        .exclude(slug=product.slug)  # exclude the current product
         .order_by('-product_adding_date')[:4]  # newest first, Limit to 4 products
     )
 
@@ -158,6 +183,8 @@ def product_details(request, slug):
         "sizes": product.sizes.all(),
         "related_products": related_products,
         "recently_viewed": recently_viewed_products,  # ordered helper
+        "current_category": current_category,
+        "current_sub_category": current_sub_category,
     }
     return render(request, "store/product_details.html", context)
 
@@ -195,4 +222,12 @@ def product_variants_json(request, slug):
         colors = [{'id': cs.color.id, 'name': cs.color.color_name, 'code': cs.color.color_code, 'stock': cs.stock} for cs in v.color_stocks.all()]
         out.append({'id': v.id, 'sku': v.sku, 'attributes': attrs, 'colors': colors, 'price': str(v.get_price())})
     return JsonResponse({'variants': out})
+
+
+def admin_get_categories_and_subcategories(request):
+    cat_id = request.GET.get('cat_id')
+    if not cat_id:
+        return JsonResponse({'results': []})
+    subs = list(subCategory.objects.filter(category_id=cat_id).values('id', 'name'))
+    return JsonResponse({'results': subs})
 

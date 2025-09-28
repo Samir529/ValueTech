@@ -12,7 +12,16 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/"><i class="fas fa-home"></i></a></li>
-            <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'product_list_by_category' product.category %}">{{ product.category.name }}</a></li>
+            {% if current_category %}
+            <li class="breadcrumb-item">
+              <a href="{% url 'product_list_by_category' current_category.slug %}">{{ current_category.name }}</a>
+            </li>
+            {% endif %}
+            {% if current_sub_category %}
+            <li class="breadcrumb-item">
+              <a href="{% url 'product_list_by_category' current_sub_category.slug %}">{{ current_sub_category.name }}</a>
+            </li>
+            {% endif %}
             <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'product_details' product.slug %}" style="color: dimgray">{{ product.name }}</a></li>
           </ol>
         </nav>

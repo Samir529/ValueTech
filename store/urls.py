@@ -23,5 +23,7 @@ urlpatterns = [
 
     path('product_variants_json/', views.product_variants_json, name='product_variants_json'),
 
+    path('admin/get_categories_and_subcategories/', views.admin_get_categories_and_subcategories, name='admin_get_categories_and_subcategories'),
+
 ]
 

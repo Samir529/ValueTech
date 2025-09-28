@@ -204,22 +204,22 @@
         <!-- Subcategories -->
         {% if category.subcategory_set.all %}
         <div class="category-bar-dropdown-content">
-          {% for sub in category.subcategory_set.all %}
-            <div class="category-bar-dropdown-sub {% if sub.typesofsubcategory_set.all %}has-types{% endif %}">
-              <a href="{% url 'product_list_by_category' sub.slug %}">
-                {{ sub.name }}
-                {% if sub.typesofsubcategory_set.all %}
+          {% for subcat in category.subcategory_set.all %}
+            <div class="category-bar-dropdown-sub {% if subcat.brandsortypesofsubcategory_set.all %}has-types{% endif %}">
+              <a href="{% url 'product_list_by_category' subcat.slug %}">
+                {{ subcat.name }}
+                {% if subcat.brandsortypesofsubcategory_set.all %}
                   <!-- optional: keep this span if we prefer controlling the arrow via a span -->
                   <span class="arrow" aria-hidden="true"></span>
                 {% endif %}
               </a>
 
-              <!-- Types of Subcategory -->
-              {% if sub.typesofsubcategory_set.all %}
+              <!-- Brands or Types of Subcategory -->
+              {% if subcat.brandsortypesofsubcategory_set.all %}
               <div class="category-bar-dropdown-sub-content">
-                {% for type in sub.typesofsubcategory_set.all %}
-                  <a href="{% url 'product_list_by_category' type.slug %}">
-                    {{ type.name }}
+                {% for brandsortypes in subcat.brandsortypesofsubcategory_set.all %}
+                  <a href="{% url 'product_list_by_category' brandsortypes.slug %}">
+                    {{ brandsortypes.name }}
                   </a>
                 {% endfor %}
               </div>
