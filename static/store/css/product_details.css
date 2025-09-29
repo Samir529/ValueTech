@@ -1,7 +1,7 @@
 .product-view-content {
     max-width: 100%;
     margin-inline: auto;
-    padding: 50px 2%;
+    padding: 0px 2%;
 }
 .product-details-content {
     max-width: 100%;
@@ -19,3 +19,22 @@
 .right-side-card .new-price { color: #e50000; }
 .spec-title { font-weight: bold; background: #f8f9fa; padding: 6px 12px; }
 .spec-table td { padding: 6px 10px; border: 1px solid #dee2e6; vertical-align: top; }
+.action-bar {
+    display: flex;  /* make flex container */
+    align-items: center;    /* vertically center */
+    justify-content: space-between;    /* horizontally center */
+    background-color: whitesmoke;
+    border-radius: 50px;
+    padding: 10px 20px;
+}
+.action-bar a:hover {
+    color: lime;
+    text-decoration: none;
+}
+.action-bar .icon-btn svg {
+    fill: black;
+    transition: fill 0.05s ease;
+}
+.action-bar .icon-btn:hover svg {
+    fill: lime;
+}

@@ -113,7 +113,8 @@ class productForm(forms.ModelForm):
 
     def save(self, commit=True):
         product = super().save(commit=False)
-        product.category = self.cleaned_data["category"]
+        product.save()
+        product.categories.add(self.cleaned_data["category"])
         if commit:
             product.save()
 

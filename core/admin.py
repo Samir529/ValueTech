@@ -125,16 +125,18 @@ class ProductAdmin(nested_admin.NestedModelAdmin):
 
     list_filter = ("status", "categories", "sub_categories", "brands_or_types")
     fieldsets = (
-        (None, {"fields": ("primary_category", "primary_sub_category", "primary_brand_or_type", "name", "slug", "product_code", "brand", "model", "regular_price",
-                           "special_price", "status", "stock", "specification", "description", "warranty",
-                           "warranty_details", "product_image", "image_preview")}),
+        (None, {"fields": ("primary_category", "primary_sub_category", "primary_brand_or_type", "name", "slug",
+                           "product_code", "product_adding_date", "brand", "model", "regular_price", "special_price",
+                           "status", "stock", "specification", "description", "warranty", "warranty_details",
+                           "product_image", "image_preview")}),
     )
     add_fieldsets = (
         (None, {
             "classes": ("wide",),
-            "fields": ("primary_category", "primary_sub_category", "primary_brand_or_type", "name", "slug", "product_code", "product_adding_date", "brand", "model",
-                       "regular_price", "special_price", "status", "stock", "specification", "description",
-                       "warranty", "warranty_details", "product_image")}
+            "fields": ("primary_category", "primary_sub_category", "primary_brand_or_type", "name", "slug",
+                       "product_code", "product_adding_date", "brand", "model", "regular_price", "special_price",
+                       "status", "stock", "specification", "description", "warranty", "warranty_details",
+                       "product_image")}
          ),
     )
     search_fields = ("name", "product_code", "sub_categories")
@@ -162,36 +164,6 @@ class ProductAdmin(nested_admin.NestedModelAdmin):
     def get_brands_or_types(self, obj):
         return ", ".join([bt.name for bt in obj.brands_or_types.all()])
     get_brands_or_types.short_description = "Brands or Types"
-
-
-    def get_urls(self):
-        urls = super().get_urls()
-        custom_urls = [
-            path("load-subcategories/", self.admin_site.admin_view(self.load_subcategories), name="load-subcategories"),
-            path("load-brands-or-types/", self.admin_site.admin_view(self.load_brands_or_types), name="load-brands-or-types"),
-        ]
-        return custom_urls + urls
-
-    def load_subcategories(self, request):
-        category_ids = request.GET.getlist("categories[]", [])
-        subcategories = subCategory.objects.filter(category__id__in=category_ids).values("id", "name")
-        return JsonResponse(list(subcategories), safe=False)
-
-    def load_brands_or_types(self, request):
-        subcategory_ids = request.GET.getlist("subcategories[]", [])
-        # print("DEBUG >>> Subcategory IDs from AJAX:", subcategory_ids)
-
-        brands_or_types = brandsOrTypesOfSubCategory.objects.filter(sub_category__id__in=subcategory_ids).values("id", "name")
-        # print("DEBUG >>> Found brands/types:", list(brands_or_types))
-        return JsonResponse(list(brands_or_types), safe=False)
-
-
-    # def delete_queryset(self, request, queryset):
-    #     """
-    #     Safely delete all selected products.
-    #     """
-    #     for product in queryset:
-    #         product.safe_delete()  # use the safe_delete method
 
 
 
