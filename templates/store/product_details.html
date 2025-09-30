@@ -252,18 +252,18 @@
           <hr class="card mb-0">
           {% for related in related_products %}
             <div class="card-body">
-              <!-- image + name + prices -->
+              <!-- image + name + prices + add to compare -->
               <!-- image + name side by side -->
-              <div class="d-flex align-items-center mb-1">
+              <div class="d-flex align-items-center mb-1 gap-2">
                 <!-- left: image -->
                 <a href="{% url 'product_details' related.slug %}">
                     <img src="{{ related.image_url }}"
                          alt="{{ related.name }}"
                          class="me-2"
-                         style="width:70px; height:70px; object-fit:cover; border-radius:8px;">
+                         style="width:75px; height:75px; object-fit:cover; border-radius:8px;">
                 </a>
 
-                <!-- right: name + prices -->
+                <!-- right: name + prices + add to compare -->
                 <div>
                   <a href="{% url 'product_details' related.slug %}">
                       <h6 class="small mb-1">{{ related.name }}</h6>
@@ -271,25 +271,35 @@
                   <!-- prices aligned with name -->
                   <div>
                     {% if related.special_price %}
-                      <span class="new-price">
+                      <span class="small new-price">
                         {{ related.special_price|intcomma }}৳
                       </span>
-                      <small class="text-muted text-decoration-line-through ms-2">
+                      <small class="small text-muted text-decoration-line-through ms-2">
                         {{ related.regular_price|intcomma }}৳
                       </small>
 
                     {% else %}
-                      <span class="new-price">
+                      <span class="small new-price">
                         {{ related.regular_price|intcomma }}৳
                       </span>
                     {% endif %}
                   </div>
+                  <!-- add to compare -->
+                  <a href="#" onclick="event.preventDefault();" class="add-to-compare-btn d-flex align-items-center gap-2 mt-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#000" viewBox="0 0 24 24">
+                        <rect x="2" y="10" width="4" height="10"/>
+                        <rect x="8" y="6" width="4" height="14"/>
+                        <rect x="14" y="12" width="4" height="8"/>
+                        <rect x="20" y="4" width="4" height="16"/>
+                    </svg>
+                    <p class="small mb-0">Add to Compare</p>
+                  </a>
                 </div>
               </div>
             </div>
-          <hr class="card mb-0">
+          <hr class="card m-0">
           {% empty %}
-            <p class="ps-4">No related products.</p>
+            <p class="ps-4 mt-3">No related products.</p>
           {% endfor %}
       </div>
 
@@ -299,17 +309,18 @@
         <hr class="card mb-0">
         {% for viewed in recently_viewed %}
           <div class="card-body">
-            <!-- image + name + prices -->
+            <!-- image + name + prices + add to compare -->
             <!-- image + name side by side -->
-            <div class="d-flex align-items-center mb-1">
+            <div class="d-flex align-items-center mb-1 gap-2">
               <!-- left: image -->
               <a href="{% url 'product_details' viewed.slug %}">
                   <img src="{{ viewed.image_url }}"
                        alt="{{ viewed.name }}"
                        class="me-2"
-                       style="width:70px; height:70px; object-fit:cover; border-radius:8px;">
+                       style="width:75px; height:75px; object-fit:cover; border-radius:8px;">
               </a>
-              <!-- right: name + prices -->
+
+              <!-- right: name + prices + add to compare -->
               <div>
                 <a href="{% url 'product_details' viewed.slug %}">
                     <h6 class="small mb-1">{{ viewed.name }}</h6>
@@ -317,25 +328,35 @@
                 <!-- prices aligned with name -->
                 <div>
                   {% if viewed.special_price %}
-                      <span class="new-price">
+                      <span class="small new-price">
                         {{ viewed.special_price|intcomma }}৳
                       </span>
-                      <small class="text-muted text-decoration-line-through ms-2">
+                      <small class="small text-muted text-decoration-line-through ms-2">
                         {{ viewed.regular_price|intcomma }}৳
                       </small>
 
                     {% else %}
-                      <span class="new-price">
+                      <span class="small new-price">
                         {{ viewed.regular_price|intcomma }}৳
                       </span>
                     {% endif %}
                 </div>
+                <!-- add to compare -->
+                  <a href="#" onclick="event.preventDefault();" class="add-to-compare-btn d-flex align-items-center gap-2 mt-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#000" viewBox="0 0 24 24">
+                        <rect x="2" y="10" width="4" height="10"/>
+                        <rect x="8" y="6" width="4" height="14"/>
+                        <rect x="14" y="12" width="4" height="8"/>
+                        <rect x="20" y="4" width="4" height="16"/>
+                    </svg>
+                    <p class="small mb-0">Add to Compare</p>
+                  </a>
               </div>
             </div>
           </div>
-        <hr class="card mb-0">
+        <hr class="card m-0">
         {% empty %}
-          <p class="ps-4">No recently viewed products.</p>
+          <p class="ps-4 mt-3">No recently viewed products.</p>
         {% endfor %}
       </div>
     </div>

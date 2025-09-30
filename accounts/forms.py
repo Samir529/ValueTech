@@ -4,8 +4,8 @@ from core.models import customUser
 
 class userForm(forms.ModelForm):
     phone_number = forms.CharField(max_length=14, required=True)
-    password = forms.CharField(min_length=4, widget=forms.PasswordInput())
-    confirm_password = forms.CharField(min_length=4, widget=forms.PasswordInput())
+    password = forms.CharField(min_length=8, widget=forms.PasswordInput())
+    confirm_password = forms.CharField(widget=forms.PasswordInput())
 
     class Meta():
         model = customUser

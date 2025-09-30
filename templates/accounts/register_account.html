@@ -24,7 +24,7 @@
             </div>
         {% endfor %}
     {% endif %}
-    <h4 style="color: black;">Register Account</h4>
+    <h5 class="mb-4" style="color: black;">Register Account</h5>
     <!--        {% load crispy_forms_tags %}-->
     <form class="row g-3" action="{% url 'register_account' %}" method="post" style="width: 400px">
         {% csrf_token %}

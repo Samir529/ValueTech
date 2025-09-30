@@ -65,17 +65,17 @@ def product_list(request, slug=None):
             # Try matching SubCategory first
             try:
                 selected_sub_category = subCategory.objects.get(slug=slug)
-                products = Product.objects.filter(sub_categories=selected_sub_category)
+                products = Product.objects.filter(sub_categories=selected_sub_category).distinct()
             except subCategory.DoesNotExist:
                 # If not sub_category, try matching brand_or_type
                 try:
                     selected_brand_or_type = brandsOrTypesOfSubCategory.objects.get(slug=slug)
-                    products = Product.objects.filter(brands_or_types=selected_brand_or_type)
+                    products = Product.objects.filter(brands_or_types=selected_brand_or_type).distinct()
                 except brandsOrTypesOfSubCategory.DoesNotExist:
                     # Finally try matching Category
                     try:
                         selected_category = Category.objects.get(slug=slug)
-                        products = Product.objects.filter(categories=selected_category)
+                        products = Product.objects.filter(categories=selected_category).distinct()
                     except Category.DoesNotExist:
                         pass
     else:
@@ -157,9 +157,10 @@ def product_details(request, slug):
     # --- Related Products ---
     related_products = (
         Product.objects
-        .filter(categories__in=product.categories.all())
+        .filter(sub_categories__in=product.sub_categories.all())
         .exclude(slug=product.slug)  # exclude the current product
-        .order_by('-product_adding_date')[:4]  # newest first, Limit to 4 products
+        .order_by('-product_adding_date')   # newest first
+        .distinct()[:4]   # avoid duplicates, Limit to 4 products
     )
 
     # --- Recently Viewed Tracking ---

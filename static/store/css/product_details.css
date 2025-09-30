@@ -1,7 +1,7 @@
 .product-view-content {
     max-width: 100%;
     margin-inline: auto;
-    padding: 0px 2%;
+    padding: 0px 2% 40px 2%;
 }
 .product-details-content {
     max-width: 100%;
@@ -16,13 +16,14 @@
 .right-side-card img { height: 120px; object-fit: contain; }
 .right-side-card h5 { font-size: 1.2rem; color: royalblue; }
 .right-side-card h6:hover { color: tomato; text-decoration: underline; }
-.right-side-card .new-price { color: #e50000; }
+.right-side-card .new-price { color: #d60000; }
 .spec-title { font-weight: bold; background: #f8f9fa; padding: 6px 12px; }
 .spec-table td { padding: 6px 10px; border: 1px solid #dee2e6; vertical-align: top; }
+
 .action-bar {
-    display: flex;  /* make flex container */
+    display: flex;          /* make flex container */
     align-items: center;    /* vertically center */
-    justify-content: space-between;    /* horizontally center */
+    justify-content: space-between;
     background-color: whitesmoke;
     border-radius: 50px;
     padding: 10px 20px;
@@ -37,4 +38,20 @@
 }
 .action-bar .icon-btn:hover svg {
     fill: lime;
+}
+
+.add-to-compare-btn svg {
+    fill: #6e6e6e;
+}
+.add-to-compare-btn p {
+    color: #6e6e6e;
+}
+.add-to-compare-btn:hover svg {
+    fill: black;
+}
+.add-to-compare-btn:hover p {
+    color: black;
+}
+.add-to-compare-btn:hover {
+    text-decoration: none;
 }

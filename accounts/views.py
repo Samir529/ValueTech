@@ -86,7 +86,11 @@ def account_password(request):
             'password': request.POST.get('password'),
             'confirm_password': request.POST.get('confirm_password')
         })
-        if user_form.is_valid() and user_form.cleaned_data['password'] == user_form.cleaned_data['confirm_password']:
+
+        password = user_form.data['password']
+        confirm_password = user_form.data['confirm_password']
+
+        if user_form.is_valid() and password == confirm_password:
             user = user_form.save(commit=False)
             user.set_password(user.password) # hashes the password
             user.save()
@@ -108,7 +112,13 @@ def account_password(request):
             # redirect to user panel
             return redirect('userPanel')
 
-        elif user_form.data['password'] != user_form.data['confirm_password']:
+        # Check minimum length of password
+        elif len(password) < 8:
+            messages.error(request, "Password must be at least 8 characters long!")
+            return render(request, "accounts/account_password.html")
+
+        # Check password confirmation
+        elif password != confirm_password:
             messages.error(request, "Password confirmation does not match password!")
             return render(request, "accounts/account_password.html")
         else:

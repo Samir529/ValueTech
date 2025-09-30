@@ -166,6 +166,69 @@ class ProductAdmin(nested_admin.NestedModelAdmin):
     get_brands_or_types.short_description = "Brands or Types"
 
 
+    # --- Copy main image on Save as new ---
+    def save_model(self, request, obj, form, change):
+        """
+        Ensure product_image (main image) is preserved on 'Save as new'.
+        """
+        if "_saveasnew" in request.POST:
+            # The form has initial data of the original object
+            original_id = request.resolver_match.kwargs.get("object_id")  # <- the ID of the product being copied # old object ID
+            if original_id:
+                try:
+                    original = Product.objects.get(pk=original_id)
+                    if not obj.product_image:  # if user didn’t upload a new one
+                        obj.product_image = original.product_image  # copy image path
+                except Product.DoesNotExist:
+                    pass  # fallback: just skip
+        super().save_model(request, obj, form, change)
+
+    # --- Copy related inlines (gallery, colors, sizes, variants) ---
+    def save_related(self, request, form, formsets, change):
+        super().save_related(request, form, formsets, change)
+
+        if "_saveasnew" in request.POST:  # user clicked "Save as new"
+            new_product = form.instance
+            original_id = request.resolver_match.kwargs.get("object_id")
+            if original_id:
+                try:
+                    original = Product.objects.get(pk=original_id)
+
+                    # Copy gallery images # Copy related ProductImage rows too
+                    for img in original.images.all():
+                        img.pk = None  # create a new row
+                        img.product = new_product
+                        img.save()
+
+                    # Copy colors
+                    for c in original.colors.all():
+                        c.pk = None
+                        c.product = new_product
+                        c.save()
+
+                    # Copy sizes
+                    for s in original.sizes.all():
+                        s.pk = None
+                        s.product = new_product
+                        s.save()
+
+                    # Copy variants + nested color stocks
+                    for v in original.variants.all():
+                        old_attr_values = list(v.attribute_values.all())
+                        v.pk = None
+                        v.product = new_product
+                        v.save()
+                        v.attribute_values.set(old_attr_values)
+
+                        for stock in v.color_stocks.all():
+                            stock.pk = None
+                            stock.variant = v
+                            stock.save()
+
+                except Product.DoesNotExist:
+                    pass
+
+
 
 admin.site.register(customUser, CustomUserAdmin)
 

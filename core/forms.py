@@ -130,7 +130,7 @@ class ProductColorForm(forms.ModelForm):
             "color_code": "Color Code",
         }
         widgets = {
-            "color_name": forms.TextInput(attrs={"placeholder": "e.g. Black, Blue, Gray", "class": "form-control"}),
+            "color_name": forms.TextInput(attrs={"placeholder": "e.g. Black, Silver, Blue", "class": "form-control"}),
             'color_code': ColorWidget(attrs={'style': 'width: 80px; height: 40px;'})
         }
 
