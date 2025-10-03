@@ -1,0 +1,225 @@
+/* Make mobile logo absolutely centered */
+.mobile-logo {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+
+/* Mobile Shopping Cart */
+.mobile-shopping-cart svg {
+  fill: #230D42;
+}
+
+
+/* Mobile Search Button */
+.mobile-search-button i {
+  color: #230D42;
+  font-size: 18px;
+}
+
+
+/* Mobile Search Box */
+.mobile-search-box {
+  display: none;
+  position: fixed;        /* stick to viewport, not inside content flow */
+  top: 90px;              /* match your .navbar height (90px) */
+  left: 0;
+  width: 100%;            /* full width */
+  background: #fff;
+  z-index: 9999;          /* above navbar but below overlay menus */
+  padding: 5px 10px;
+
+  /* shadow below the search box */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+.navbar.sticky + .mobile-search-box {
+  top: 70px;              /* adjust when navbar shrinks in sticky mode */
+}
+.mobile-search-box.show {
+  display: block;
+}
+/* Remove input border & outline */
+.mobile-search-box input.form-control {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  background-color: #f9f9f9;   /* subtle background (optional) */
+  border-radius: 6px;          /* smooth rounded corners */
+  padding: 10px 12px;
+  font-size: 15px;
+}
+/* Optional: style the button */
+.mobile-search-box button.btn {
+  border-radius: 6px;
+  box-shadow: none;
+}
+
+
+/* Mobile Category Toggle Button */
+.category-toggle svg {
+  fill: #230D42;
+}
+
+
+/* Side Dropdown Category Menu */
+/* Side menu wrapper */
+.side-menu {
+  position: fixed;
+  top: 0;
+  left: -300px;
+  width: 280px;
+  height: 100%;
+  background: #fff;
+  border-right: 1px solid #ccc;
+  box-shadow: 2px 0 6px rgba(0,0,0,0.2);
+  transition: left 0.3s ease;
+  z-index: 10000;
+  overflow-y: auto;
+}
+.side-menu.open { left: 0; }
+
+.side-menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  font-weight: bold;
+  background: #f5f5f5;
+  border-bottom: 1px solid #ddd;
+}
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+#overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.4);
+  z-index: 9999;
+}
+#overlay.show { display: block; }
+
+.menu-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.menu-item {
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 12px 15px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  color: #000;
+}
+.menu-item:hover { background: #f0f0f0; }
+
+.subcatmenu {
+  display: none;
+  padding-left: 15px;
+}
+.subcatmenu.open { display: block; }
+
+
+/* --- Back-to-Top button styles --- */
+#mobileBackToTop {
+position: fixed;
+right: 15px !important;
+bottom: 70px !important;
+width: 45px !important;
+height: 45px !important;
+border: none;
+border-radius: 9999px;
+background: rgba(17, 24, 39, 0.8); /* dark slate */
+color: #fff;
+display: grid;
+place-items: center;
+box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+cursor: pointer;
+opacity: 0; /* hidden by default at top of page */
+pointer-events: none; /* don't trap clicks when hidden */
+transform: translateY(8px);
+transition: opacity .25s ease, transform .25s ease, background-color .2s ease;
+z-index: 9999;
+}
+
+/* Visible state once user has scrolled past the threshold */
+#mobileBackToTop.show {
+opacity: .65; /* usually faded out */
+pointer-events: auto;
+transform: translateY(0);
+}
+
+/* Hover/Focus makes it fully visible */
+#mobileBackToTop:hover, #mobileBackToTop:focus-visible {
+opacity: 1;
+background: rgba(17, 24, 39, 0.92);
+outline: none; /* we'll style focus ring below */
+}
+
+/* Accessible focus ring */
+#mobileBackToTop:focus-visible { box-shadow: 0 0 0 3px rgba(59,130,246,.6), 0 10px 30px rgba(0,0,0,0.25); }
+
+/* Optional: reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+#mobileBackToTop { transition: none; }
+}
+
+/* Optional: adjust position on very small screens */
+@media (max-width: 480px) {
+#mobileBackToTop { right: 16px; bottom: 16px; width: 48px; height: 48px; }
+}
+
+/* SVG icon size */
+#mobileBackToTop svg { width: 22px; height: 22px; }
+
+
+/* Mobile Bottom Nav */
+.mobile-bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background: #0D1142;
+  border-top: 1px solid #6B7580;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 1100;
+}
+.mobile-bottom-nav .nav-link {
+  flex: 1;
+  display: flex;
+  flex-direction: column;   /* stack icon above text */
+  align-items: center;      /* center horizontally */
+  justify-content: center;  /* center vertically */
+  font-size: 10px;
+  color: lightgray;
+  text-decoration: none;
+  transition: color 0.05s ease;
+}
+.mobile-bottom-nav .nav-link svg {
+  display: block;
+  fill: white;
+  margin-bottom: 2px;
+  vertical-align: middle;   /* normalize icon baseline */
+  transition: fill 0.05s ease;
+}
+.mobile-bottom-nav .nav-link.active,
+.mobile-bottom-nav .nav-link:hover {
+  color: #00FF80;
+}
+.mobile-bottom-nav .nav-link.active svg,
+.mobile-bottom-nav .nav-link:hover svg {
+  fill: #00FF80;
+}

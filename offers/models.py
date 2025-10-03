@@ -6,7 +6,7 @@ class Offer(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
     outlet = models.CharField(max_length=200, default="All Outlet")
-    image = models.ImageField(upload_to="offers/")
+    image = models.ImageField(upload_to="Offers/")
     button_text = models.CharField(max_length=50, default="View Details")
     button_link = models.URLField(blank=True, null=True)
 

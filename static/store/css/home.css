@@ -159,3 +159,7 @@
     position: absolute;
     z-index: 2;   /* ensures badge is above the image */
 }
+
+.view-all-btn:hover {
+    color: #FF2F00;
+  }

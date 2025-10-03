@@ -1,9 +1,9 @@
-from django.db.models import F, ExpressionWrapper, IntegerField, FloatField
-from django.shortcuts import render, get_object_or_404
-from store.models import Product, Category, subCategory, brandsOrTypesOfSubCategory
-
+from django.db.models import F, ExpressionWrapper, IntegerField, FloatField, Q
+from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
 from django.http import JsonResponse
 from django.template.loader import render_to_string
+from store.models import Product, Category, subCategory, brandsOrTypesOfSubCategory
 from store.utils import get_recently_viewed
 
 
@@ -29,9 +29,9 @@ def store_home(request):
     products = annotated_qs[:20]
 
     # Latest Gadgets
-    # Take the first 20 gadgets
-    latest_gadgets = annotated_qs.filter(categories__name="Gadget")[:20]  # show latest 20 gadgets from gadget category
-    # latest_gadgets = products[:20]  # show latest 20 products
+    # Take the first 15 gadgets
+    latest_gadgets = annotated_qs.filter(categories__name="Gadget")[:15]  # show latest 15 gadgets from gadget category
+    # latest_gadgets = products[:15]  # show latest 15 products
 
     context = {
         'products': products,
@@ -44,9 +44,124 @@ def base(request):
     return render(request, 'base.html')
 
 
-def category_view(request):
-    categories = Category.objects.all().prefetch_related('subcategory_set__typesofsubcategory_set')
-    return render(request, 'base.html', {"categories": categories})
+def coming_soon(request):
+    return render(request, "store/coming_soon.html")
+
+
+def ajax_live_search(request):
+    query = request.GET.get("search_field", "").strip()
+    results = []
+
+    if query:
+        # Search in products (name, brand, model, specification, description, product_code)
+        products = Product.objects.filter(
+            Q(name__icontains=query) |
+            Q(brand__icontains=query) |
+            Q(model__icontains=query) |
+            Q(specification__icontains=query) |
+            Q(description__icontains=query) |
+            Q(product_code__icontains=query)
+        ).distinct()[:5]   # Limit results
+
+        for product in products:
+            results.append({
+                "type": "product",
+                "name": product.name,
+                "url": reverse("product_details", args=[product.slug]),  # generates /store/product/<slug>/
+                # "image": product.image_url
+                "image": product.product_image.url if product.product_image else "/static/assets/images/Default images/product-icon.png",
+                "regular_price": str(product.regular_price),
+                "special_price": str(product.special_price) if product.special_price else None
+            })
+
+        # Search in categories
+        categories = Category.objects.filter(name__icontains=query)[:5]
+        for cat in categories:
+            results.append({
+                "type": "category",
+                "name": f"Category: {cat.name}",
+                "url": reverse("product_list_by_category", args=[cat.slug]),
+                "image": cat.image.url if hasattr(cat, 'image') and cat.image else "/static/assets/images/Default images/category-icon.png"
+            })
+
+        # Search in sub categories
+        sub_categories = subCategory.objects.filter(name__icontains=query)[:5]
+        for sub in sub_categories:
+            results.append({
+                "type": "sub_category",
+                "name": f"Sub Category: {sub.name}",
+                "url": reverse("product_list_by_subcategory", args=[sub.slug]),
+                "image": sub.image.url if hasattr(sub, 'image') and sub.image else "/static/assets/images/Default images/category-icon.png"
+            })
+
+        # Search in brands or types of sub categories
+        brands_or_types = brandsOrTypesOfSubCategory.objects.filter(name__icontains=query)[:5]
+        for brand_or_type in brands_or_types:
+            results.append({
+                "type": "brand_or_type",
+                "name": f"Brand/Type: {brand_or_type.name}",
+                "url": reverse("product_list_by_type", args=[brand_or_type.slug]),
+                "image": brand_or_type.image.url if hasattr(brand_or_type, 'image') and brand_or_type.image else "/static/assets/images/Default images/category-icon.png"
+            })
+
+    return JsonResponse({"results": results})
+
+
+def search_products(request):
+    query = request.GET.get("search_field", "").strip()
+
+    if not query:
+        # fallback
+        return render(request, "store/products.html", {
+            "products": Product.objects.none(),  # empty queryset
+            "search_query": query,  # <-- empty string ""
+            "search_performed": True,
+            "no_search_result_message": "There is no product that matches the search criteria."
+        })
+
+    # 1 Try exact product match first
+    try:
+        product = Product.objects.get(
+            Q(name__iexact=query) | Q(slug__iexact=query) | Q(product_code__iexact=query)
+        )
+        return redirect("product_details", slug=product.slug)
+    except Product.DoesNotExist:
+        pass
+
+    # 2 If not a product, check for category/subcategory match
+    category = Category.objects.filter(name__iexact=query).first()
+    if category:
+        url = reverse("product_list_by_category", args=[category.slug])
+        return redirect(f"{url}?search_query={query}")
+
+    sub_category = subCategory.objects.filter(name__iexact=query).first()
+    if sub_category:
+        url = reverse("product_list_by_category", args=[sub_category.slug])
+        return redirect(f"{url}?search_query={query}")
+
+    brand_or_type = brandsOrTypesOfSubCategory.objects.filter(name__iexact=query).first()
+    if brand_or_type:
+        url = reverse("product_list_by_category", args=[brand_or_type.slug])
+        return redirect(f"{url}?search_query={query}")
+
+    # 3 Otherwise, show normal product list (partial match search)
+    products = Product.objects.filter(
+        Q(name__icontains=query) |
+        Q(specification__icontains=query) |
+        Q(description__icontains=query)
+    ).distinct()
+
+    if not products.exists():   # Returns False because QuerySet is empty here
+        no_search_result_message = "There is no product that matches the search criteria."
+    else:
+        no_search_result_message = None
+
+    return render(request, "store/products.html", {
+        "products": products,
+        "search_query": query,
+        "search_performed": True,  # tells template a search was done
+        "no_search_result_message": no_search_result_message,
+    })
 
 
 def product_list(request, slug=None):
@@ -54,6 +169,8 @@ def product_list(request, slug=None):
     selected_category = None
     selected_sub_category = None
     selected_brand_or_type = None
+
+    search_query = request.GET.get("search_query", "").strip()  # detect if came from search
 
     if slug:    # filter only if a category slug is passed
 
@@ -81,7 +198,7 @@ def product_list(request, slug=None):
     else:
         products = Product.objects.all()
 
-    if products is not None:
+    if products.exists():   # Returns True because QuerySet is not empty here
         products = (
             products
             .annotate(
@@ -103,6 +220,8 @@ def product_list(request, slug=None):
         'selected_category': selected_category,
         'selected_sub_category': selected_sub_category,
         'selected_brand_or_type': selected_brand_or_type,
+        'search_query': search_query,
+        'search_performed': bool(search_query),  # True if search_query exists
     }
     return render(request, 'store/products.html', context)
 
@@ -223,12 +342,4 @@ def product_variants_json(request, slug):
         colors = [{'id': cs.color.id, 'name': cs.color.color_name, 'code': cs.color.color_code, 'stock': cs.stock} for cs in v.color_stocks.all()]
         out.append({'id': v.id, 'sku': v.sku, 'attributes': attrs, 'colors': colors, 'price': str(v.get_price())})
     return JsonResponse({'variants': out})
-
-
-def admin_get_categories_and_subcategories(request):
-    cat_id = request.GET.get('cat_id')
-    if not cat_id:
-        return JsonResponse({'results': []})
-    subs = list(subCategory.objects.filter(category_id=cat_id).values('id', 'name'))
-    return JsonResponse({'results': subs})
 

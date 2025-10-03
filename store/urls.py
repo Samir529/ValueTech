@@ -23,7 +23,10 @@ urlpatterns = [
 
     path('product_variants_json/', views.product_variants_json, name='product_variants_json'),
 
-    path('admin/get_categories_and_subcategories/', views.admin_get_categories_and_subcategories, name='admin_get_categories_and_subcategories'),
+    # ajax live search
+    path("ajax/search/", views.ajax_live_search, name="ajax_live_search"),
+    path("search/", views.search_products, name="search_products"),
+
+    path("coming-soon/", views.coming_soon, name="coming_soon"),
 
 ]
-

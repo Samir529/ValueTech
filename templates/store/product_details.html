@@ -29,6 +29,7 @@
 
     <div class="product-view-content">
 
+        <!-- Action Bar -->
         <div class="action-bar shadow-sm mb-5">
             <div class="d-flex align-items-center gap-1">
                 <p class="mb-0">Share:</p>
@@ -166,10 +167,10 @@
                 <input type="text" class="form-control text-center" id="quantityInput" name="quantity" value="1">
                 <button class="btn btn-outline-secondary" type="button" id="increaseQty">+</button>
             </div>
-            <a href="#" onclick="event.preventDefault();"><button class="button2" style="width: 190px"><span>Add to Cart</span></button></a>
+            <a href="#" onclick="event.preventDefault();"><button class="button2" style="width: 190px;"><span>Add to Cart</span></button></a>
             <form action="{% url 'checkout' product.slug %}" method="get" class="d-inline">
                 <input type="hidden" name="quantity" id="buyNowQuantity" value="1">
-                <button type="submit" class="button" style="width: 190px"><span>Buy Now</span></button>
+                <button type="submit" class="button" style="width: 190px;"><span>Buy Now</span></button>
             </form>
           </div>
         </div>

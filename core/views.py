@@ -1,8 +1,9 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.forms import modelformset_factory
+from django.http import JsonResponse
 from core.forms import productForm, ProductColorForm
-from store.models import ProductColor
+from store.models import ProductColor, subCategory
 
 
 ProductColorFormSet = modelformset_factory(
@@ -43,3 +44,12 @@ def add_product(request):
         "form": form,
         "formset": formset,
     })
+
+
+def admin_get_categories_and_subcategories(request):
+    cat_id = request.GET.get('cat_id')
+    if not cat_id:
+        return JsonResponse({'results': []})
+    subs = list(subCategory.objects.filter(category_id=cat_id).values('id', 'name'))
+    return JsonResponse({'results': subs})
+

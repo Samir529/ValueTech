@@ -11,21 +11,25 @@
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/"><i class="fas fa-home"></i></a></li>
-        {% if category_name %}
-          <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'new_arrivals' %}" style="color: dimgray">{{ category_name }}</a></li>
-        {% elif slug == 'latest-gadgets' %}
-          <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'product_list_by_category' slug %}" style="color: dimgray">Latest Gadgets</a></li>
-        {% elif selected_category %}
-          <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'product_list_by_category' selected_category.slug %}" style="color: dimgray">{{ selected_category.name }}</a></li>
-        {% elif selected_sub_category %}
-          <li class="breadcrumb-item"><a href="{% url 'product_list_by_category' selected_sub_category.category.slug %}">{{ selected_sub_category.category }}</a></li>
-          <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'product_list_by_category' selected_sub_category.slug %}" style="color: dimgray">{{ selected_sub_category.name }}</a></li>
-        {% elif selected_brand_or_type %}
-          <li class="breadcrumb-item"><a href="{% url 'product_list_by_category' selected_brand_or_type.category.slug %}">{{ selected_brand_or_type.category }}</a></li>
-          <li class="breadcrumb-item"><a href="{% url 'product_list_by_category' selected_brand_or_type.sub_category.slug %}">{{ selected_brand_or_type.sub_category }}</a></li>
-          <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'product_list_by_category' selected_brand_or_type.slug %}" style="color: dimgray">{{ selected_brand_or_type.name }}</a></li>
+        {% if search_performed %}
+          <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'search_products' %}?q={{ search_query }}" style="color: dimgray">Search</a></li>
         {% else %}
-          <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'product_list' %}" style="color: dimgray">All Products</a></li>
+            {% if category_name %}
+              <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'new_arrivals' %}" style="color: dimgray">{{ category_name }}</a></li>
+            {% elif slug == 'latest-gadgets' %}
+              <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'product_list_by_category' slug %}" style="color: dimgray">Latest Gadgets</a></li>
+            {% elif selected_category %}
+              <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'product_list_by_category' selected_category.slug %}" style="color: dimgray">{{ selected_category.name }}</a></li>
+            {% elif selected_sub_category %}
+              <li class="breadcrumb-item"><a href="{% url 'product_list_by_category' selected_sub_category.category.slug %}">{{ selected_sub_category.category }}</a></li>
+              <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'product_list_by_category' selected_sub_category.slug %}" style="color: dimgray">{{ selected_sub_category.name }}</a></li>
+            {% elif selected_brand_or_type %}
+              <li class="breadcrumb-item"><a href="{% url 'product_list_by_category' selected_brand_or_type.category.slug %}">{{ selected_brand_or_type.category }}</a></li>
+              <li class="breadcrumb-item"><a href="{% url 'product_list_by_category' selected_brand_or_type.sub_category.slug %}">{{ selected_brand_or_type.sub_category }}</a></li>
+              <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'product_list_by_category' selected_brand_or_type.slug %}" style="color: dimgray">{{ selected_brand_or_type.name }}</a></li>
+            {% else %}
+              <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'product_list' %}" style="color: dimgray">All Products</a></li>
+            {% endif %}
         {% endif %}
       </ol>
     </nav>
@@ -33,30 +37,42 @@
 
 <div class="products-content">
   <div>
-    {% if category_name %}
-      <h3 class="fw-bold mb-3" style="color: royalblue; font-family: 'Candara', Arial, sans-serif;">
-          {{ category_name }} Products Price in Bangladesh
-      </h3>
-    {% elif slug == 'latest-gadgets' %}
-      <h3 class="fw-bold mb-3" style="color: royalblue; font-family: 'Candara', Arial, sans-serif;">
-          Latest Gadgets Price in Bangladesh
-      </h3>
-    {% elif selected_category %}
-      <h3 class="fw-bold mb-3" style="color: royalblue; font-family: 'Candara', Arial, sans-serif;">
-          {{ selected_category.name }} Price in Bangladesh
-      </h3>
-    {% elif selected_sub_category %}
-      <h3 class="fw-bold mb-3" style="color: royalblue; font-family: 'Candara', Arial, sans-serif;">
-          {{ selected_sub_category.name }} Price in Bangladesh
-      </h3>
-    {% elif selected_brand_or_type %}
-      <h3 class="fw-bold mb-3" style="color: royalblue; font-family: 'Candara', Arial, sans-serif;">
-          {{ selected_brand_or_type.name }} Price in Bangladesh
-      </h3>
+    {% if search_performed %}
+        {% if search_query %}
+          <h3 class="fw-bold mb-3" style="color: royalblue; font-family: 'Candara', Arial, sans-serif;">
+              Search Results for "{{ search_query }}"
+          </h3>
+        {% elif no_search_result_message %}
+          <h3 class="fw-bold mb-3" style="color: royalblue; font-family: 'Candara', Arial, sans-serif;">
+              Search Results
+          </h3>
+        {% endif %}
     {% else %}
-      <h3 class="fw-bold mb-3" style="color: royalblue; font-family: 'Candara', Arial, sans-serif;">
-          All Products Price in Bangladesh
-      </h3>
+        {% if category_name %}
+          <h3 class="fw-bold mb-3" style="color: royalblue; font-family: 'Candara', Arial, sans-serif;">
+              {{ category_name }} Products Price in Bangladesh
+          </h3>
+        {% elif slug == 'latest-gadgets' %}
+          <h3 class="fw-bold mb-3" style="color: royalblue; font-family: 'Candara', Arial, sans-serif;">
+              Latest Gadgets Price in Bangladesh
+          </h3>
+        {% elif selected_category %}
+          <h3 class="fw-bold mb-3" style="color: royalblue; font-family: 'Candara', Arial, sans-serif;">
+              {{ selected_category.name }} Price in Bangladesh
+          </h3>
+        {% elif selected_sub_category %}
+          <h3 class="fw-bold mb-3" style="color: royalblue; font-family: 'Candara', Arial, sans-serif;">
+              {{ selected_sub_category.name }} Price in Bangladesh
+          </h3>
+        {% elif selected_brand_or_type %}
+          <h3 class="fw-bold mb-3" style="color: royalblue; font-family: 'Candara', Arial, sans-serif;">
+              {{ selected_brand_or_type.name }} Price in Bangladesh
+          </h3>
+        {% else %}
+          <h3 class="fw-bold mb-3" style="color: royalblue; font-family: 'Candara', Arial, sans-serif;">
+              All Products Price in Bangladesh
+          </h3>
+        {% endif %}
     {% endif %}
   </div>
 
@@ -156,7 +172,13 @@
             </div>
         </div>
         {% empty %}
-            <p class="mt-3">No products found.</p>
+            {% if no_search_result_message %}
+                <p class="mt-3" style="display:inline !important; width:auto !important;">
+                    {{ no_search_result_message }}
+                </p>
+            {% else %}
+                <p class="mt-3">No products found.</p>
+            {% endif %}
         {% endfor %}
       </div>
 

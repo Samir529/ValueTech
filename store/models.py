@@ -36,6 +36,11 @@ class Category(models.Model):
     serial = models.IntegerField(blank=True, null=True)
     display_at_bar = models.BooleanField(default=False)
     category_adding_date = models.DateTimeField(auto_now_add=True)  # stores full date + time
+    image = models.ImageField(
+        upload_to="Categories/",
+        blank=True,
+        null=True,
+    )
 
     class Meta:
         verbose_name_plural = "Categories"
@@ -48,6 +53,12 @@ class Category(models.Model):
             self.slug = unique_slugify(self, self.name)
         super().save(*args, **kwargs)
 
+    @property
+    def image_url(self):
+        if self.image and hasattr(self.image, "url"):
+            return self.image.url
+        return static("assets/images/Default images/category-icon.png")
+
 
 
 class subCategory(models.Model):
@@ -56,6 +67,11 @@ class subCategory(models.Model):
     )
     name = models.CharField(max_length=100)
     slug = models.SlugField(max_length=100, unique=True, blank=True)
+    image = models.ImageField(
+        upload_to="Sub Categories/",
+        blank=True,
+        null=True,
+    )
 
     class Meta:
         verbose_name_plural = "Sub Categories"
@@ -68,6 +84,12 @@ class subCategory(models.Model):
             self.slug = unique_slugify(self, self.name)
         super().save(*args, **kwargs)
 
+    @property
+    def image_url(self):
+        if self.image and hasattr(self.image, "url"):
+            return self.image.url
+        return static("assets/images/Default images/category-icon.png")
+
 
 
 class brandsOrTypesOfSubCategory(models.Model):
@@ -79,9 +101,14 @@ class brandsOrTypesOfSubCategory(models.Model):
     )
     name = models.CharField(max_length=100)
     slug = models.SlugField(max_length=100, unique=True, blank=True)
+    image = models.ImageField(
+        upload_to="Brands or Types of Sub Categories/",
+        blank=True,
+        null=True,
+    )
 
     class Meta:
-        verbose_name_plural = "Types of Sub Categories"
+        verbose_name_plural = "Brands or Types of Sub Categories"
 
     def __str__(self):
         return self.name
@@ -91,6 +118,11 @@ class brandsOrTypesOfSubCategory(models.Model):
             self.slug = unique_slugify(self, self.name)
         super().save(*args, **kwargs)
 
+    @property
+    def image_url(self):
+        if self.image and hasattr(self.image, "url"):
+            return self.image.url
+        return static("assets/images/Default images/category-icon.png")
 
 
 # def get_default_category():
