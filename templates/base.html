@@ -61,46 +61,70 @@
   </div>
 </div>
 
+
+                <!-- Navbar (will become sticky after scrolling past topbar) -->
+                <nav class="d-lg-none">
+                  <!-- Navbar content -->
+                  <div class="mobile-navbar d-flex align-items-center justify-content-between px-3">
+
+                              <!-- For Mobile/Tablet View -->
+                              <div class="d-flex d-lg-none align-items-center justify-content-between w-100">
+
+                                <!-- Mobile Category Toggle Button (hamburger) -->
+                                <button class="btn category-toggle me-2 ps-1">
+                                  <!-- Hamburger -->
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24">
+                                      <path d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z"/>
+                                  </svg>
+                                </button>
+
+                                <!-- Centered Mobile Logo -->
+                                <a class="navbar-brand mobile-logo" href="/">
+                                  <img src="{% static 'assets/images/logos/transparent.png' %}" alt="Logo" height="35">
+                                </a>
+
+                                <!-- ================= MOBILE SEARCH BOX (hidden by default, toggled with JS) ================= -->
+                                <div id="mobileSearchBox" class="mobile-search-box">
+                                   <form action="{% url 'search_products' %}" method="GET" class="d-flex">
+                                      <input type="text"
+                                             name="search_field"
+                                             id="mobile-search-input"
+                                             class="form-control me-2"
+                                             placeholder="Search..."
+                                             autocomplete="off">
+                                      <button class="btn" type="submit">
+                                        <i class="fas fa-search"></i>
+                                      </button>
+                                   </form>
+                                   <!-- AJAX live results (kept outside the form so clicks don’t trigger submit) -->
+                                   <div id="mobile-search-results" class="search-results"></div>
+                                </div>
+
+                                <!-- Right-side Icons -->
+                                <div class="d-flex align-items-center ms-auto gap-2">
+                                  <!-- Mobile Search Icon -->
+                                  <button id="mobileSearchToggle" class="btn mobile-search-button p-0">
+                                    <i class="fas fa-search"></i>
+                                  </button>
+
+                                  <!-- Mobile Shopping Cart -->
+                                  <a href="{% url 'cart' %}" class="mobile-shopping-cart p-0 pb-1 {% if request.resolver_match.url_name == 'cart' %}active{% endif %}">
+                                    <img src="{% static 'assets/images/cart-icon.png' %}" alt="Shopping Cart" height="35">
+                                  </a>
+                                </div>
+                              </div>
+                  </div>
+                </nav>
+
+
 <!-- Navbar (will become sticky after scrolling past topbar) -->
-<nav>
+<nav class="d-none d-md-none d-lg-flex">
   <!-- Navbar content -->
-  <div class="navbar d-flex align-items-center justify-content-between px-3">
-
-
-              <!-- For Mobile/Tablet View -->
-              <div class="d-flex d-lg-none align-items-center justify-content-between w-100">
-
-                <!-- Mobile Category Toggle Button (hamburger) -->
-                <button class="btn category-toggle me-2 ps-1">
-                  <!-- Hamburger -->
-                  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24">
-                      <path d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z"/>
-                  </svg>
-                </button>
-
-                <!-- Centered Mobile Logo -->
-                <a class="navbar-brand mobile-logo" href="/">
-                  <img src="{% static 'assets/images/logos/transparent.png' %}" alt="Logo" height="35">
-                </a>
-
-                <!-- Right-side Icons -->
-                <div class="d-flex align-items-center ms-auto gap-2">
-                  <!-- Mobile Search Icon -->
-                  <button id="mobileSearchToggle" class="btn mobile-search-button p-0">
-                    <i class="fas fa-search"></i>
-                  </button>
-
-                  <!-- Mobile Shopping Cart -->
-                  <a href="{% url 'coming_soon' %}" class="btn mobile-shopping-cart p-0 pb-1">
-                    <img src="{% static 'assets/images/cart-icon.png' %}" alt="Shopping Cart" height="35">
-                  </a>
-                </div>
-              </div>
-
+  <div class="navbar align-items-center justify-content-between px-3">
 
       <!-- Logo -->
       <a href="/" class="d-none d-md-none d-lg-block me-3">
-        <img src="/static/assets/images/logos/transparent.png" alt="Logo" style="width: 250px; height: 55px;"/>
+        <img src="/static/assets/images/logos/transparent.png" alt="Logo" style="height: 55px;"/>
       </a>
 
         <!-- mx-auto = centers -->
@@ -111,7 +135,7 @@
       <!-- ================= DESKTOP SEARCH (visible on lg+ screens) ================= -->
       <!-- Center Search Box -->
       <form class="search-container d-none d-md-none d-lg-flex me-auto" action="{% url 'search_products' %}" method="GET">
-        <input type="text" name="search_field" id="search-input" class="search-box" placeholder="Search...">
+        <input type="text" name="search_field" id="search-input" class="search-box" placeholder="Search..." autocomplete="off">
         <button class="search-button" type="submit">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" >
             <path d="M10 2a8 8 0 0 0 0 16 7.96 7.96 0 0 0 4.9-1.7l4.4 4.4a1 1 0 0 0 1.4-1.4l-4.4-4.4A7.96 7.96 0 0 0 18 10a8 8 0 0 0-8-8Zm0 2a6 6 0 1 1 0 12 6 6 0 0 1 0-12Z"/>
@@ -120,26 +144,6 @@
         <!-- AJAX live results -->
         <div id="search-results" class="search-results"></div>
       </form>
-
-
-
-              <!-- ================= MOBILE SEARCH BOX (hidden by default, toggled with JS) ================= -->
-              <div id="mobileSearchBox" class="mobile-search-box d-lg-none">
-                 <form action="{% url 'search_products' %}" method="GET" class="d-flex">
-                    <input type="text"
-                           name="search_field"
-                           id="mobile-search-input"
-                           class="form-control me-2"
-                           placeholder="Search...">
-                    <button class="btn" type="submit">
-                      <i class="fas fa-search"></i>
-                    </button>
-                  </form>
-                  <!-- AJAX live results (kept outside the form so clicks don’t trigger submit) -->
-                  <div id="mobile-search-results" class="search-results"></div>
-              </div>
-
-
 
       <!-- Right-side icons (Desktop only) -->
       <div class="d-none d-md-none d-lg-flex align-items-center ms-3">
@@ -306,31 +310,45 @@
         <!-- For Mobile/Tablet View -->
         <!-- Side Category Menu -->
         <!-- Side Menu -->
-<div id="sideCategoryMenu" class="side-menu">
-  <div class="side-menu-header">
-    <span>Categories</span>
-    <button class="close-btn">&times;</button>
-  </div>
-  <ul class="menu-list">
-    <li>
-      <button class="menu-item" data-toggle="sub1">Category 1</button>
-      <ul id="sub1" class="subcatmenu">
-        <li><a href="#">Subcategory 1A</a></li>
-        <li><a href="#">Subcategory 1B</a></li>
-      </ul>
-    </li>
-    <li>
-      <button class="menu-item" data-toggle="sub2">Category 2</button>
-      <ul id="sub2" class="subcatmenu">
-        <li><a href="#">Subcategory 2A</a></li>
-        <li><a href="#">Subcategory 2B</a></li>
-      </ul>
-    </li>
-  </ul>
-</div>
+        <div id="sideCategoryMenu" class="side-menu d-lg-none">
+          <div class="side-menu-header">
+            <span>Categories</span>
+            <button class="close-btn">&times;</button>
+          </div>
 
-<!-- Overlay -->
-<div id="overlay"></div>
+          <ul class="menu-list">
+            {% for category in categories %}
+              <li>
+                <button class="menu-item" data-toggle="sub-{{ category.slug }}">
+                  {{ category.name }}
+                </button>
+
+                <!-- Subcategories -->
+                <ul id="subcat-{{ category.slug }}" class="subcatmenu">
+                  {% for subcat in category.subcategory_set.all %}
+                    <li>
+                      <button class="subcatmenu-item" data-toggle="types-{{ subcat.slug }}">
+                        {{ subcat.name }}
+                      </button>
+
+                      <!-- Brands or Types of Subcategory -->
+                      <ul id="brandsortypes-{{ subcat.slug }}" class="sub-subcatmenu">
+                        {% for brandsortypes in subcat.brandsortypesofsubcategory_set.all %}
+                          <li>
+                            <a href="{% url 'product_list_by_category' brandsortypes.slug %}">
+                              {{ brandsortypes.name }}
+                            </a>
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    </li>
+                  {% endfor %}
+                </ul>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+        <div id="overlay"></div>
 
 
 <!-- Side Navigation Menu -->
@@ -396,20 +414,20 @@
         <!-- For Mobile/Tablet View -->
         <!-- Mobile Bottom Nav -->
           <div class="mobile-bottom-nav d-lg-none">
-            <a href="{% url 'offers' %}" class="nav-link">
+            <a href="{% url 'offers' %}" class="nav-link {% if request.resolver_match.url_name == 'offers' %}active{% endif %}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 2 22 24">
                     <path d="M20 7h-2.18c.11-.31.18-.65.18-1a3 3 0 0 0-5.91-.75L12 6.1l-.09-.85A3 3 0 0 0 6 6c0 .35.07.69.18 1H4a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-9a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1ZM15 4a1 1 0 0 1 1 1 1 1 0 0 1-2 0 1 1 0 0 1 1-1ZM9 4a1 1 0 0 1 1 1 1 1 0 0 1-2 0 1 1 0 0 1 1-1Zm2 16H6v-7h5Zm7 0h-5v-7h5Zm1-9H5V9h14Z"/>
                 </svg>
                 <span>Offers</span>
             </a>
-            <a href="{% url 'coming_soon' %}" class="nav-link">
+            <a href="{% url 'pc_builder' %}" class="nav-link {% if request.resolver_match.url_name == 'pc_builder' %}active{% endif %}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 24 24">
                     <path d="M20 3H4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h6v2H8a1 1 0 0 0 0 2h8a1 1 0 0 0 0-2h-2v-2h6a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2ZM20 16H4V5h16Z"/>
                     <path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm0 2a2 2 0 1 1 0 4 2 2 0 0 1 0-4Z"/>
                 </svg>
                 <span>PC Builder</span>
             </a>
-            <a href="{% url 'coming_soon' %}" class="nav-link">
+            <a href="{% url 'wishlist' %}" class="nav-link {% if request.resolver_match.url_name == 'wishlist' %}active{% endif %}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24">
                     <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28
                              2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81
@@ -419,7 +437,7 @@
                     </svg>
                 <span>Wish List (0)</span>
             </a>
-            <a href="{% url 'coming_soon' %}" class="nav-link">
+            <a href="{% url 'compare' %}" class="nav-link {% if request.resolver_match.url_name == 'compare' %}active{% endif %}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="1 0 24 24">
                         <rect x="2" y="10" width="4" height="10"/>
                         <rect x="8" y="6" width="4" height="14"/>
@@ -428,7 +446,7 @@
                 </svg>
                 <span>Compare</span>
             </a>
-            <a href="{% url 'account' %}" class="nav-link">
+            <a href="{% url 'account' %}" class="nav-link {% if request.path|slice:':9' == '/account/' or request.path|slice:':6' == '/core/' %}active{% endif %}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24">
                  <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12
                           2.4 7.2 4.5 7.2 7.2 9.3 12 12

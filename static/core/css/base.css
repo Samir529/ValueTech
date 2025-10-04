@@ -82,7 +82,7 @@ a:hover {
     border-radius: 5px;
     padding: 1px 7px;
     box-shadow: 0 6px 12px rgba(0,0,0,0.1);
-    width: 480px;
+    width: 485px;
     max-width: 90%;
     position: relative;
 }
@@ -350,7 +350,7 @@ gap: 4px;
     padding-bottom: 15px;
     width: 100%;
     transition: all 0.3s ease-in-out;
-    height: 90px;
+    height: 90px;   /* (60+15+15) */
     z-index: 999;
 }
 .navbar-icon:hover {
@@ -440,7 +440,6 @@ gap: 4px;
     color: orangered;
     text-decoration: none;
 }
-
 /* Sticky Category Bar */
 .category-bar.sticky {
     position: fixed;

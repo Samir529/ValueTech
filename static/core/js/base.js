@@ -36,13 +36,13 @@
     window.toggleNav = function () {
       const menu = document.getElementById("sidenavjs");
 
-      if (menu.style.width === "260px") {
+      if (menu.style.width === "270px") {
         menu.style.width = "0";
         menu.removeEventListener("mouseenter", blockPageScroll);
         menu.removeEventListener("mouseleave", allowPageScroll);
         allowPageScroll(); // Ensure page scroll is restored
       } else {
-        menu.style.width = "260px";
+        menu.style.width = "270px";
         menu.addEventListener("mouseenter", blockPageScroll);
         menu.addEventListener("mouseleave", allowPageScroll);
         blockPageScroll();
@@ -336,32 +336,55 @@
         if (window.innerWidth > 768) return;
 
 
-        // Mobile Search Toggle
-        document.querySelector(".mobile-search-button").addEventListener("click", function () {
-            document.querySelector(".mobile-search-box").classList.toggle("show");
+        // ======= MOBILE STICKY NAVBAR =======
+        // Make Mobile Navbar sticky
+        window.addEventListener("scroll", function () {
+            const mobileNavbar = document.querySelector(".mobile-navbar");
+            const mobileSearchBox  = document.querySelector(".mobile-search-box");
+
+            if (window.scrollY >= 0) {
+                mobileNavbar.classList.add("sticky");
+                mobileSearchBox?.classList.add("sticky");
+                document.body.style.paddingTop = mobileNavbar.offsetHeight + 'px';
+            } else {
+                mobileNavbar.classList.remove("sticky");
+                mobileSearchBox?.classList.remove("sticky");
+                document.body.style.paddingTop = '0';
+            }
         });
 
-        // Adjust Mobile Search Box When Navbar Shrinks in Sticky Mode
-        (function () {
-          const mobileBox = document.getElementById('mobileSearchBox');
-          const navbar = document.querySelector('.navbar');
 
-          if (!mobileBox || !navbar) return;
+        // Mobile Search Toggle
+        document.querySelector(".mobile-search-button").addEventListener("click", function () {
+            // Toggle search box visibility
+            document.querySelector(".mobile-search-box").classList.toggle("show");
 
-          function updateMobileSearchTop() {
-            // use the current navbar height so it works for sticky / non-sticky and responsive
-            const topValue = navbar.offsetHeight || 0;
-            mobileBox.style.top = `${topValue}px`;
-          }
+            // Toggle active state on button (for red icon)
+            this.classList.toggle("active");
+        });
 
-          // run at important times
-          document.addEventListener('DOMContentLoaded', updateMobileSearchTop);
-          window.addEventListener('resize', updateMobileSearchTop);
-          window.addEventListener('scroll', updateMobileSearchTop);
 
-          // If you have custom code that toggles .navbar.sticky, call updateMobileSearchTop() right after toggling.
-          // e.g. inside your scroll handler, after navbar.classList.add/remove('sticky'), call updateMobileSearchTop();
-        })();
+        // Adjust Mobile Search Box When Mobile Navbar Shrinks in Sticky Mode
+//        (function () {
+//          const mobileBox = document.getElementById('mobileSearchBox');
+//          const mobileNavbar = document.querySelector('.mobile-navbar');
+//
+//          if (!mobileBox || !mobileNavbar) return;
+//
+//          function updateMobileSearchTop() {
+//            // use the current mobile navbar height so it works for sticky / non-sticky and responsive
+//            const topValue = mobileNavbar.offsetHeight || 0;
+//            mobileBox.style.top = `${topValue}px`;
+//          }
+//
+//          // run at important times
+//          document.addEventListener('DOMContentLoaded', updateMobileSearchTop);
+//          window.addEventListener('resize', updateMobileSearchTop);
+//          window.addEventListener('scroll', updateMobileSearchTop);
+//
+//          // If we have custom code that toggles .mobile-navbar.sticky, call updateMobileSearchTop() right after toggling.
+//          // e.g. inside your scroll handler, after mobile-navbar.classList.add/remove('sticky'), call updateMobileSearchTop();
+//        })();
 
 
         // ================= Live Search Dropdown For Mobile / AJAX live results =================
@@ -529,42 +552,53 @@
         })();
 
 
-        // Side Dropdown Category Menu
-        (function() {
-  document.addEventListener("DOMContentLoaded", function () {
-    const menu = document.getElementById("sideCategoryMenu");
-    const overlay = document.getElementById("overlay");
-    const openBtn = document.querySelector(".category-toggle");
-    const closeBtn = document.querySelector(".close-btn");
+        // ======= Mobile Category Side Dropdown Panel =======
+        const menu     = document.getElementById("sideCategoryMenu");
+        const overlay  = document.getElementById("overlay");
+        const openBtn  = document.querySelector(".category-toggle");
+        const closeBtn = document.querySelector(".close-btn");
 
-    if (!menu || !overlay || !openBtn || !closeBtn) return;
+        // Helper: open menu
+        function openMenu() {
+          menu?.classList.add("open");
+          overlay?.classList.add("show");
+          openBtn?.classList.add("active");
+        }
 
-    openBtn.addEventListener("click", function () {
-      menu.classList.add("open");
-      overlay.classList.add("show");
-    });
+        // Helper: close menu
+        function closeMenu() {
+          menu?.classList.remove("open");
+          overlay?.classList.remove("show");
+          openBtn?.classList.remove("active");
+        }
 
-    closeBtn.addEventListener("click", function () {
-      menu.classList.remove("open");
-      overlay.classList.remove("show");
-    });
+        // Open menu
+        openBtn?.addEventListener("click", () => {
+          const isOpen = menu?.classList.contains("open");
+          if (isOpen) {
+            closeMenu();
+          } else {
+            openMenu();
+          }
+        });
 
-    overlay.addEventListener("click", function () {
-      menu.classList.remove("open");
-      overlay.classList.remove("show");
-    });
+        // Close button
+        closeBtn?.addEventListener("click", closeMenu);
 
-    document.querySelectorAll("[data-toggle]").forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        const target = document.getElementById(this.dataset.toggle);
-        target.classList.toggle("open");
-      });
-    });
-  });
-})();
+        // Close on overlay click
+        overlay?.addEventListener("click", closeMenu);
+
+        // Toggle submenus
+        document.querySelectorAll("[data-toggle]").forEach(btn => {
+          btn.addEventListener("click", function () {
+            const target = document.getElementById(this.dataset.toggle);
+            target?.classList.toggle("open");
+          });
+        });
 
 
     }
+
 
 
     // Run on page load
@@ -573,5 +607,4 @@
 
     // Optional: handle window resize to re-initialize mobile features
     window.addEventListener("resize", initMobileFeatures);
-
 })();

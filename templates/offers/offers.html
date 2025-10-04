@@ -20,7 +20,8 @@
         {% for offer in offers %}
         <div class="offer-card">
             <div class="offer-img">
-                <a href="{{ offer.button_link|default:'#' }}" onclick="event.preventDefault();">
+                {% url 'coming_soon' as coming_soon_url %}
+                <a href="{{ offer.button_link|default:coming_soon_url }}">
                     <img src="{{ offer.image.url }}" alt="{{ offer.title }}">
                 </a>
             </div>
@@ -44,14 +45,14 @@
                 <hr class="card">
 
                 <h3 class="offer-title">
-                    <a href="{{ offer.button_link|default:'#' }}" onclick="event.preventDefault();">
+                    <a href="{{ offer.button_link|default:coming_soon_url }}">
                         {{ offer.title }}
                     </a>
                 </h3>
                 <p class="offer-desc">
                     {{ offer.description }}
                 </p>
-                <a href="{{ offer.button_link|default:'#' }}" onclick="event.preventDefault();" class="btn-offer">
+                <a href="{{ offer.button_link|default:coming_soon_url }}" class="btn-offer">
                     {{ offer.button_text }}
                 </a>
             </div>

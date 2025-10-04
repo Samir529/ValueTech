@@ -1,3 +1,43 @@
+/* Mobile Navbar */
+.mobile-navbar {
+    background-color: #435EA3;
+    margin-top: 0;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    width: 100%;
+    transition: all 0.3s ease-in-out;
+    height: 59px;   /* (35+12+12) */
+    z-index: 2000;
+}
+.mobile-navbar-icon:hover {
+    fill: #165D9B;
+}
+.mobile-navbar-icon-2:hover {
+    fill: seagreen;
+}
+.mobile-navbar-icon-3:hover {
+    fill: #E1670A;
+}
+/* Sticky navbar (activated by JS when scrolling past topbar) */
+.mobile-navbar.sticky {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 2000;
+    /*box-shadow: 0 2px 8px rgba(0,0,0,0.1);*/
+    padding-top: 7px;  /* shrinks navbar smoothly */
+    padding-bottom: 7px;   /* shrinks navbar smoothly */
+    animation: slideDown 0.3s forwards; /* slide animation */
+    height: 49px;   /* (35+7+7) */
+}
+/* Slide animation */
+@keyframes slideDown {
+    from { transform: translateY(-100%); }
+    to { transform: translateY(0); }
+}
+
+
 /* Make mobile logo absolutely centered */
 .mobile-logo {
   position: absolute;
@@ -7,15 +47,28 @@
 
 
 /* Mobile Shopping Cart */
-.mobile-shopping-cart svg {
-  fill: #230D42;
+.mobile-shopping-cart img {
+  filter: brightness(0) invert(1);
+}
+/* When button is active, change icon color */
+/* Active (toggled) state */
+.mobile-shopping-cart.active img {
+  filter: invert(50%) sepia(100%) saturate(500%) hue-rotate(90deg) brightness(1.2);
 }
 
 
 /* Mobile Search Button */
+.mobile-search-button {
+  border: none;
+}
 .mobile-search-button i {
-  color: #230D42;
+  color: white;
   font-size: 18px;
+}
+/* When button is active, change icon color */
+/* Active (toggled) state */
+.mobile-search-button.active i {
+  color: #FF3000;
 }
 
 
@@ -23,18 +76,18 @@
 .mobile-search-box {
   display: none;
   position: fixed;        /* stick to viewport, not inside content flow */
-  top: 90px;              /* match your .navbar height (90px) */
+  top: 59px;              /* match your .navbar height (90px) */
   left: 0;
   width: 100%;            /* full width */
   background: #fff;
-  z-index: 9999;          /* above navbar but below overlay menus */
-  padding: 5px 10px;
+  z-index: 1999;          /* above navbar but below overlay menus */
+  padding: 3px 4px;
 
   /* shadow below the search box */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
 }
-.navbar.sticky + .mobile-search-box {
-  top: 70px;              /* adjust when navbar shrinks in sticky mode */
+.mobile-search-box.sticky {
+  top: 49px;              /* adjust when navbar shrinks in sticky mode */
 }
 .mobile-search-box.show {
   display: block;
@@ -44,21 +97,27 @@
   border: none !important;
   outline: none !important;
   box-shadow: none !important;
-  background-color: #f9f9f9;   /* subtle background (optional) */
-  border-radius: 6px;          /* smooth rounded corners */
-  padding: 10px 12px;
+  background-color: #fff;
+  border-radius: 0px;
   font-size: 15px;
 }
-/* Optional: style the button */
+/* Style the button */
 .mobile-search-box button.btn {
-  border-radius: 6px;
-  box-shadow: none;
+  color: gray;
 }
 
 
 /* Mobile Category Toggle Button */
+.category-toggle {
+  border: none;
+}
 .category-toggle svg {
-  fill: #230D42;
+  fill: white;
+}
+/* When button is active, change icon color */
+/* Active (toggled) state */
+.category-toggle.active svg {
+  fill: #FF3000;
 }
 
 
@@ -66,19 +125,22 @@
 /* Side menu wrapper */
 .side-menu {
   position: fixed;
-  top: 0;
-  left: -300px;
+  top: 49px;
+  left: -300px;           /* hidden by default */
   width: 280px;
-  height: 100%;
+  height: calc(100vh - 59px); /* visible area */
   background: #fff;
   border-right: 1px solid #ccc;
   box-shadow: 2px 0 6px rgba(0,0,0,0.2);
   transition: left 0.3s ease;
-  z-index: 10000;
+  z-index: 1500;    /* between navbar(2000) and bottom nav(1100) */
   overflow-y: auto;
 }
-.side-menu.open { left: 0; }
-
+/* Show menu */
+.side-menu.open {
+  left: 0;
+}
+/* Header */
 .side-menu-header {
   display: flex;
   justify-content: space-between;
@@ -94,23 +156,30 @@
   font-size: 22px;
   cursor: pointer;
 }
-
+/* Overlay */
 #overlay {
   display: none;
   position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
+  top: 49px; /* below navbar */
+  left: 0;
+  width: 100%;
+  height: 100%;
   background: rgba(0,0,0,0.4);
-  z-index: 9999;
+  z-index: 1400; /* just below panel */
 }
-#overlay.show { display: block; }
-
-.menu-list {
+#overlay.show {
+  display: block;
+}
+/* Menu styles */
+.menu-list,
+.subcatmenu,
+.sub-subcatmenu {
   list-style: none;
   padding: 0;
   margin: 0;
 }
-.menu-item {
+.menu-item,
+.subcatmenu-item {
   width: 100%;
   text-align: left;
   background: none;
@@ -121,13 +190,31 @@
   cursor: pointer;
   color: #000;
 }
-.menu-item:hover { background: #f0f0f0; }
-
-.subcatmenu {
+.menu-item:hover,
+.subcatmenu-item:hover {
+  background: #f0f0f0;
+}
+/* Nested menus */
+.subcatmenu,
+.sub-subcatmenu {
   display: none;
   padding-left: 15px;
+  border-left: 2px solid #eee;
 }
-.subcatmenu.open { display: block; }
+.subcatmenu.open,
+.sub-subcatmenu.open {
+  display: block;
+}
+.sub-subcatmenu a {
+  display: block;
+  padding: 8px 15px;
+  font-size: 13px;
+  color: #444;
+  text-decoration: none;
+}
+.sub-subcatmenu a:hover {
+  color: orangered;
+}
 
 
 /* --- Back-to-Top button styles --- */
@@ -149,7 +236,7 @@ opacity: 0; /* hidden by default at top of page */
 pointer-events: none; /* don't trap clicks when hidden */
 transform: translateY(8px);
 transition: opacity .25s ease, transform .25s ease, background-color .2s ease;
-z-index: 9999;
+z-index: 500;
 }
 
 /* Visible state once user has scrolled past the threshold */

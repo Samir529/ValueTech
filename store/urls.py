@@ -28,5 +28,9 @@ urlpatterns = [
     path("search/", views.search_products, name="search_products"),
 
     path("coming-soon/", views.coming_soon, name="coming_soon"),
+    path("pc-builder/", views.coming_soon, name="pc_builder"),
+    path("cart/", views.coming_soon, name="cart"),
+    path("wish-list/", views.coming_soon, name="wishlist"),
+    path("compare/", views.coming_soon, name="compare"),
 
 ]

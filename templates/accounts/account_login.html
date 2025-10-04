@@ -37,7 +37,7 @@
 <!--        <a href="#"><button class="button" style="width: 25%;  padding: 6px;"><span>Reset</span></button></a></h5>-->
 <!--        </div>-->
 <!--        {% endif %}-->
-    <h4 style="color: black;">Account Login</h4>
+    <h5 class="mb-4" style="color: black;">Account Login</h5>
     <form action="{% url 'account_login' %}" method="post" id="accountLoginForm" style="width: 385px">
         {% csrf_token %}
         <label for="username" style="color: black;">Phone / E-Mail</label>
@@ -55,9 +55,9 @@
         <button class="button" style="border-radius: 20px; width: 385px"><span>Login</span></button>
     </form>
     <br>
-    <a href="#"><h6 style="color: red; text-align: center">Forgot your password?</h6></a>
+    <a href="#" onclick="event.preventDefault();" style="color: red; text-align: center"><h6>Forgot your password?</h6></a>
     <br>
-    <h4 style="color: gray; text-align: left">Don't have an account?</h4>
+    <h5 style="color: gray; text-align: left">Don't have an account?</h5>
     <br>
     <a href="{% url 'register_account' %}"><button class="button2" style="border-radius: 20px; width: 385px"><span>Create Your Account</span></button></a>
 </div>
