@@ -9,7 +9,7 @@
     padding: 20px 2%;
 }
 .product-title { font-size: 1.4rem; color: royalblue; font-family: 'Cascadia Code Light', Arial, sans-serif; }
-.price-tag { font-size: 1.3rem; font-weight: bold; color: #e63946; }
+.price-tag { font-size: 1.1rem; font-weight: bold; color: #e63946; }
 .old-price { text-decoration: line-through; color: gray; font-weight: bold; font-size: 0.95rem; margin-left: 10px; }
 .key-features li { margin-bottom: 6px; }
 .tab-content { background: #fff; border: 1px solid #dee2e6; border-top: none; padding: 20px; }

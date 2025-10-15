@@ -52,13 +52,13 @@
             </div>
 
             <div class="d-flex align-items-center gap-3">
-                <a href="#" onclick="event.preventDefault();" class="icon-btn d-flex align-items-center gap-1">
+                <a href="{% url 'coming_soon' %}" class="icon-btn d-flex align-items-center gap-1">
                     <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#000" viewBox="0 0 24 24">
                         <path d="M6 2c-1.1 0-2 .9-2 2v18l8-5.33L20 22V4c0-1.1-.9-2-2-2H6z"/>
                     </svg>
                     <p class="mb-0">Save</p>
                 </a>
-                <a href="#" onclick="event.preventDefault();" class="icon-btn d-flex align-items-center gap-2">
+                <a href="{% url 'coming_soon' %}" class="icon-btn d-flex align-items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#000" viewBox="0 0 24 24">
                         <rect x="2" y="10" width="4" height="10"/>
                         <rect x="8" y="6" width="4" height="14"/>
@@ -98,41 +98,57 @@
 
         <!-- Product Info -->
         <div class="col-md-7">
-          <h4 class="product-title fw-bold">{{ product.name }}</h4>
-          <p>
+          <h4 class="product-title fw-bold mb-3">{{ product.name }}</h4>
+
+          <div class="d-flex flex-wrap align-items-center gap-2">
             {% if product.special_price %}
-              <span class="price-tag">
+              <p class="px-3 py-1 bg-body-secondary rounded-pill">
+                Special Price:
+                <span class="price-tag">
                   {{ product.special_price|intcomma }}৳
-              </span>
-              <small class="old-price">
-                  {{ product.regular_price|intcomma }}৳
-              </small>
+                </span>
+              </p>
 
+              <p class="px-3 py-1 bg-body-secondary rounded-pill">
+                Regular Price:
+                <strong>{{ product.regular_price|intcomma }}৳</strong>
+              </p>
             {% else %}
-              <span class="price-tag">
+              <p class="px-3 py-1 bg-body-secondary rounded-pill">
+                Price:
+                <span class="price-tag">
                   {{ product.regular_price|intcomma }}৳
-              </span>
+                </span>
+              </p>
             {% endif %}
-          </p>
+          </div>
 
-          <p>Status:
-            {% if product.status == "in_stock" %}
-              <span class="badge bg-success">In Stock</span>
-            {% elif product.status == "pre_order" %}
-              <span class="badge bg-warning text-dark">Pre Order</span>
-            {% elif product.status == "up_coming" %}
-              <span class="badge bg-info text-dark">Up Coming</span>
-            {% elif product.status == "out_of_stock" %}
-              <span class="badge bg-danger">Out of Stock</span>
-            {% endif %}
-          </p>
+          <div class="d-flex flex-wrap align-items-center gap-2">
+            <p class="d-flex align-items-center px-3 py-1 bg-body-secondary rounded-pill">
+              Status:
+              {% if product.status == "in_stock" %}
+                <span class="badge bg-success ms-2">In Stock</span>
+              {% elif product.status == "pre_order" %}
+                <span class="badge bg-warning text-dark ms-2">Pre Order</span>
+              {% elif product.status == "up_coming" %}
+                <span class="badge bg-info text-dark ms-2">Up Coming</span>
+              {% elif product.status == "out_of_stock" %}
+                <span class="badge bg-danger ms-2">Out of Stock</span>
+              {% endif %}
+            </p>
 
-          <p>Product Code: <strong>{{ product.product_code }}</strong></p>
-          <p>Brand: <span>{{ product.brand }}</span></p>
+            <p class="px-3 py-1 bg-body-secondary rounded-pill">
+              Product Code: <strong>{{ product.product_code }}</strong>
+            </p>
+
+            <p class="px-3 py-1 bg-body-secondary rounded-pill">
+              Brand: <strong>{{ product.brand }}</strong>
+            </p>
+          </div>
 
           <!-- Key Features -->
-          <h6 class="fw-bold mt-4">Key Features</h6>
-          <p>Model: <span>{{ product.model }}</span></p>
+          <h6 class="fw-bold mt-3">Key Features</h6>
+          <span>{{ product.specification|linebreaks }}</span>
 
           <!-- Sizes -->
           {% if sizes %}
@@ -227,18 +243,26 @@
       </ul>
 
       <div class="tab-content">
-        <div class="tab-pane fade show active">
-          <h6 class="fw-bold mb-3">Specification</h6>
+        <div class="tab-pane fade show active mt-2">
+          <h5 class="fw-bold mb-3">Specification</h5>
           <p>{{ product.specification|linebreaks }}</p>
+          <p>
+            Warranty Details: {{ product.warranty }}
+            {% if product.warranty_details %}
+              ({{ product.warranty_details }})
+            {% endif %}
+          </p>
         </div>
-        <div id="description" class="tab-pane fade">
-          <h6>Description</h6>
+        <div id="description" class="tab-pane fade mt-4">
+          <h5 class="fw-bold mb-3">Description</h5>
           <p>{{ product.description|linebreaks }}</p>
         </div>
-        <div id="questions" class="tab-pane fade">
+        <div id="questions" class="tab-pane fade mt-4">
+          <h5 class="fw-bold mb-3">Questions (0)</h5>
           <p>No questions yet.</p>
         </div>
-        <div id="reviews" class="tab-pane fade">
+        <div id="reviews" class="tab-pane fade mt-4">
+          <h5 class="fw-bold mb-3">Reviews (0)</h5>
           <p>No reviews yet.</p>
         </div>
       </div>
