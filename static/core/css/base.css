@@ -504,9 +504,12 @@ gap: 4px;
     position: relative;     /* for arrow placement */
 }
 /* nicer hover for dropdown items */
-.category-bar-dropdown-content .category-bar-dropdown-sub > a:hover {
-    background: limegreen;
-    color: white;
+.category-bar-dropdown-sub a.active,
+.category-bar-dropdown-content .category-bar-dropdown-sub > a:hover,
+.category-bar-dropdown-sub:has(.category-bar-dropdown-sub-content:hover) > a,
+.category-bar-dropdown-sub:hover > a {
+  background: limegreen;
+  color: white;
 }
 
 /* ARROW: only for subcategories that have a types-flyout */
@@ -526,24 +529,12 @@ gap: 4px;
 .category-bar-dropdown-sub.has-types > a .arrow::before {
     content: "►";
 }
-/* Change arrow color when parent <a> is hovered */
-.category-bar-dropdown-sub.has-types > a:hover .arrow::before {
+/* Change arrow color when parent <a> is hovered or it's child dropdown is open*/
+.category-bar-dropdown-sub.has-types > a:hover .arrow::before,
+.category-bar-dropdown-sub.has-types:has(.category-bar-dropdown-sub-content:hover) > a .arrow::before {
     color: limegreen;
 }
 
-/* TYPES FLYOUT (the right-side panel) */
-.category-bar-dropdown-sub-content {
-    display: none;
-    position: absolute;
-    top: 0;             /* align with the subcategory row top (you can tweak) */
-    left: 100%;         /* fly out to the right */
-    background: #fff;
-    min-width: 200px;
-    border: 1px solid #ccc;
-    box-shadow: 0 8px 18px rgba(0,0,0,0.18);
-    z-index: 5100;
-    padding: 6px 0;
-}
 /* TYPES FLYOUT (the right-side panel) */
 .category-bar-dropdown-sub-content {
     display: none;

@@ -13,7 +13,6 @@ def categories_processor(request):
     second_half_categories = categories[half_index:]
 
     context = {
-        'categories': categories,
         'first_half_categories': first_half_categories,
         'second_half_categories': second_half_categories,
     }

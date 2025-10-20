@@ -138,6 +138,31 @@
     });
 
 
+    // Show sub category active when hovering on it's brands or types
+    document.querySelectorAll('.category-bar-dropdown-sub').forEach(sub => {
+      const subContent = sub.querySelector('.category-bar-dropdown-sub-content');
+      if (subContent) {
+        // When hovering on the sub or its sub-content, add active class
+        sub.addEventListener('mouseenter', () => {
+          sub.classList.add('active');
+        });
+        sub.addEventListener('mouseleave', () => {
+          sub.classList.remove('active');
+        });
+
+        // Also keep it active while hovering on the sub-content itself
+        subContent.addEventListener('mouseenter', () => {
+          sub.classList.add('active');
+        });
+        subContent.addEventListener('mouseleave', () => {
+          sub.classList.remove('active');
+        });
+      }
+    });
+
+
+
+
     // ================= Live Search Dropdown / AJAX live results =================
     (function () {
       const searchInput = document.getElementById("search-input");
