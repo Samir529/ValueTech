@@ -469,13 +469,18 @@ gap: 4px;
     display: none;
     position: absolute;
     top: 100%;          /* start directly below category bar */
-    left: 0;
     background: #fff;
     min-width: 210px;       /* adjust as needed */
     border: 1px solid #ccc;
     box-shadow: 0 8px 18px rgba(0,0,0,0.18);
     z-index: 5000;
     padding: 6px 0;     /* vertical padding inside dropdown */
+}
+.right-dropdown {
+    left: 0;
+}
+.left-dropdown {
+    right: 0;
 }
 
 /* Subcategories rows */
@@ -526,6 +531,19 @@ gap: 4px;
     color: limegreen;
 }
 
+/* TYPES FLYOUT (the right-side panel) */
+.category-bar-dropdown-sub-content {
+    display: none;
+    position: absolute;
+    top: 0;             /* align with the subcategory row top (you can tweak) */
+    left: 100%;         /* fly out to the right */
+    background: #fff;
+    min-width: 200px;
+    border: 1px solid #ccc;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.18);
+    z-index: 5100;
+    padding: 6px 0;
+}
 /* TYPES FLYOUT (the right-side panel) */
 .category-bar-dropdown-sub-content {
     display: none;

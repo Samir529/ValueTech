@@ -28,7 +28,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Product's Extra images, Sizes, Color etc.
 let currentIndex = 0;
-const images = [...document.querySelectorAll('.thumb-img')].map(img => img.src);
+const mainImg = document.getElementById('mainProductImage').getAttribute('src');
+const extraImgs = [...document.querySelectorAll('.thumb-img')].map(img => img.getAttribute('src'));
+const images = [mainImg, ...extraImgs];
 
 function changeImage(src) {
     document.getElementById('mainProductImage').src = src;
@@ -37,16 +39,17 @@ function changeImage(src) {
 }
 
 function prevImage() {
-    if (currentIndex > 0) currentIndex--;
-    else currentIndex = images.length - 1;
+    if (currentIndex > 0) currentIndex--;   // if 1 > 0 then 1-1 = 0
+    else currentIndex = images.length - 1;  // if 0 then 4-1 = 3 (last index)
     document.getElementById('modalImage').src = images[currentIndex];
 }
 
 function nextImage() {
-    if (currentIndex < images.length - 1) currentIndex++;
-    else currentIndex = 0;
+    if (currentIndex < images.length - 1) currentIndex++;   // if 0 < 4-1 = 3 then 0+1 = 1
+    else currentIndex = 0;  // if 3 then 0 (first index)
     document.getElementById('modalImage').src = images[currentIndex];
 }
+
 
 // Disable color buttons until size is selected
 const sizeBtns = document.querySelectorAll(".size-btn");

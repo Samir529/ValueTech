@@ -8,4 +8,14 @@ def categories_processor(request):
         .order_by(F('serial').asc(nulls_last=True))  # Order by serial, nulls go last
         .prefetch_related('subcategory_set__brandsortypesofsubcategory_set')
     )
-    return {'categories': categories}
+    half_index = categories.count() // 2  # integer division
+    first_half_categories = categories[:half_index]
+    second_half_categories = categories[half_index:]
+
+    context = {
+        'categories': categories,
+        'first_half_categories': first_half_categories,
+        'second_half_categories': second_half_categories,
+    }
+
+    return (context)

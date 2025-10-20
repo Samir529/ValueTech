@@ -293,6 +293,7 @@ def reassign_products_on_category_delete(sender, instance, **kwargs):
     Product.objects.filter(primary_category=instance).update(primary_category=default_category)
 
 
+
 class ProductImage(models.Model):
     product = models.ForeignKey(
         Product, related_name="images", on_delete=models.CASCADE
